@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CVS Caregiver — Modern Redesign · Scott Jewell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#1E66FF;--cyan:#13C8FF;--navy:#070C1C;--slate:#9fb0d0;
+    --cvs:#CC0000;--cvs-dk:#A30000;
+    --ink:#16181F;--sec:#6B7280;--bg:#F6F7F9;--card:#fff;--line:#ECEEF2;--field:#F2F3F6;
+    --green:#1FA971;--green-bg:#E7F6EF;--amber:#C77A06;--amber-bg:#FBF0DD;
+    --display:"Space Grotesk",sans-serif;--sans:"Inter",-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--sans);min-height:100vh;color:#fff;
+    background:radial-gradient(900px 500px at 80% -5%,rgba(19,200,255,.22),transparent 60%),
+               radial-gradient(700px 460px at 10% 10%,rgba(30,102,255,.28),transparent 58%),var(--navy);
+    display:flex;flex-direction:column;align-items:center;padding:40px 20px 70px;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .top{max-width:760px;text-align:center;margin-bottom:30px;}
+  .eyebrow{font-family:var(--display);font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#8fb0ff;margin-bottom:14px;}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4.5vw,40px);letter-spacing:-1px;line-height:1.08;}
+  h1 .g{background:linear-gradient(120deg,#7fb2ff,#13C8FF);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .sub{margin-top:16px;color:#c4cee4;font-size:16px;line-height:1.6;}
+  .stage{display:flex;gap:48px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:1000px;}
+
+  /* PHONE */
+  .device{width:340px;height:712px;background:#0b0b0d;border-radius:52px;padding:13px;
+    box-shadow:0 40px 90px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.06),inset 0 0 0 2px #2a2a2e;position:relative;flex:none;}
+  .screenframe{position:relative;width:100%;height:100%;border-radius:40px;overflow:hidden;background:var(--bg);}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:130px;height:26px;background:#0b0b0d;border-radius:0 0 18px 18px;z-index:60;}
+  .statusbar{position:absolute;top:0;left:0;right:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600;z-index:55;color:#16181F;}
+  .sb-icons{display:flex;align-items:center;gap:6px;}
+
+  .stack{position:absolute;inset:0;}
+  .screen{position:absolute;inset:0;background:var(--bg);transform:translateX(100%);
+    transition:transform .44s cubic-bezier(.36,.66,.04,1);display:flex;flex-direction:column;overflow:hidden;}
+  .screen.active{transform:translateX(0);}
+  .screen.prev{transform:translateX(-26%);}
+  .screen .dim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .44s;}
+  .screen.prev .dim{opacity:.12;}
+
+  .hdr{padding:54px 22px 14px;flex:none;display:flex;align-items:center;gap:12px;background:var(--bg);}
+  .hdr .back{width:34px;height:34px;border-radius:50%;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;}
+  .hdr .back svg{width:13px;height:13px;color:var(--ink);}
+  .hdr .htitle{font-family:var(--display);font-weight:600;font-size:18px;color:var(--ink);}
+  .hdr .hsub{font-size:12.5px;color:var(--sec);margin-top:1px;}
+
+  .body{flex:1;overflow-y:auto;padding:6px 18px 96px;}
+  .body::-webkit-scrollbar{width:0;}
+
+  .greet{padding:2px 4px 4px;}
+  .greet .small{font-size:13px;color:var(--sec);}
+  .greet .big{font-family:var(--display);font-weight:700;font-size:27px;color:var(--ink);letter-spacing:-.6px;margin-top:2px;}
+  .greet .meta{font-size:13.5px;color:var(--sec);margin-top:5px;}
+  .greet .attn{display:inline-flex;align-items:center;gap:7px;margin-top:13px;font-size:12.5px;font-weight:600;color:var(--amber);background:var(--amber-bg);padding:6px 12px 6px 11px;border-radius:30px;}
+  .greet .attn .ad{width:6px;height:6px;border-radius:50%;background:var(--amber);}
+
+  .label{font-family:var(--display);font-size:12.5px;font-weight:600;letter-spacing:.04em;color:var(--sec);text-transform:uppercase;margin:20px 4px 11px;}
+
+  .person{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:15px;margin-bottom:13px;display:flex;align-items:center;gap:14px;cursor:pointer;
+    box-shadow:0 4px 14px rgba(20,30,60,.04);transition:transform .14s,box-shadow .2s;}
+  .person:active{transform:scale(.985);}
+  .avatar{width:50px;height:50px;border-radius:16px;flex:none;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:17px;color:#3A3D45;background:#EEF0F3;border:1px solid #E3E5EA;letter-spacing:.01em;}
+  .av-red,.av-blue,.av-violet{background:#EEF0F3;color:#3A3D45;}
+  .person .pinfo{flex:1;}
+  .person .pname{font-size:16px;font-weight:600;color:var(--ink);}
+  .person .prel{font-size:13px;color:var(--sec);margin-top:1px;}
+  .pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:30px;margin-top:7px;}
+  .pill.amber{background:var(--amber-bg);color:var(--amber);}
+  .pill.green{background:var(--green-bg);color:var(--green);}
+  .chev{width:9px;height:9px;color:#c2c6cf;flex:none;}
+
+  .add{display:flex;align-items:center;justify-content:center;gap:9px;border:1.6px dashed #cdd2db;border-radius:20px;padding:16px;color:var(--cvs);
+    font-weight:600;font-size:14.5px;cursor:pointer;margin-top:4px;background:#fff;transition:background .2s,border-color .2s;}
+  .add:active{background:#fff5f5;border-color:var(--cvs);}
+
+  /* summary chips */
+  .chips{display:flex;gap:9px;margin:4px 0 6px;}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 14px;flex:1;}
+  .chip .n{font-family:var(--display);font-weight:700;font-size:19px;color:var(--ink);}
+  .chip .l{font-size:11.5px;color:var(--sec);margin-top:2px;}
+
+  /* med card */
+  .med{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 4px 14px rgba(20,30,60,.04);}
+  .med-top{display:flex;align-items:flex-start;gap:12px;}
+  .med .dot{width:42px;height:42px;border-radius:13px;background:#FBE9E9;display:flex;align-items:center;justify-content:center;flex:none;}
+  .med .dot svg{width:22px;height:22px;color:var(--cvs);}
+  .med .mname{font-size:15.5px;font-weight:600;color:var(--ink);}
+  .med .mdose{font-size:13px;color:var(--sec);margin-top:2px;}
+  .med-foot{display:flex;align-items:center;justify-content:space-between;margin-top:13px;padding-top:13px;border-top:1px solid var(--line);}
+  .refill{background:var(--cvs);color:#fff;font-size:13px;font-weight:600;padding:9px 18px;border-radius:30px;cursor:pointer;position:relative;overflow:hidden;transition:transform .12s,background .3s;min-width:84px;text-align:center;}
+  .refill:active{transform:scale(.95);}
+  .refill.done{background:var(--green);}
+  .refill .lt{transition:opacity .2s;}
+  .refill .ck{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;}
+  .refill .ck svg{width:20px;height:20px;}
+  .tog{width:44px;height:26px;border-radius:20px;background:#d7d8dc;position:relative;cursor:pointer;transition:background .3s;flex:none;}
+  .tog .knob{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .26s cubic-bezier(.4,0,.2,1);}
+  .tog.on{background:var(--green);}.tog.on .knob{left:21px;}
+  .remind{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sec);}
+
+  /* form */
+  .flabel{font-size:13px;font-weight:600;color:var(--ink);margin:16px 4px 8px;}
+  .input{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:14px 15px;font-size:15px;color:var(--ink);transition:border-color .2s;}
+  .input.focus{border-color:var(--cvs);}
+  .input .ph{color:#aab0ba;}
+  .relchips{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+  .relchip{font-size:13px;font-weight:500;color:var(--ink);background:#fff;border:1.5px solid var(--line);padding:9px 15px;border-radius:30px;cursor:pointer;transition:.2s;}
+  .relchip.sel{background:var(--cvs);color:#fff;border-color:var(--cvs);}
+  .cta{background:var(--cvs);color:#fff;text-align:center;font-size:16px;font-weight:600;padding:16px;border-radius:16px;cursor:pointer;margin-top:24px;position:relative;overflow:hidden;transition:transform .12s,background .3s;}
+  .cta:active{transform:scale(.98);}
+  .cta.done{background:var(--green);}
+  .cta .lt{transition:opacity .2s;}
+  .cta .ck{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;}
+  .cta .ck svg{width:24px;height:24px;}
+
+  /* bottom nav */
+  .tabbar{position:absolute;bottom:0;left:0;right:0;height:76px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;z-index:40;padding-bottom:16px;}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#aab0ba;cursor:pointer;}
+  .tab.on{color:var(--cvs);}
+  .tab svg{width:22px;height:22px;}.tab span{font-size:10px;font-weight:600;}
+
+  .ripple{position:absolute;width:46px;height:46px;border-radius:50%;background:rgba(30,102,255,.3);border:2px solid rgba(255,255,255,.9);transform:translate(-50%,-50%) scale(.2);opacity:0;z-index:90;pointer-events:none;}
+  .ripple.go{animation:rip .6s ease-out;}
+  @keyframes rip{0%{opacity:.9;transform:translate(-50%,-50%) scale(.2);}100%{opacity:0;transform:translate(-50%,-50%) scale(1.3);}}
+  .toast{position:absolute;left:50%;bottom:100px;transform:translateX(-50%) translateY(20px);background:#16181F;color:#fff;font-size:13px;font-weight:500;padding:11px 18px;border-radius:30px;opacity:0;transition:all .3s;z-index:80;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* control panel */
+  .panel{flex:none;width:320px;max-width:100%;}
+  .panel h2{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.4px;margin-bottom:6px;}
+  .panel .pdesc{color:#c4cee4;font-size:14.5px;line-height:1.6;margin-bottom:22px;}
+  .chipbtn{width:100%;text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(150,180,255,.22);color:#fff;border-radius:14px;padding:14px 16px;margin-bottom:11px;cursor:pointer;transition:.2s;display:flex;gap:13px;align-items:center;}
+  .chipbtn:hover{background:rgba(30,102,255,.18);border-color:rgba(120,160,255,.5);transform:translateX(3px);}
+  .chipbtn .dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(120deg,#1E66FF,#13C8FF);flex:none;display:flex;align-items:center;justify-content:center;}
+  .chipbtn .dot svg{width:18px;height:18px;color:#fff;}
+  .chipbtn .ct .t{font-size:14.5px;font-weight:600;}
+  .chipbtn .ct .d{font-size:12.5px;color:var(--slate);margin-top:2px;}
+  .chipbtn.primary{background:linear-gradient(120deg,#1E66FF,#13C8FF);border:none;}
+  .chipbtn.primary .dot{background:rgba(255,255,255,.2);}
+  .caption{margin-top:18px;background:rgba(255,255,255,.05);border-left:3px solid var(--cyan);border-radius:0 12px 12px 0;padding:13px 16px;font-size:13.5px;color:#dfe7f5;min-height:54px;line-height:1.5;}
+  .caption b{color:#fff;}
+  .backlink{margin-top:40px;font-size:14px;color:var(--slate);}
+  .backlink a{color:#9fb0d0;text-decoration:none;font-weight:600;}.backlink a:hover{color:#fff;}
+  @media(max-width:900px){.stage{gap:34px;}.panel{width:340px;}}
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="eyebrow">CVS Caregiver · Modern Reimagining</div>
+    <h1>The caregiver flow, <span class="g">redesigned for today.</span></h1>
+    <p class="sub">A modern take on the same caregiver experience — calmer hierarchy, clearer status, and softer, more human screens. The original designs still live in the case study above; this is where it could go next.</p>
+  </div>
+
+  <div class="stage">
+    <div class="device">
+      <div class="screenframe" id="frame">
+        <div class="notch"></div>
+        <div class="statusbar"><span id="clock">9:41</span>
+          <span class="sb-icons">
+            <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.4-1.5A11 11 0 0 0 8 0 11 11 0 0 0 .6 3.1L2 4.6A8.7 8.7 0 0 1 8 2.2Z"/><circle cx="8" cy="9.5" r="1.6"/></svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="1" y="1" width="20" height="10" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.5" y="2.5" width="16" height="7" rx="1.5" fill="currentColor"/><rect x="22.5" y="4" width="1.6" height="4" rx="0.8" fill="currentColor" fill-opacity=".5"/></svg>
+          </span>
+        </div>
+
+        <div class="stack" id="stack">
+
+          <!-- HOME / CIRCLE -->
+          <section class="screen active" data-screen="home">
+            <div class="dim"></div>
+            <div class="body" style="padding-top:54px;">
+              <div class="greet">
+                <div class="small">Good morning</div>
+                <div class="big">Hi, Ajee</div>
+                <div class="meta">Caring for <b style="color:var(--ink);">2 people</b></div>
+                <span class="attn"><span class="ad"></span>1 needs attention</span>
+              </div>
+              <div class="label">Your circle</div>
+              <div class="person" data-go="member" data-tap="Robert (Dad)">
+                <div class="avatar av-red">RW</div>
+                <div class="pinfo"><div class="pname">Robert Williams</div><div class="prel">Dad · 4 medications</div>
+                  <span class="pill amber"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 8v5M12 16.5v.01"/><circle cx="12" cy="12" r="9"/></svg> 1 refill due</span></div>
+                <svg class="chev" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2"><path d="m1 1 6 6-6 6"/></svg>
+              </div>
+              <div class="person">
+                <div class="avatar av-violet">AW</div>
+                <div class="pinfo"><div class="pname">Abena Williams</div><div class="prel">Mom · 2 medications</div>
+                  <span class="pill green"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m5 12 4 4 10-11"/></svg> All up to date</span></div>
+                <svg class="chev" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2"><path d="m1 1 6 6-6 6"/></svg>
+              </div>
+              <div class="add" data-go="addperson" data-tap="Add someone">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Add someone to your circle
+              </div>
+            </div>
+            <div class="tabbar">
+              <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg><span>Home</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6"/></svg><span>Meds</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10.5 21a2 2 0 0 0 3 0"/></svg><span>Reminders</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>You</span></div>
+            </div>
+          </section>
+
+          <!-- MEMBER DETAIL -->
+          <section class="screen" data-screen="member">
+            <div class="dim"></div>
+            <div class="hdr">
+              <div class="back" data-back><svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2 3 11l9 9"/></svg></div>
+              <div><div class="htitle">Robert Williams</div><div class="hsub">Dad · You're the caregiver</div></div>
+            </div>
+            <div class="body">
+              <div class="chips">
+                <div class="chip"><div class="n">4</div><div class="l">Medications</div></div>
+                <div class="chip"><div class="n" style="color:var(--amber);">1</div><div class="l">Refill due</div></div>
+                <div class="chip"><div class="n" style="color:var(--green);">On</div><div class="l">Reminders</div></div>
+              </div>
+              <div class="label">Medications</div>
+
+              <div class="med">
+                <div class="med-top">
+                  <div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="9" width="13" height="7" rx="3.5" transform="rotate(-45 9.5 12.5)"/></svg></div>
+                  <div style="flex:1;"><div class="mname">Lisinopril</div><div class="mdose">10 mg · 1 tablet daily</div>
+                    <span class="pill amber" style="margin-top:8px;">Refill due in 3 days</span></div>
+                </div>
+                <div class="med-foot">
+                  <div class="remind"><div class="tog on" data-toggle><div class="knob"></div></div> Reminders</div>
+                  <div class="refill" data-refill><span class="lt">Refill</span><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path class="ckp" d="M5 13l4 4 10-11" stroke-dasharray="30" stroke-dashoffset="30"/></svg></span></div>
+                </div>
+              </div>
+
+              <div class="med">
+                <div class="med-top">
+                  <div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="9" width="13" height="7" rx="3.5" transform="rotate(-45 9.5 12.5)"/></svg></div>
+                  <div style="flex:1;"><div class="mname">Metformin</div><div class="mdose">500 mg · twice daily</div>
+                    <span class="pill green" style="margin-top:8px;">28 days left</span></div>
+                </div>
+                <div class="med-foot">
+                  <div class="remind"><div class="tog on" data-toggle><div class="knob"></div></div> Reminders</div>
+                  <div class="refill" data-refill><span class="lt">Refill</span><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path class="ckp" d="M5 13l4 4 10-11" stroke-dasharray="30" stroke-dashoffset="30"/></svg></span></div>
+                </div>
+              </div>
+
+              <div class="med">
+                <div class="med-top">
+                  <div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="9" width="13" height="7" rx="3.5" transform="rotate(-45 9.5 12.5)"/></svg></div>
+                  <div style="flex:1;"><div class="mname">Atorvastatin</div><div class="mdose">20 mg · 1 tablet at night</div>
+                    <span class="pill green" style="margin-top:8px;">45 days left</span></div>
+                </div>
+                <div class="med-foot">
+                  <div class="remind"><div class="tog" data-toggle><div class="knob"></div></div> Reminders</div>
+                  <div class="refill" data-refill><span class="lt">Refill</span><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path class="ckp" d="M5 13l4 4 10-11" stroke-dasharray="30" stroke-dashoffset="30"/></svg></span></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ADD PERSON -->
+          <section class="screen" data-screen="addperson">
+            <div class="dim"></div>
+            <div class="hdr">
+              <div class="back" data-back><svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2 3 11l9 9"/></svg></div>
+              <div><div class="htitle">Add someone</div><div class="hsub">Bring a loved one into your circle</div></div>
+            </div>
+            <div class="body">
+              <div class="flabel">Their name</div>
+              <div class="input"><span class="ph">e.g. Robert Williams</span></div>
+              <div class="flabel">Your relationship</div>
+              <div class="relchips">
+                <span class="relchip sel" data-rel>Parent</span><span class="relchip" data-rel>Spouse</span>
+                <span class="relchip" data-rel>Child</span><span class="relchip" data-rel>Friend</span><span class="relchip" data-rel>Other</span>
+              </div>
+              <div class="flabel">Date of birth <span style="color:#aab0ba;font-weight:400;">(optional)</span></div>
+              <div class="input"><span class="ph">MM / DD / YYYY</span></div>
+              <div class="remind" style="margin:18px 4px 0;justify-content:space-between;">
+                <span style="color:var(--ink);font-weight:500;font-size:14px;">Manage their prescriptions</span>
+                <div class="tog on" data-toggle><div class="knob"></div></div>
+              </div>
+              <div class="cta" data-add><span class="lt">Add to your circle</span><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path class="ckp" d="M5 13l4 4 10-11" stroke-dasharray="30" stroke-dashoffset="30"/></svg></span></div>
+            </div>
+          </section>
+
+        </div>
+        <div class="ripple" id="ripple"></div>
+        <div class="toast" id="toast"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Try the redesign</h2>
+      <p class="pdesc">A modern reimagining of the caregiver flow — each control runs a real interaction on the phone.</p>
+      <button class="chipbtn primary" data-demo="tour"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v14l11-7z"/></svg></span><span class="ct"><div class="t">Play guided walkthrough</div><div class="d">Auto-tour the whole flow</div></span></button>
+      <button class="chipbtn" data-demo="open"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="ct"><div class="t">Open a loved one</div><div class="d">Card → member detail</div></span></button>
+      <button class="chipbtn" data-demo="refill"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span><span class="ct"><div class="t">Request a refill</div><div class="d">Button → success morph</div></span></button>
+      <button class="chipbtn" data-demo="add"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span><span class="ct"><div class="t">Add someone</div><div class="d">Modern add-person form</div></span></button>
+      <button class="chipbtn" data-demo="reset"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/></svg></span><span class="ct"><div class="t">Reset</div><div class="d">Back to Home</div></span></button>
+      <div class="caption" id="caption"><b>Tip:</b> tap the phone directly, or play the guided walkthrough to see every micro-interaction.</div>
+    </div>
+  </div>
+
+  <div class="backlink">← <a href="case-caregiver.html">Back to the Caregiver case study</a></div>
+
+<script>
+(()=>{
+  const stack=document.getElementById('stack'),screens={};
+  stack.querySelectorAll('.screen').forEach(s=>screens[s.dataset.screen]=s);
+  const ripple=document.getElementById('ripple'),toast=document.getElementById('toast'),caption=document.getElementById('caption'),frame=document.getElementById('frame');
+  let nav=['home'],busy=false;
+  const clock=document.getElementById('clock');
+  const tick=()=>clock.textContent=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});tick();setInterval(tick,10000);
+  const cap=h=>caption.innerHTML=h;
+  const showToast=m=>{toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1600);};
+  function rippleAt(el){const fr=frame.getBoundingClientRect(),r=el.getBoundingClientRect();
+    ripple.style.left=(r.left-fr.left+r.width/2)+'px';ripple.style.top=(r.top-fr.top+r.height/2)+'px';
+    ripple.classList.remove('go');void ripple.offsetWidth;ripple.classList.add('go');}
+  const cur=()=>nav[nav.length-1];
+  function push(n){if(n===cur())return;const c=screens[cur()],x=screens[n];c.classList.remove('active');c.classList.add('prev');x.classList.remove('prev');x.classList.add('active');nav.push(n);}
+  function pop(){if(nav.length<2)return;const c=screens[nav.pop()],p=screens[cur()];c.classList.remove('active');p.classList.remove('prev');p.classList.add('active');}
+  function reset(){while(nav.length>1){screens[nav.pop()].classList.remove('active','prev');}screens.home.classList.add('active');screens.home.classList.remove('prev');resetAll();}
+  function resetAll(){document.querySelectorAll('.refill,.cta').forEach(b=>{b.classList.remove('done');const lt=b.querySelector('.lt'),ck=b.querySelector('.ck'),p=b.querySelector('.ckp');if(lt)lt.style.opacity='1';if(ck)ck.style.opacity='0';if(p)p.style.strokeDashoffset='30';});}
+  function morph(btn,msg){const lt=btn.querySelector('.lt'),ck=btn.querySelector('.ck'),p=btn.querySelector('.ckp');lt.style.opacity='0';
+    setTimeout(()=>{btn.classList.add('done');ck.style.opacity='1';p.style.transition='stroke-dashoffset .5s ease';p.style.strokeDashoffset='0';if(msg)showToast(msg);},200);}
+
+  stack.addEventListener('click',e=>{
+    if(busy)return;
+    const back=e.target.closest('[data-back]');if(back){rippleAt(back);pop();cap('<b>Pop transition.</b> The detail slides back to the right with a parallax dim on Home.');return;}
+    const go=e.target.closest('[data-go]');if(go){rippleAt(go);push(go.dataset.go);cap('<b>Push transition.</b> Tapping a card opens it with an iOS-style slide — calm, predictable navigation.');return;}
+    const rel=e.target.closest('[data-rel]');if(rel){rel.parentElement.querySelectorAll('[data-rel]').forEach(c=>c.classList.remove('sel'));rel.classList.add('sel');rippleAt(rel);cap('<b>Segmented choice.</b> Relationship is a single tap, not a dropdown — faster and friendlier.');return;}
+    const tog=e.target.closest('[data-toggle]');if(tog){tog.classList.toggle('on');rippleAt(tog);cap('<b>Reminders toggle.</b> Weighted spring + green track = instant, tactile feedback.');return;}
+    const rf=e.target.closest('[data-refill]');if(rf){rippleAt(rf);morph(rf,'Refill requested');cap('<b>Refill → success.</b> The button morphs to a green check in place — confirmation without a disruptive dialog.');return;}
+    const add=e.target.closest('[data-add]');if(add){rippleAt(add);morph(add,'Added to your circle');cap('<b>Add → success.</b> The primary button itself becomes the confirmation.');return;}
+  });
+
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  async function tapEl(el){if(!el)return;rippleAt(el);await sleep(260);}
+  async function tour(){
+    if(busy)return;busy=true;reset();await sleep(400);
+    cap('<b>1 · Open a loved one.</b> Tapping Robert’s card pushes his medication list.');
+    await tapEl(screens.home.querySelector('[data-go="member"]'));push('member');await sleep(950);
+    cap('<b>2 · Request a refill.</b> The amber medication, refilled in one tap.');
+    await tapEl(screens.member.querySelector('[data-refill]'));morph(screens.member.querySelector('[data-refill]'),'Refill requested');await sleep(1700);
+    cap('<b>3 · Back to your circle.</b> Pop transition returns Home.');
+    await tapEl(screens.member.querySelector('[data-back]'));pop();await sleep(900);
+    cap('<b>4 · Add someone.</b> A modern, low-friction add-person form.');
+    await tapEl(screens.home.querySelector('[data-go="addperson"]'));push('addperson');await sleep(950);
+    const rc=screens.addperson.querySelectorAll('[data-rel]');await tapEl(rc[1]);rc[0].classList.remove('sel');rc[1].classList.add('sel');await sleep(700);
+    cap('<b>5 · Add to circle.</b> Save morphs into a success check.');
+    await tapEl(screens.addperson.querySelector('[data-add]'));morph(screens.addperson.querySelector('[data-add]'),'Added to your circle');await sleep(1800);
+    cap('<b>Done.</b> Calmer hierarchy, clearer status, fewer taps. Replay any step from the panel, or tap through yourself.');
+    busy=false;
+  }
+  document.querySelectorAll('[data-demo]').forEach(b=>b.addEventListener('click',async()=>{
+    const d=b.dataset.demo;if(d==='tour')return tour();if(busy)return;
+    if(d==='reset'){reset();cap('<b>Reset.</b> Back to your circle.');}
+    if(d==='open'){reset();await sleep(250);await tapEl(screens.home.querySelector('[data-go="member"]'));push('member');cap('<b>Card → detail.</b> Each loved one opens to a clear, scannable medication list.');}
+    if(d==='refill'){reset();await sleep(250);push('member');await sleep(500);const r=screens.member.querySelector('[data-refill]');resetAll();await sleep(80);rippleAt(r);morph(r,'Refill requested');cap('<b>Refill → success.</b> No modal, no reload — the button becomes the confirmation.');}
+    if(d==='add'){reset();await sleep(250);push('addperson');await sleep(500);cap('<b>Add someone.</b> Relationship is a single tap; everything optional stays optional.');}
+  }));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CVS Health — Account &amp; Login · Scott Jewell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#1E66FF;--blue-deep:#0B49E0;--cyan:#13C8FF;--navy:#0C0C0D;--navy-2:#161617;
+    --ink:#0C1322;--slate:#5a6070;--bg:#FBFAF8;--bg-soft:#F3F1EC;--line:#E7E4DD;
+    --grad:linear-gradient(120deg,#1E66FF 0%,#13C8FF 100%);
+    --grad-soft:linear-gradient(120deg,rgba(30,102,255,.12),rgba(19,200,255,.12));
+    --display:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,sans-serif;
+    --radius:18px;--shadow:0 18px 50px rgba(13,40,120,.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 28px;}
+  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s;}
+  .reveal.in{opacity:1;transform:none;}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:saturate(160%) blur(14px);
+    background:rgba(255,255,255,.74);border-bottom:1px solid var(--line);}
+  .nav-inner{max-width:920px;margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{font-family:var(--display);font-weight:700;font-size:18px;display:flex;align-items:center;gap:9px;}
+  .bolt{width:20px;height:20px;}
+  .back{font-size:14px;font-weight:600;color:var(--slate);display:inline-flex;align-items:center;gap:7px;}
+  .back:hover{color:var(--blue);}
+
+  /* HERO */
+  .hero{background:radial-gradient(800px 460px at 82% -10%,rgba(30,102,255,.10),transparent 60%),
+        radial-gradient(620px 420px at 6% 8%,rgba(30,102,255,.14),transparent 58%),var(--navy);
+        color:#fff;padding:140px 0 80px;}
+  .crumb{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#8fb0ff;margin-bottom:20px;}
+  .hero h1{font-family:var(--display);font-weight:700;font-size:clamp(32px,5.5vw,54px);letter-spacing:-1.4px;line-height:1.05;max-width:16ch;}
+  .hero .lead{margin-top:22px;font-size:clamp(16px,2vw,19px);color:#c4cee4;max-width:58ch;}
+  .tags{margin-top:26px;display:flex;gap:8px;flex-wrap:wrap;}
+  .tag{font-size:12px;font-weight:600;color:#cfe0ff;border:1px solid rgba(120,160,255,.4);padding:5px 13px;border-radius:30px;}
+
+  /* META */
+  .meta{margin-top:-44px;position:relative;z-index:5;}
+  .meta-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+    display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden;}
+  .meta-card div{padding:22px 24px;border-right:1px solid var(--line);}
+  .meta-card div:last-child{border-right:none;}
+  .meta-card .mk{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);}
+  .meta-card .mv{margin-top:7px;font-size:15px;font-weight:600;font-family:var(--display);}
+
+  /* CONTENT */
+  section{padding:62px 0;}
+  section.tight{padding:38px 0;}
+  h2.sec{font-family:var(--display);font-weight:700;font-size:clamp(24px,3.4vw,34px);letter-spacing:-.8px;margin-bottom:6px;}
+  .kick{font-family:var(--display);font-size:12.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;}
+  p.body{font-size:17px;color:var(--slate);margin-top:16px;}
+  p.body b{color:var(--ink);font-weight:600;}
+
+  .callout{border-left:3px solid var(--blue);background:var(--bg-soft);padding:20px 24px;border-radius:0 14px 14px 0;margin-top:24px;}
+  .callout .q{font-family:var(--display);font-size:19px;font-weight:500;color:var(--ink);line-height:1.4;}
+
+  /* image placeholder */
+  .shot{margin-top:28px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);}
+  .shot .frame{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;position:relative;}
+  .f1{background:linear-gradient(135deg,#0B49E0,#13C8FF);}
+  .f2{background:linear-gradient(135deg,#1E66FF,#5b8cff);}
+  .f3{background:linear-gradient(135deg,#0C1530,#1E66FF);}
+  .shot .frame::after{content:"";position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);background-size:34px 34px;}
+  .shot .lbl{position:relative;z-index:2;color:rgba(255,255,255,.92);font-family:var(--display);font-weight:600;font-size:16px;text-align:center;padding:0 24px;}
+  .shot .cap{padding:13px 20px;font-size:13px;color:var(--slate);background:#fff;}
+
+  /* process steps */
+  .steps{margin-top:28px;display:grid;gap:16px;}
+  .step{display:grid;grid-template-columns:46px 1fr;gap:18px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;}
+  .step .n{width:46px;height:46px;border-radius:12px;background:var(--grad-soft);color:var(--blue);
+    font-family:var(--display);font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center;}
+  .step h4{font-family:var(--display);font-weight:600;font-size:17px;}
+  .step p{font-size:14.5px;color:var(--slate);margin-top:5px;}
+
+  /* impact stats */
+  .impact{background:var(--bg-soft);}
+  .impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:8px;}
+  .istat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px 24px;text-align:center;}
+  .istat .num{font-family:var(--display);font-weight:700;font-size:36px;line-height:1;}
+  .istat .d{margin-top:10px;font-size:14px;color:var(--slate);}
+  .ph-note{margin-top:18px;font-size:12.5px;color:var(--slate);text-align:center;font-style:italic;}
+
+  /* next */
+  .next{background:var(--navy);color:#fff;text-align:center;}
+  .next h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,4vw,40px);letter-spacing:-1px;}
+  .next .btn{margin-top:28px;display:inline-flex;align-items:center;gap:9px;background:var(--grad);color:#fff;
+    padding:14px 26px;border-radius:44px;font-weight:600;box-shadow:0 12px 30px rgba(30,102,255,.4);}
+  footer{background:var(--navy-2);color:#8090b0;text-align:center;padding:26px 0;font-size:13px;}
+
+  @media(max-width:760px){
+    .meta-card{grid-template-columns:repeat(2,1fr);}
+    .meta-card div:nth-child(2){border-right:none;}
+    .impact-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="Scott-Jewell-Portfolio.html" class="brand">
+      <svg class="bolt" viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="url(#b)"/><defs><linearGradient id="b" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#1E66FF"/><stop offset="1" stop-color="#13C8FF"/></linearGradient></defs></svg>
+      Scott Jewell
+    </a>
+    <a href="Scott-Jewell-Portfolio.html" class="back">← All work</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap reveal">
+    <div class="crumb">Case Study · Healthcare</div>
+    <h1>Making secure login feel effortless at CVS&nbsp;Health</h1>
+    <p class="lead">Authentication is the front door to everything in the CVS app — prescriptions, pharmacy, account. I redesigned login, biometric, and security flows for iOS and Android to remove friction without compromising safety.</p>
+    <div class="tags"><span class="tag">Product Design</span><span class="tag">iOS &amp; Android</span><span class="tag">Security UX</span><span class="tag">Usability Testing</span></div>
+  </div>
+</header>
+
+<div class="meta">
+  <div class="wrap">
+    <div class="meta-card reveal">
+      <div><div class="mk">Role</div><div class="mv">Senior Product Designer</div></div>
+      <div><div class="mk">Timeline</div><div class="mv">2022 – Present</div></div>
+      <div><div class="mk">Platform</div><div class="mv">Native iOS / Android</div></div>
+      <div><div class="mk">Team</div><div class="mv">Accounts Team</div></div>
+    </div>
+  </div>
+</div>
+
+<section style="padding-top:60px;">
+  <div class="wrap reveal">
+    <div class="kick">Interactive Prototype</div>
+    <h2 class="sec">The redesigned screens, rebuilt as live UI</h2>
+    <p class="body">Rather than show static mockups, I recreated the account flow as working UI to demonstrate the <b>micro-interactions</b> that make it feel effortless — iOS push/pop transitions, an animated Face ID toggle, and a save-to-success morph. Tap through it below, or open it full-screen.</p>
+    <div style="margin-top:24px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#0C0C0D;">
+      <iframe src="cvs-prototype.html" title="CVS interactive prototype" loading="lazy" style="width:100%;height:900px;border:0;display:block;"></iframe>
+    </div>
+    <div style="margin-top:16px;text-align:center;">
+      <a href="cvs-prototype.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--grad);color:#fff;padding:13px 24px;border-radius:44px;font-weight:600;font-size:15px;box-shadow:0 12px 30px rgba(30,102,255,.4);">
+        Open prototype full-screen
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap reveal">
+    <div class="kick">Overview</div>
+    <h2 class="sec">The front door used by millions</h2>
+    <p class="body">As a designer on the CVS Health Accounts team, I owned the experiences that get people <b>into</b> the app safely: sign-in, biometric setup, secure login, and account management across iOS and Android. These flows touch nearly every customer, every session — which means even small amounts of friction multiply into millions of frustrated moments.</p>
+    <div class="callout"><div class="q">"How do we make logging in faster and easier — without ever making it feel less safe?"</div></div>
+  </div>
+</section>
+
+<section class="tight">
+  <div class="wrap reveal">
+    <div class="kick">The Challenge</div>
+    <h2 class="sec">Security and simplicity were pulling in opposite directions</h2>
+    <p class="body">Login was a known pain point. Customers ran into friction during sign-in and password recovery, biometric options weren't consistent across platforms, and navigating account settings was harder than it needed to be. Every safeguard we added risked adding a step — and every step we removed risked weakening trust. The work was to resolve that tension, not pick a side.</p>
+  </div>
+</section>
+
+<section class="tight">
+  <div class="wrap reveal">
+    <div class="shot">
+      <img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/668c152f7bd26d0002aa21a3/efNvDymryXWTZR6a.png" alt="Original CVS account screen" style="width:100%;display:block;">
+      <div class="cap">The original account screen — dense navigation and friction-heavy flows.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap reveal">
+    <div class="kick">My Process</div>
+    <h2 class="sec">From user pain to validated flows</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div><h4>Research &amp; discovery</h4><p>Worked cross-functionally with research to understand where users got stuck — mapping the login and account journeys and the moments that caused drop-off and support contacts.</p></div></div>
+      <div class="step"><div class="n">2</div><div><h4>Wireframes &amp; exploration</h4><p>Explored streamlined sign-in patterns, biometric (Face ID / fingerprint) setup, and clearer account navigation — balancing security requirements against the fewest possible steps.</p></div></div>
+      <div class="step"><div class="n">3</div><div><h4>Prototyping &amp; usability testing</h4><p>Built interactive prototypes and ran usability testing to validate that the new flows were both faster and clearer, iterating on what the testing surfaced.</p></div></div>
+      <div class="step"><div class="n">4</div><div><h4>Developer handoff</h4><p>Partnered with engineering to ship pixel-accurate, accessible implementations across iOS and Android, with specs that held up to platform differences.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="tight">
+  <div class="wrap reveal">
+    <div class="kick">The Solution</div>
+    <h2 class="sec">Faster in, fewer dead ends</h2>
+    <p class="body">The redesigned experience introduced <b>biometric and secure login</b> that work consistently across platforms, <b>simplified sign-in and recovery</b> flows, and clearer account navigation. Checkout and check-in were streamlined to cut steps. Accessibility was built in throughout, aligned to WCAG, so the experience worked for everyone.</p>
+    <div class="shot">
+      <img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/668c152f7bd26d0002aa21a3/xMFetbawZgpMqSBT.png" alt="Redesigned CVS profile and security screens" style="width:100%;display:block;">
+      <div class="cap">The redesigned Profile and Sign-in &amp; Security experience.</div>
+    </div>
+  </div>
+</section>
+
+<section class="impact">
+  <div class="wrap reveal">
+    <div class="kick">Impact</div>
+    <h2 class="sec">Outcomes</h2>
+    <div class="impact-grid">
+      <div class="istat"><div class="num grad-text">↓ Friction</div><div class="d">Faster, simpler sign-in across platforms</div></div>
+      <div class="istat"><div class="num grad-text">Millions</div><div class="d">Of customers served by the redesigned flows</div></div>
+      <div class="istat"><div class="num grad-text">WCAG</div><div class="d">Accessibility built in, validated in testing</div></div>
+    </div>
+    <p class="ph-note">Have real numbers (login success rate, support-ticket reduction, task time)? Swap them into these cards — quantified outcomes are what recruiters remember.</p>
+  </div>
+</section>
+
+<section class="tight">
+  <div class="wrap reveal">
+    <div class="kick">Reflection</div>
+    <h2 class="sec">What I took from it</h2>
+    <p class="body">Designing the front door for millions taught me that security and simplicity aren't opposites — they're a design problem. The best authentication is the kind users barely notice. Working at this scale also sharpened how I collaborate: with research to find the real pain, and with engineering to make sure the polished prototype survives contact with two very different platforms.</p>
+  </div>
+</section>
+
+<section class="next">
+  <div class="wrap reveal">
+    <h2>Next project</h2>
+    <a href="case-bagequity.html" class="btn">BagEquity — Fintech Platform
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<footer><div class="wrap">© <span id="yr"></span> Scott Jewell · <a href="Scott-Jewell-Portfolio.html" style="color:#9fb0d0;">Back to portfolio</a></div></footer>
+
+<script>
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

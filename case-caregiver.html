@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CVS Health — Caregiver Experience · Scott Jewell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--blue:#1E66FF;--cyan:#13C8FF;--navy:#0C0C0D;--navy-2:#161617;--ink:#0C1322;--slate:#5a6070;--bg:#FBFAF8;--bg-soft:#F3F1EC;--line:#E7E4DD;
+    --grad:linear-gradient(120deg,#1E66FF,#13C8FF);--grad-soft:linear-gradient(120deg,rgba(30,102,255,.12),rgba(19,200,255,.12));
+    --display:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,sans-serif;--radius:18px;--shadow:0 18px 50px rgba(13,40,120,.12);}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 28px;}
+  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s;}
+  .reveal.in{opacity:1;transform:none;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:saturate(160%) blur(14px);background:rgba(255,255,255,.74);border-bottom:1px solid var(--line);}
+  .nav-inner{max-width:920px;margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{font-family:var(--display);font-weight:700;font-size:18px;display:flex;align-items:center;gap:9px;}
+  .bolt{width:20px;height:20px;}
+  .back{font-size:14px;font-weight:600;color:var(--slate);}
+  .back:hover{color:var(--blue);}
+  .hero{background:radial-gradient(800px 460px at 82% -10%,rgba(30,102,255,.10),transparent 60%),radial-gradient(620px 420px at 6% 8%,rgba(30,102,255,.14),transparent 58%),var(--navy);color:#fff;padding:140px 0 80px;}
+  .crumb{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#8fb0ff;margin-bottom:20px;}
+  .hero h1{font-family:var(--display);font-weight:700;font-size:clamp(32px,5.5vw,54px);letter-spacing:-1.4px;line-height:1.05;max-width:17ch;}
+  .hero .lead{margin-top:22px;font-size:clamp(16px,2vw,19px);color:#c4cee4;max-width:60ch;}
+  .tags{margin-top:26px;display:flex;gap:8px;flex-wrap:wrap;}
+  .tag{font-size:12px;font-weight:600;color:#cfe0ff;border:1px solid rgba(120,160,255,.4);padding:5px 13px;border-radius:30px;}
+  .meta{margin-top:-44px;position:relative;z-index:5;}
+  .meta-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden;}
+  .meta-card div{padding:22px 22px;border-right:1px solid var(--line);}
+  .meta-card div:last-child{border-right:none;}
+  .meta-card .mk{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);}
+  .meta-card .mv{margin-top:7px;font-size:14px;font-weight:600;font-family:var(--display);}
+  section{padding:60px 0;}
+  section.tight{padding:36px 0;}
+  h2.sec{font-family:var(--display);font-weight:700;font-size:clamp(24px,3.4vw,34px);letter-spacing:-.8px;margin-bottom:6px;}
+  .kick{font-family:var(--display);font-size:12.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;}
+  p.body{font-size:17px;color:var(--slate);margin-top:16px;}
+  p.body b{color:var(--ink);font-weight:600;}
+  .callout{border-left:3px solid var(--blue);background:var(--bg-soft);padding:20px 24px;border-radius:0 14px 14px 0;margin-top:24px;}
+  .callout .q{font-family:var(--display);font-size:19px;font-weight:500;color:var(--ink);line-height:1.4;}
+  .note{font-size:13px;color:var(--slate);background:var(--bg-soft);border:1px dashed var(--line);border-radius:12px;padding:13px 16px;margin-top:18px;font-style:italic;}
+  .realshot{margin-top:26px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;}
+  .realshot img{width:100%;display:block;}
+  .realshot.scroll{max-height:640px;overflow-y:auto;}
+  .realshot .cap{padding:12px 18px;font-size:13px;color:var(--slate);border-top:1px solid var(--line);}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:26px;}
+  .grid2 .realshot{margin-top:0;}
+  .steps{margin-top:26px;display:grid;gap:16px;}
+  .step{display:grid;grid-template-columns:46px 1fr;gap:18px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;}
+  .step .n{width:46px;height:46px;border-radius:12px;background:var(--grad-soft);color:var(--blue);font-family:var(--display);font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center;}
+  .step h4{font-family:var(--display);font-weight:600;font-size:17px;}
+  .step p{font-size:14.5px;color:var(--slate);margin-top:5px;}
+  .next{background:var(--navy);color:#fff;text-align:center;}
+  .next h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,4vw,40px);letter-spacing:-1px;}
+  .next .btn{margin-top:28px;display:inline-flex;align-items:center;gap:9px;background:var(--grad);color:#fff;padding:14px 26px;border-radius:44px;font-weight:600;box-shadow:0 12px 30px rgba(30,102,255,.4);}
+  footer{background:var(--navy-2);color:#8090b0;text-align:center;padding:26px 0;font-size:13px;}
+  @media(max-width:760px){.meta-card{grid-template-columns:repeat(2,1fr);}.meta-card div:nth-child(2){border-right:none;}.grid2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav><div class="nav-inner">
+  <a href="Scott-Jewell-Portfolio.html" class="brand"><svg class="bolt" viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="url(#b)"/><defs><linearGradient id="b" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#1E66FF"/><stop offset="1" stop-color="#13C8FF"/></linearGradient></defs></svg>Scott Jewell</a>
+  <a href="Scott-Jewell-Portfolio.html" class="back">← All work</a>
+</div></nav>
+
+<header class="hero"><div class="wrap reveal">
+  <div class="crumb">Case Study · Healthcare · Caregiving</div>
+  <h1>Managing a loved one's prescriptions, made effortless</h1>
+  <p class="lead">A native iOS and Android experience that lets caregivers manage their family members' medications from one place — a project born from a deeply personal caregiving experience in my own family.</p>
+  <div class="tags"><span class="tag">UX Design</span><span class="tag">UX Research</span><span class="tag">iOS &amp; Android</span><span class="tag">Healthcare</span></div>
+</div></header>
+
+<div class="meta"><div class="wrap"><div class="meta-card reveal">
+  <div><div class="mk">Role</div><div class="mv">Product Designer · Research</div></div>
+  <div><div class="mk">Timeline</div><div class="mv">8+ weeks</div></div>
+  <div><div class="mk">Team</div><div class="mv">2 UX · 6 Dev · 1 PM</div></div>
+  <div><div class="mk">Tools</div><div class="mv">Figma · Miro · Jira</div></div>
+</div></div></div>
+
+<section class="tight" style="padding-top:54px;"><div class="wrap reveal">
+  <div class="kick">A Modern Reimagining</div>
+  <h2 class="sec">How I'd take it further today</h2>
+  <p class="body">Here's a <b>modern redesign</b> of the caregiver flow, rebuilt as live UI — a calmer "circle" of the people you care for, clearer medication status, and one-tap refills. The original experience follows below; this shows where the design could go next.</p>
+  <div style="margin-top:24px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#0C0C0D;">
+    <iframe src="caregiver-redesign.html" title="Caregiver modern redesign prototype" loading="lazy" style="width:100%;height:900px;border:0;display:block;"></iframe>
+  </div>
+  <div style="margin-top:16px;text-align:center;">
+    <a href="caregiver-redesign.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--grad);color:#fff;padding:13px 24px;border-radius:44px;font-weight:600;font-size:15px;box-shadow:0 12px 30px rgba(30,102,255,.4);">
+      Open the redesign full-screen
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</div></section>
+
+<section><div class="wrap reveal">
+  <div class="kick">Overview</div>
+  <h2 class="sec">Caregiving is hard enough</h2>
+  <p class="body">This project set out to transform the <b>caregiver experience</b> for CVS Health — a seamless app that lets people effortlessly manage a family member's prescription medications. As the designer, I led the UX, from research through the final interface, with one goal: take the friction out of caring for someone else's health.</p>
+  <div class="callout"><div class="q">"How do you let someone manage another person's medications with total clarity — and total trust?"</div></div>
+  <div class="note">Note: this case study is a recreation. The original Figma files stayed with CVS Health, so what's shown here is a small, rebuilt fraction of the full body of work.</div>
+</div></section>
+
+<section class="tight"><div class="wrap reveal">
+  <div class="realshot"><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/65556fe99784aa0002544b83/SEvkUtgizDA5m8xN.png" alt="Caregiver experience overview"><div class="cap">Caregiver experience — overview</div></div>
+</div></section>
+
+<section class="tight"><div class="wrap reveal">
+  <div class="kick">A journey close to my heart</div>
+  <h2 class="sec">Why this one mattered</h2>
+  <p class="body">This wasn't an abstract brief. It grew out of a personal caregiving experience in my own family — the late-night confusion of tracking someone else's prescriptions, refills, and pharmacies. That perspective turned a product problem into a <b>personal mission</b>, and kept the work honest: every screen had to make a stressful job feel manageable.</p>
+</div></section>
+
+<section><div class="wrap reveal">
+  <div class="kick">Process</div>
+  <h2 class="sec">From lived experience to validated design</h2>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><div><h4>Discovery &amp; research</h4><p>Two-plus weeks understanding how caregivers actually manage another person's medications — the workarounds, the anxiety, the gaps in the current experience.</p></div></div>
+    <div class="step"><div class="n">2</div><div><h4>Define the experience</h4><p>Mapped the caregiver's journey and the core jobs: add a family member, see their meds, manage refills and pharmacies — with the right permissions and clarity.</p></div></div>
+    <div class="step"><div class="n">3</div><div><h4>Design &amp; iterate</h4><p>Six weeks designing and refining native iOS/Android flows, pressure-testing what worked and openly cutting what didn't.</p></div></div>
+    <div class="step"><div class="n">4</div><div><h4>Build with the team</h4><p>Partnered with 6 developers and a PM to ship designs that held up in engineering and stayed true to the research.</p></div></div>
+  </div>
+</div></section>
+
+<section class="tight"><div class="wrap reveal">
+  <div class="kick">Solution &amp; UI</div>
+  <h2 class="sec">The caregiver experience</h2>
+  <p class="body">The result is a calm, legible flow for managing someone else's care — clear medication lists, refills, and family management designed to reduce cognitive load at an already stressful time.</p>
+  <div class="realshot scroll"><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/65556fe99784aa0002544b83/5wiSvw4DscGMlx0e.png" alt="Caregiver flow screens"><div class="cap">Caregiver flow — scroll to explore the full sequence</div></div>
+  <div class="grid2">
+    <div class="realshot"><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/65556fe99784aa0002544b83/HMwy8wMjJHp7Ier9.png" alt="Medication management screens"></div>
+    <div class="realshot"><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/64ee4432d15c0b00028e03d5/TP6adu4Om3E5v8eu.png" alt="Family management screens"></div>
+  </div>
+  <div class="realshot scroll"><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/65556fe99784aa0002544b83/AWBoOeO7sfdTBj2N.png" alt="Full caregiver experience"><div class="cap">Extended flow — full caregiver experience</div></div>
+</div></section>
+
+<section class="tight"><div class="wrap reveal">
+  <div class="kick">Reflection</div>
+  <h2 class="sec">What I learned</h2>
+  <p class="body">Designing for caregivers taught me that <b>emotional context is a design constraint</b>. People using this app are often tired, worried, and short on time. The win wasn't a clever interface — it was reducing the number of decisions someone has to make while caring for a person they love. Some early directions didn't work; cutting them honestly made the final experience stronger.</p>
+</div></section>
+
+<section class="next"><div class="wrap reveal">
+  <h2>Next project</h2>
+  <a href="case-cvs.html" class="btn">CVS Health — Account &amp; Login<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</div></section>
+
+<footer><div class="wrap">© <span id="yr"></span> Scott Jewell · <a href="Scott-Jewell-Portfolio.html" style="color:#9fb0d0;">Back to portfolio</a></div></footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));</script>
+</body>
+</html>

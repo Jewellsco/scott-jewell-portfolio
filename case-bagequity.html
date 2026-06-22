@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BagEquity — Fintech Platform · Scott Jewell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#1E66FF;--blue-deep:#0B49E0;--cyan:#13C8FF;--navy:#0C0C0D;--navy-2:#161617;
+    --ink:#0C1322;--slate:#5a6070;--bg:#FBFAF8;--bg-soft:#F3F1EC;--line:#E7E4DD;
+    --grad:linear-gradient(120deg,#1E66FF 0%,#13C8FF 100%);
+    --grad-soft:linear-gradient(120deg,rgba(30,102,255,.12),rgba(19,200,255,.12));
+    --display:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,sans-serif;
+    --radius:18px;--shadow:0 18px 50px rgba(13,40,120,.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 28px;}
+  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s;}
+  .reveal.in{opacity:1;transform:none;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:saturate(160%) blur(14px);background:rgba(255,255,255,.74);border-bottom:1px solid var(--line);}
+  .nav-inner{max-width:920px;margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{font-family:var(--display);font-weight:700;font-size:18px;display:flex;align-items:center;gap:9px;}
+  .bolt{width:20px;height:20px;}
+  .back{font-size:14px;font-weight:600;color:var(--slate);display:inline-flex;align-items:center;gap:7px;}
+  .back:hover{color:var(--blue);}
+  .hero{background:radial-gradient(800px 460px at 82% -10%,rgba(30,102,255,.10),transparent 60%),radial-gradient(620px 420px at 6% 8%,rgba(30,102,255,.14),transparent 58%),var(--navy);color:#fff;padding:140px 0 80px;}
+  .crumb{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#8fb0ff;margin-bottom:20px;}
+  .hero h1{font-family:var(--display);font-weight:700;font-size:clamp(32px,5.5vw,54px);letter-spacing:-1.4px;line-height:1.05;max-width:16ch;}
+  .hero .lead{margin-top:22px;font-size:clamp(16px,2vw,19px);color:#c4cee4;max-width:58ch;}
+  .tags{margin-top:26px;display:flex;gap:8px;flex-wrap:wrap;}
+  .tag{font-size:12px;font-weight:600;color:#cfe0ff;border:1px solid rgba(120,160,255,.4);padding:5px 13px;border-radius:30px;}
+  .meta{margin-top:-44px;position:relative;z-index:5;}
+  .meta-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden;}
+  .meta-card div{padding:22px 24px;border-right:1px solid var(--line);}
+  .meta-card div:last-child{border-right:none;}
+  .meta-card .mk{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);}
+  .meta-card .mv{margin-top:7px;font-size:15px;font-weight:600;font-family:var(--display);}
+  section{padding:62px 0;}
+  section.tight{padding:38px 0;}
+  h2.sec{font-family:var(--display);font-weight:700;font-size:clamp(24px,3.4vw,34px);letter-spacing:-.8px;margin-bottom:6px;}
+  .kick{font-family:var(--display);font-size:12.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;}
+  p.body{font-size:17px;color:var(--slate);margin-top:16px;}
+  p.body b{color:var(--ink);font-weight:600;}
+  .callout{border-left:3px solid var(--blue);background:var(--bg-soft);padding:20px 24px;border-radius:0 14px 14px 0;margin-top:24px;}
+  .callout .q{font-family:var(--display);font-size:19px;font-weight:500;color:var(--ink);line-height:1.4;}
+  .shot{margin-top:28px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);}
+  .shot .frame{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;position:relative;}
+  .f1{background:linear-gradient(135deg,#0B49E0,#13C8FF);}
+  .f2{background:linear-gradient(135deg,#1E66FF,#5b8cff);}
+  .f3{background:linear-gradient(135deg,#3a2bff,#13C8FF);}
+  .shot .frame::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);background-size:34px 34px;}
+  .shot .lbl{position:relative;z-index:2;color:rgba(255,255,255,.92);font-family:var(--display);font-weight:600;font-size:16px;text-align:center;padding:0 24px;}
+  .shot .cap{padding:13px 20px;font-size:13px;color:var(--slate);background:#fff;}
+  .steps{margin-top:28px;display:grid;gap:16px;}
+  .step{display:grid;grid-template-columns:46px 1fr;gap:18px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;}
+  .step .n{width:46px;height:46px;border-radius:12px;background:var(--grad-soft);color:var(--blue);font-family:var(--display);font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center;}
+  .step h4{font-family:var(--display);font-weight:600;font-size:17px;}
+  .step p{font-size:14.5px;color:var(--slate);margin-top:5px;}
+  .impact{background:var(--bg-soft);}
+  .impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:8px;}
+  .istat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px 24px;text-align:center;}
+  .istat .num{font-family:var(--display);font-weight:700;font-size:34px;line-height:1.05;}
+  .istat .d{margin-top:10px;font-size:14px;color:var(--slate);}
+  .ph-note{margin-top:18px;font-size:12.5px;color:var(--slate);text-align:center;font-style:italic;}
+  .next{background:var(--navy);color:#fff;text-align:center;}
+  .next h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,4vw,40px);letter-spacing:-1px;}
+  .next .btn{margin-top:28px;display:inline-flex;align-items:center;gap:9px;background:var(--grad);color:#fff;padding:14px 26px;border-radius:44px;font-weight:600;box-shadow:0 12px 30px rgba(30,102,255,.4);}
+  footer{background:var(--navy-2);color:#8090b0;text-align:center;padding:26px 0;font-size:13px;}
+  @media(max-width:760px){.meta-card{grid-template-columns:repeat(2,1fr);}.meta-card div:nth-child(2){border-right:none;}.impact-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="Scott-Jewell-Portfolio.html" class="brand">
+      <svg class="bolt" viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="url(#b)"/><defs><linearGradient id="b" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#1E66FF"/><stop offset="1" stop-color="#13C8FF"/></linearGradient></defs></svg>
+      Scott Jewell
+    </a>
+    <a href="Scott-Jewell-Portfolio.html" class="back">← All work</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap reveal">
+    <div class="crumb">Case Study · Fintech · 0 → 1</div>
+    <h1>Building a money platform families can actually&nbsp;trust</h1>
+    <p class="lead">BagEquity helps families and youth-sports coaches manage money together. As founder and lead designer, I shaped the entire product from a blank canvas — every flow, pattern, and pixel.</p>
+    <div class="tags"><span class="tag">Product Design</span><span class="tag">Design System</span><span class="tag">Fintech</span><span class="tag">Web &amp; Mobile</span></div>
+  </div>
+</header>
+
+<div class="meta">
+  <div class="wrap">
+    <div class="meta-card reveal">
+      <div><div class="mk">Role</div><div class="mv">Founder &amp; Lead Designer</div></div>
+      <div><div class="mk">Timeline</div><div class="mv">2025 – Present</div></div>
+      <div><div class="mk">Platform</div><div class="mv">Web &amp; Native Mobile</div></div>
+      <div><div class="mk">Scope</div><div class="mv">End-to-end product</div></div>
+    </div>
+  </div>
+</div>
+
+<section style="padding-top:60px;">
+  <div class="wrap reveal">
+    <div class="kick">Interactive Prototype</div>
+    <h2 class="sec">The BagEquity flow, rebuilt as live UI</h2>
+    <p class="body">Rather than show static mockups, I rebuilt the BagEquity flow as working UI to demonstrate the <b>micro-interactions</b> that make saving feel effortless — push/pop transitions, an animated round-up dial, and a contribution that ticks the balance up in real time. Tap through it below, or open it full-screen.</p>
+    <div style="margin-top:24px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#0A0B0A;">
+      <iframe src="bagequity-prototype.html" title="BagEquity interactive prototype" loading="lazy" style="width:100%;height:900px;border:0;display:block;"></iframe>
+    </div>
+    <div style="margin-top:16px;text-align:center;">
+      <a href="bagequity-prototype.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--grad);color:#fff;padding:13px 24px;border-radius:44px;font-weight:600;font-size:15px;box-shadow:0 12px 30px rgba(30,102,255,.4);">
+        Open prototype full-screen
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap reveal">
+    <div class="kick">Overview</div>
+    <h2 class="sec">A blank canvas in a high-trust category</h2>
+    <p class="body">BagEquity is a fintech platform connecting families and youth-sports coaches around shared money. As the founding designer, I'm responsible for the <b>entire product experience</b> — onboarding, accounts, money movement — plus the design system that keeps it all consistent as the product grows. Money plus minors plus multiple parties is one of the highest-trust problems in product design.</p>
+    <div class="callout"><div class="q">"How do you make moving money between families and coaches feel as simple as a text — while meeting the bar a regulated fintech requires?"</div></div>
+  </div>
+</section>
+
+<section class="tight">
+  <div class="wrap reveal">
+    <div class="kick">The Challenge</div>
+    <h2 class="sec">Simple on the surface, serious underneath</h2>
+    <p class="body">There were no existing patterns to inherit. Every screen had to earn trust on first contact, handle <b>sensitive family and minor data</b> responsibly, and satisfy identity and consent requirements — all without burying users in steps or jargon. And it had to be built on a system that one designer could scale, not a pile of one-off screens.</p>
+  </div>
+</section>
+
+<section class="tight">
+  <div class="wrap reveal">
+    <div class="shot">
+      <div class="frame f3"><div class="lbl">Onboarding &amp; money-movement flow<br><span style="font-weight:400;opacity:.8;font-size:13px;">Designs in active development</span></div></div>
+      <div class="cap">Onboarding &amp; dashboard — visuals withheld while the product is pre-launch.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap reveal">
+    <div class="kick">My Process</div>
+    <h2 class="sec">Designing zero to one</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div><h4>Framing the problem</h4><p>Defined who the product serves — families and coaches — and the core jobs to be done, mapping the end-to-end money-movement journey before drawing a single screen.</p></div></div>
+      <div class="step"><div class="n">2</div><div><h4>Flows &amp; architecture</h4><p>Designed onboarding, account, and transaction flows with security and consent treated as part of the experience, not bolted on afterward.</p></div></div>
+      <div class="step"><div class="n">3</div><div><h4>Design system from scratch</h4><p>Built the UI kit and component library in Figma — tokens, patterns, and accessible (WCAG) components — so the product stays coherent and fast to extend.</p></div></div>
+      <div class="step"><div class="n">4</div><div><h4>Prototype, test, hand off</h4><p>Validated flows through interactive prototypes and usability checks, then partnered with engineering on dev-ready handoff.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="tight">
+  <div class="wrap reveal">
+    <div class="kick">The Solution</div>
+    <h2 class="sec">A coherent, trustworthy product system</h2>
+    <p class="body">The result is a unified experience across web and mobile: <b>clear onboarding</b>, <b>confident money-movement flows</b>, and <b>compliance-aware identity and consent</b> that feel reassuring rather than bureaucratic — all powered by a scalable design system that lets the product grow without losing its voice.</p>
+    <div class="shot">
+      <div class="frame f1"><div class="lbl">Design system &amp; key screens<br><span style="font-weight:400;opacity:.8;font-size:13px;">Designs in active development</span></div></div>
+      <div class="cap">Design system &amp; component library — sample available on request.</div>
+    </div>
+  </div>
+</section>
+
+<section class="impact">
+  <div class="wrap reveal">
+    <div class="kick">Impact</div>
+    <h2 class="sec">Where it stands</h2>
+    <div class="impact-grid">
+      <div class="istat"><div class="num grad-text">0 → 1</div><div class="d">Full product designed from scratch</div></div>
+      <div class="istat"><div class="num grad-text">1 system</div><div class="d">Scalable design system &amp; UI kit</div></div>
+      <div class="istat"><div class="num grad-text">Trust-first</div><div class="d">Compliance-aware, accessible flows</div></div>
+    </div>
+    <p class="ph-note">Once BagEquity has live metrics (signups, activation, retention), feature them here — early traction tells a powerful founder story.</p>
+  </div>
+</section>
+
+<section class="tight">
+  <div class="wrap reveal">
+    <div class="kick">Reflection</div>
+    <h2 class="sec">What I took from it</h2>
+    <p class="body">Founding the design meant wearing every hat — strategy, research, systems, and pixels. The biggest lesson: in a high-trust category, design <i>is</i> the trust. The flows that look simplest are the ones that did the most work to earn confidence. Building the system early is what let one designer ship a product that still feels like one product.</p>
+  </div>
+</section>
+
+<section class="next">
+  <div class="wrap reveal">
+    <h2>Next project</h2>
+    <a href="case-freebird.html" class="btn">Freebird — Web &amp; App Foundation
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<footer><div class="wrap">© <span id="yr"></span> Scott Jewell · <a href="Scott-Jewell-Portfolio.html" style="color:#9fb0d0;">Back to portfolio</a></div></footer>
+
+<script>
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CVS Health — Interactive Prototype · Scott Jewell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#1E66FF;--cyan:#13C8FF;--navy:#070C1C;--slate:#9fb0d0;
+    --cvs-red:#CC0000;--cvs-red-dk:#A20000;--cvs-blue:#0061B0;
+    --ink:#16181d;--sec:#6b7280;--line:#e9eaee;--field:#f1f2f4;--green:#34C759;
+    --display:"Space Grotesk",sans-serif;--sans:"Inter",-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--sans);min-height:100vh;color:#fff;
+    background:radial-gradient(900px 500px at 80% -5%,rgba(19,200,255,.22),transparent 60%),
+               radial-gradient(700px 460px at 10% 10%,rgba(30,102,255,.28),transparent 58%),var(--navy);
+    display:flex;flex-direction:column;align-items:center;padding:40px 20px 70px;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .top{max-width:760px;text-align:center;margin-bottom:30px;}
+  .eyebrow{font-family:var(--display);font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+    color:#8fb0ff;margin-bottom:14px;}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4.5vw,40px);letter-spacing:-1px;line-height:1.08;}
+  h1 .g{background:linear-gradient(120deg,#7fb2ff,#13C8FF);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .sub{margin-top:16px;color:#c4cee4;font-size:16px;line-height:1.6;}
+
+  .stage{display:flex;gap:48px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:1000px;}
+
+  /* ---------- PHONE ---------- */
+  .device{width:340px;height:712px;background:#0b0b0d;border-radius:52px;padding:13px;
+    box-shadow:0 40px 90px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.06),inset 0 0 0 2px #2a2a2e;
+    position:relative;flex:none;}
+  .screenframe{position:relative;width:100%;height:100%;border-radius:40px;overflow:hidden;background:#fff;}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:130px;height:26px;background:#0b0b0d;
+    border-radius:0 0 18px 18px;z-index:60;}
+
+  /* status bar */
+  .statusbar{position:absolute;top:0;left:0;right:0;height:46px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 26px;font-size:13px;font-weight:600;z-index:55;color:#fff;}
+  .statusbar.dark{color:#1a1a1a;}
+  .sb-icons{display:flex;align-items:center;gap:6px;}
+  .sb-icons svg{display:block;}
+
+  /* screen stack */
+  .stack{position:absolute;inset:0;}
+  .screen{position:absolute;inset:0;background:#f4f5f7;transform:translateX(100%);
+    transition:transform .44s cubic-bezier(.36,.66,.04,1);display:flex;flex-direction:column;overflow:hidden;}
+  .screen.active{transform:translateX(0);}
+  .screen.prev{transform:translateX(-26%);}
+  .screen .dim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .44s;}
+  .screen.prev .dim{opacity:.14;}
+
+  /* header */
+  .hdr{background:var(--cvs-red);color:#fff;padding:46px 16px 13px;display:flex;align-items:center;
+    position:relative;flex:none;box-shadow:0 1px 0 rgba(0,0,0,.05);}
+  .hdr .back{position:absolute;left:12px;bottom:11px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;border-radius:50%;}
+  .hdr .back svg{width:13px;height:13px;}
+  .hdr .ttl{flex:1;text-align:center;font-size:17px;font-weight:600;}
+  .hdr.noback .ttl{text-align:center;}
+
+  .body{flex:1;overflow-y:auto;padding:16px 16px 90px;-webkit-overflow-scrolling:touch;}
+  .body::-webkit-scrollbar{width:0;}
+
+  /* profile hero (account) */
+  .phero{display:flex;align-items:center;gap:14px;padding:6px 4px 18px;}
+  .heart{width:46px;height:46px;flex:none;}
+  .phero .hi{font-size:26px;font-weight:700;color:#1a1a1a;letter-spacing:-.5px;}
+  .phero .edit{font-size:13px;color:var(--cvs-red);font-weight:600;margin-top:2px;}
+
+  .card{background:#fff;border-radius:14px;padding:15px 16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;
+    box-shadow:0 1px 3px rgba(20,30,60,.07);cursor:pointer;transition:transform .12s,box-shadow .2s;}
+  .card:active{transform:scale(.98);}
+  .card .ic{width:26px;height:26px;color:#444;flex:none;}
+  .card .ct{flex:1;}
+  .card .ct .t{font-size:15px;font-weight:600;color:#1a1a1a;}
+  .card .ct .d{font-size:12.5px;color:var(--sec);margin-top:3px;line-height:1.35;}
+
+  .sect{font-size:18px;font-weight:700;color:#1a1a1a;margin:18px 4px 8px;letter-spacing:-.3px;}
+
+  .rows{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(20,30,60,.07);}
+  .row{display:flex;align-items:center;gap:14px;padding:15px 16px;cursor:pointer;position:relative;
+    transition:background .2s;}
+  .row+.row{border-top:1px solid var(--line);}
+  .row:active,.row.tap{background:#f0f1f4;}
+  .row .ic{width:22px;height:22px;color:#555;flex:none;}
+  .row .lbl{flex:1;font-size:15px;color:#1a1a1a;font-weight:500;}
+  .row .val{font-size:13px;color:var(--sec);}
+  .row .chev{width:9px;height:9px;color:#bbb;flex:none;}
+
+  /* toggle */
+  .tog{width:46px;height:28px;border-radius:20px;background:#d7d8dc;position:relative;flex:none;cursor:pointer;
+    transition:background .3s;}
+  .tog .knob{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;
+    box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .28s cubic-bezier(.4,.0,.2,1);}
+  .tog.on{background:var(--green);}
+  .tog.on .knob{left:21px;}
+
+  /* form */
+  .flabel{font-size:13px;font-weight:600;color:#333;margin:16px 4px 7px;}
+  .flabel .opt{color:#9aa0aa;font-weight:400;}
+  .input{background:var(--field);border:1.5px solid transparent;border-radius:11px;padding:13px 14px;font-size:15px;color:#1a1a1a;
+    transition:border-color .2s,background .2s;display:flex;align-items:center;justify-content:space-between;}
+  .input.focus{border-color:var(--cvs-red);background:#fff;}
+  .input .ph{color:#a7adb6;}
+  .input .eye{width:18px;height:18px;color:#8a8f98;}
+  .checkrow{display:flex;align-items:center;gap:10px;margin:14px 4px;}
+  .checkrow .lbl{font-size:14px;color:#333;}
+
+  .btn{border-radius:12px;padding:15px;text-align:center;font-size:16px;font-weight:600;color:#fff;cursor:pointer;
+    margin-top:22px;position:relative;overflow:hidden;transition:transform .12s;}
+  .btn:active{transform:scale(.97);}
+  .btn.red{background:var(--cvs-red);}
+  .btn.blue{background:var(--cvs-blue);}
+  .btn.success{background:var(--green);}
+  .btn .lbltxt{transition:opacity .2s;}
+  .btn .spin{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;}
+  .btn .spin svg{width:26px;height:26px;}
+  .ghost{text-align:center;color:var(--cvs-red);font-size:15px;font-weight:600;margin-top:14px;cursor:pointer;}
+
+  .info{background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 3px rgba(20,30,60,.07);margin-bottom:14px;}
+  .info .h{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px;}
+  .info .small{font-size:12.5px;color:var(--sec);line-height:1.5;}
+  .badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--green);font-weight:600;margin-top:6px;}
+
+  /* address card */
+  .addr{background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 3px rgba(20,30,60,.07);margin-bottom:14px;}
+  .addr .nm{font-size:15px;font-weight:600;color:#1a1a1a;}
+  .addr .ln{font-size:13px;color:var(--sec);margin-top:2px;line-height:1.45;}
+  .addr .acts{display:flex;gap:18px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);}
+  .addr .acts span{font-size:14px;font-weight:600;color:var(--cvs-red);cursor:pointer;}
+
+  /* face id overlay */
+  .faceid{position:absolute;inset:0;background:rgba(8,10,20,.55);backdrop-filter:blur(3px);z-index:70;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;opacity:0;pointer-events:none;
+    transition:opacity .3s;}
+  .faceid.show{opacity:1;}
+  .faceid .ring{width:96px;height:96px;}
+  .faceid .txt{color:#fff;font-size:15px;font-weight:500;}
+
+  /* tab bar */
+  .tabbar{position:absolute;bottom:0;left:0;right:0;height:74px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);display:flex;z-index:40;padding-bottom:14px;}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9aa0aa;cursor:pointer;}
+  .tab.on{color:var(--cvs-red);}
+  .tab svg{width:23px;height:23px;}
+  .tab span{font-size:10px;font-weight:500;}
+
+  /* tap ripple */
+  .ripple{position:absolute;width:46px;height:46px;border-radius:50%;background:rgba(30,102,255,.35);
+    border:2px solid rgba(255,255,255,.9);transform:translate(-50%,-50%) scale(.2);opacity:0;z-index:90;pointer-events:none;}
+  .ripple.go{animation:rip .6s ease-out;}
+  @keyframes rip{0%{opacity:.9;transform:translate(-50%,-50%) scale(.2);}100%{opacity:0;transform:translate(-50%,-50%) scale(1.3);}}
+
+  /* toast */
+  .toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:#1c1d22;color:#fff;
+    font-size:13px;font-weight:500;padding:10px 18px;border-radius:30px;opacity:0;transition:all .3s;z-index:80;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* ---------- CONTROLS / ANNOTATIONS ---------- */
+  .panel{flex:none;width:320px;max-width:100%;}
+  .panel h2{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.4px;margin-bottom:6px;}
+  .panel .pdesc{color:#c4cee4;font-size:14.5px;line-height:1.6;margin-bottom:22px;}
+  .chip{width:100%;text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(150,180,255,.22);color:#fff;
+    border-radius:14px;padding:14px 16px;margin-bottom:11px;cursor:pointer;transition:.2s;display:flex;gap:13px;align-items:center;}
+  .chip:hover{background:rgba(30,102,255,.18);border-color:rgba(120,160,255,.5);transform:translateX(3px);}
+  .chip .dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(120deg,#1E66FF,#13C8FF);flex:none;
+    display:flex;align-items:center;justify-content:center;}
+  .chip .dot svg{width:18px;height:18px;color:#fff;}
+  .chip .ct{flex:1;}
+  .chip .ct .t{font-size:14.5px;font-weight:600;}
+  .chip .ct .d{font-size:12.5px;color:var(--slate);margin-top:2px;}
+  .chip.primary{background:linear-gradient(120deg,#1E66FF,#13C8FF);border:none;}
+  .chip.primary .dot{background:rgba(255,255,255,.2);}
+  .chip.primary .ct .d{color:rgba(255,255,255,.85);}
+
+  .caption{margin-top:18px;background:rgba(255,255,255,.05);border-left:3px solid var(--cyan);border-radius:0 12px 12px 0;
+    padding:13px 16px;font-size:13.5px;color:#dfe7f5;min-height:54px;line-height:1.5;}
+  .caption b{color:#fff;}
+
+  .backlink{margin-top:40px;font-size:14px;color:var(--slate);}
+  .backlink a{color:#9fb0d0;text-decoration:none;font-weight:600;}
+  .backlink a:hover{color:#fff;}
+
+  @media(max-width:900px){.stage{gap:34px;}.panel{width:340px;}}
+</style>
+</head>
+<body>
+
+  <div class="top">
+    <div class="eyebrow">CVS Health · Interaction Showcase</div>
+    <h1>The redesigned account flow, <span class="g">rebuilt and animated.</span></h1>
+    <p class="sub">A faithful recreation of the CVS mobile screens I designed — running as live UI, with the micro-interactions that make the experience feel effortless. Tap through it, or play the guided walkthrough.</p>
+  </div>
+
+  <div class="stage">
+
+    <!-- PHONE -->
+    <div class="device">
+      <div class="screenframe" id="frame">
+        <div class="notch"></div>
+        <div class="statusbar dark" id="statusbar">
+          <span id="clock">9:41</span>
+          <span class="sb-icons">
+            <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.4-1.5A11 11 0 0 0 8 0 11 11 0 0 0 .6 3.1L2 4.6A8.7 8.7 0 0 1 8 2.2Z"/><path d="M8 6c1.2 0 2.3.5 3.1 1.3l1.4-1.5A6.6 6.6 0 0 0 8 4a6.6 6.6 0 0 0-4.5 1.8l1.4 1.5A4.5 4.5 0 0 1 8 6Z"/><circle cx="8" cy="9.5" r="1.6"/></svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="1" y="1" width="20" height="10" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.5" y="2.5" width="16" height="7" rx="1.5" fill="currentColor"/><rect x="22.5" y="4" width="1.6" height="4" rx="0.8" fill="currentColor" fill-opacity=".5"/></svg>
+          </span>
+        </div>
+
+        <div class="stack" id="stack">
+
+          <!-- ACCOUNT (root) -->
+          <section class="screen active" data-screen="account">
+            <div class="dim"></div>
+            <div class="hdr noback"><div class="ttl">Account</div></div>
+            <div class="body">
+              <div class="phero">
+                <svg class="heart" viewBox="0 0 48 44" fill="none"><path d="M24 41C11 32 3 25 3 15.5 3 9 8 4 14.5 4 18.5 4 22 6 24 9c2-3 5.5-5 9.5-5C40 4 45 9 45 15.5 45 25 37 32 24 41Z" stroke="#CC0000" stroke-width="3.4" stroke-linejoin="round"/></svg>
+                <div><div class="hi">Hi, Ajee!</div><div class="edit">Edit profile</div></div>
+              </div>
+              <div class="card"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 2 4 6v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6l-2-4z"/><path d="M4 6h16M9 10a3 3 0 0 0 6 0"/></svg><div class="ct"><div class="t">Purchases</div></div></div>
+              <div class="card"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><div class="ct"><div class="t">Prescription management</div></div></div>
+              <div class="card"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 3v3h6V3M9 12h6M9 16h4"/></svg><div class="ct"><div class="t">Health records</div><div class="d">Get vaccination history, test results and other health records</div></div></div>
+
+              <div class="sect">Account management</div>
+              <div class="rows">
+                <div class="row" data-go="profile" data-tap="Profile"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><div class="lbl">Profile</div><svg class="chev" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2"><path d="m1 1 6 6-6 6"/></svg></div>
+                <div class="row" data-go="signin" data-tap="Sign in and security"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><div class="lbl">Sign in and security</div><svg class="chev" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2"><path d="m1 1 6 6-6 6"/></svg></div>
+                <div class="row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><div class="lbl">Payment methods</div><svg class="chev" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2"><path d="m1 1 6 6-6 6"/></svg></div>
+                <div class="row" data-go="addresses" data-tap="Addresses"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><div class="lbl">Addresses</div><svg class="chev" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2"><path d="m1 1 6 6-6 6"/></svg></div>
+                <div class="row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/></svg><div class="lbl">Communication preferences</div><svg class="chev" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2"><path d="m1 1 6 6-6 6"/></svg></div>
+                <div class="row"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 4 6v6c0 4.5 3.5 8 8 9 4.5-1 8-4.5 8-9V6Z"/><path d="m9 12 2 2 4-4"/></svg><div class="lbl">Data privacy</div><svg class="chev" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2"><path d="m1 1 6 6-6 6"/></svg></div>
+              </div>
+            </div>
+            <div class="tabbar">
+              <div class="tab on"><svg viewBox="0 0 24 22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20C5.5 15.5 2 11.5 2 7.8 2 4.6 4.5 2 7.7 2 9.6 2 11.2 3 12 4.4 12.8 3 14.4 2 16.3 2 19.5 2 22 4.6 22 7.8c0 3.7-3.5 7.7-10 12.2Z"/></svg><span>Home</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6"/></svg><span>Prescriptions</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg><span>Card</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m4 12 4 4 1.5-1.5M12 4l-2 2M20 8l-9 9-3-3"/><circle cx="6" cy="6" r="2.5"/></svg><span>Savings</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Menu</span></div>
+            </div>
+          </section>
+
+          <!-- PROFILE -->
+          <section class="screen" data-screen="profile">
+            <div class="dim"></div>
+            <div class="hdr"><div class="back" data-back><svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2 3 11l9 9"/></svg></div><div class="ttl">Profile</div></div>
+            <div class="body">
+              <div class="sect">Personal info</div>
+              <div class="info">
+                <div class="small" style="font-weight:600;color:#1a1a1a;">First name</div>
+                <div class="small" style="margin:2px 0 10px;font-size:15px;color:#333;">Ajee</div>
+                <div class="small" style="font-weight:600;color:#1a1a1a;">Last name</div>
+                <div class="small" style="margin:2px 0 10px;font-size:15px;color:#333;">Williams</div>
+                <div class="edit" style="color:var(--cvs-red);font-weight:600;font-size:14px;cursor:pointer;" data-go="editinfo" data-tap="Edit personal info">Edit personal info ›</div>
+              </div>
+              <div class="sect">Email and username</div>
+              <div class="info">
+                <div class="small">You use your email address to sign in to your CVS.com account.</div>
+                <div class="small" style="font-size:15px;color:#333;margin-top:8px;">awphotograph.99@gmail.com</div>
+                <div class="edit" style="color:var(--cvs-red);font-weight:600;font-size:14px;cursor:pointer;margin-top:10px;">Edit email address ›</div>
+              </div>
+              <div class="sect">Primary address</div>
+              <div class="info">
+                <div class="small" style="font-size:15px;color:#333;line-height:1.5;">Ajee Williams<br>1818 S Quebec Way<br>4-6<br>Denver, CO 80231</div>
+                <div class="badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>Primary Address</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- EDIT INFO -->
+          <section class="screen" data-screen="editinfo">
+            <div class="dim"></div>
+            <div class="hdr"><div class="back" data-back><svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2 3 11l9 9"/></svg></div><div class="ttl">Edit personal info</div></div>
+            <div class="body">
+              <div class="flabel">First name</div>
+              <div class="input">Ajee</div>
+              <div class="flabel">Last name</div>
+              <div class="input">Williams</div>
+              <div class="flabel">Date of birth <span class="opt">(optional)</span></div>
+              <div class="input" id="dobField"><span class="ph">MM/DD/YYYY</span></div>
+              <div class="checkrow"><div class="tog" data-toggle><div class="knob"></div></div><div class="lbl">Show date of birth</div></div>
+              <div class="flabel">Mobile phone number <span class="opt">(optional)</span></div>
+              <div class="input"><span class="ph">(000) 000-0000</span></div>
+              <div class="flabel">Home phone number <span class="opt">(optional)</span></div>
+              <div class="input"><span class="ph">(000) 000-0000</span></div>
+              <div class="btn red" id="saveBtn" data-save>
+                <span class="lbltxt">Save changes</span>
+                <span class="spin"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path id="checkPath" d="M5 13l4 4 10-11" stroke-dasharray="30" stroke-dashoffset="30"/></svg></span>
+              </div>
+            </div>
+          </section>
+
+          <!-- SIGN IN & SECURITY -->
+          <section class="screen" data-screen="signin">
+            <div class="dim"></div>
+            <div class="faceid" id="faceid">
+              <svg class="ring" viewBox="0 0 96 96" fill="none">
+                <rect x="6" y="6" width="84" height="84" rx="22" stroke="#fff" stroke-width="3" stroke-opacity=".35"/>
+                <path id="faceArc" d="M20 14h-6v6M82 14h6v6M20 82h-6v-6M82 82h6v-6" stroke="#13C8FF" stroke-width="3.5" stroke-linecap="round"/>
+                <circle cx="38" cy="42" r="3" fill="#fff"/><circle cx="58" cy="42" r="3" fill="#fff"/>
+                <path d="M48 44v10M40 64c4 3 12 3 16 0" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+              <div class="txt" id="faceTxt">Set up Face ID…</div>
+            </div>
+            <div class="hdr"><div class="back" data-back><svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2 3 11l9 9"/></svg></div><div class="ttl">Sign in and Security</div></div>
+            <div class="body">
+              <div class="sect" style="font-size:15px;color:var(--sec);font-weight:600;">Email, password and security question</div>
+              <div class="rows" style="margin-bottom:18px;">
+                <div class="row" style="cursor:default;"><div class="lbl">Face ID sign in</div><div class="tog on" data-toggle data-faceid><div class="knob"></div></div></div>
+                <div class="row" style="cursor:default;"><div class="lbl">Remember me<div class="val" style="margin-top:2px;">On with Face ID sign in</div></div><div class="tog on" data-toggle><div class="knob"></div></div></div>
+              </div>
+              <div class="rows">
+                <div class="row"><div class="lbl">Change email address</div><svg class="chev" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2"><path d="m1 1 6 6-6 6"/></svg></div>
+                <div class="row"><div class="lbl">Change password</div><svg class="chev" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2"><path d="m1 1 6 6-6 6"/></svg></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ADDRESSES -->
+          <section class="screen" data-screen="addresses">
+            <div class="dim"></div>
+            <div class="hdr"><div class="back" data-back><svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2 3 11l9 9"/></svg></div><div class="ttl">Addresses</div></div>
+            <div class="body">
+              <div class="addr">
+                <div class="nm">Ajee Williams</div>
+                <div class="ln">1818 S Quebec Way, 4-6<br>Denver, CO 80231</div>
+                <div class="badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>Primary Address</div>
+                <div class="acts"><span>Delete</span><span>Edit ›</span></div>
+              </div>
+              <div class="addr">
+                <div class="nm">Abena Williams</div>
+                <div class="ln">1818 S Quebec Way, 4-6<br>Denver, CO 80231</div>
+                <div class="acts"><span>Delete</span><span>Edit ›</span></div>
+              </div>
+              <div class="btn red" style="background:#fff;color:var(--cvs-red);border:1.5px solid var(--cvs-red);">Add a new address</div>
+            </div>
+          </section>
+
+        </div><!-- /stack -->
+
+        <div class="ripple" id="ripple"></div>
+        <div class="toast" id="toast"></div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="panel">
+      <h2>Micro-interactions</h2>
+      <p class="pdesc">Each control triggers a real interaction in the prototype on the left.</p>
+
+      <button class="chip primary" data-demo="tour">
+        <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="ct"><div class="t">Play guided walkthrough</div><div class="d">Auto-tour through the full flow</div></span>
+      </button>
+
+      <button class="chip" data-demo="nav">
+        <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <span class="ct"><div class="t">Screen transitions</div><div class="d">iOS push / pop navigation</div></span>
+      </button>
+
+      <button class="chip" data-demo="faceid">
+        <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 8v1M16 8v1M9 15c1.5 1.2 4.5 1.2 6 0"/></svg></span>
+        <span class="ct"><div class="t">Face ID toggle</div><div class="d">Animated enable with scan feedback</div></span>
+      </button>
+
+      <button class="chip" data-demo="save">
+        <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <span class="ct"><div class="t">Save → success</div><div class="d">Button morphs into a checkmark</div></span>
+      </button>
+
+      <button class="chip" data-demo="reset">
+        <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/></svg></span>
+        <span class="ct"><div class="t">Reset</div><div class="d">Back to the Account screen</div></span>
+      </button>
+
+      <div class="caption" id="caption"><b>Tip:</b> tap the phone directly, or hit “Play guided walkthrough” to watch every micro-interaction in sequence.</div>
+    </div>
+
+  </div>
+
+  <div class="backlink">← <a href="case-cvs.html">Back to the CVS case study</a></div>
+
+<script>
+(() => {
+  const stack = document.getElementById('stack');
+  const screens = {};
+  stack.querySelectorAll('.screen').forEach(s => screens[s.dataset.screen] = s);
+  const ripple = document.getElementById('ripple');
+  const toast = document.getElementById('toast');
+  const caption = document.getElementById('caption');
+  const frame = document.getElementById('frame');
+  let navStack = ['account'];
+  let busy = false;
+
+  // live clock
+  const clock = document.getElementById('clock');
+  const tick = () => { const d=new Date(); clock.textContent = d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}); };
+  tick(); setInterval(tick, 10000);
+
+  function setCaption(html){ caption.innerHTML = html; }
+  function showToast(msg){ toast.textContent=msg; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1600); }
+
+  function rippleAt(el){
+    const fr = frame.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    ripple.style.left = (r.left - fr.left + r.width/2) + 'px';
+    ripple.style.top  = (r.top  - fr.top  + r.height/2) + 'px';
+    ripple.classList.remove('go'); void ripple.offsetWidth; ripple.classList.add('go');
+  }
+
+  function current(){ return navStack[navStack.length-1]; }
+
+  function push(name){
+    if(name === current()) return;
+    const cur = screens[current()];
+    const nxt = screens[name];
+    cur.classList.remove('active'); cur.classList.add('prev');
+    nxt.classList.remove('prev'); nxt.classList.add('active');
+    navStack.push(name);
+  }
+  function pop(){
+    if(navStack.length < 2) return;
+    const cur = screens[navStack.pop()];
+    const prev = screens[current()];
+    cur.classList.remove('active');           // slides right (back to translateX 100%)
+    prev.classList.remove('prev'); prev.classList.add('active');
+  }
+  function reset(){
+    while(navStack.length > 1){
+      const s = screens[navStack.pop()];
+      s.classList.remove('active','prev');
+    }
+    screens['account'].classList.add('active');
+    screens['account'].classList.remove('prev');
+    // restore toggles/buttons
+    document.querySelectorAll('#faceid').forEach(f=>f.classList.remove('show'));
+    resetSaveBtn();
+  }
+
+  // ---- toggles ----
+  function flipToggle(t){
+    t.classList.toggle('on');
+    return t.classList.contains('on');
+  }
+
+  // ---- face id animation ----
+  function playFaceId(){
+    const fid = document.getElementById('faceid');
+    const txt = document.getElementById('faceTxt');
+    fid.classList.add('show'); txt.textContent='Scanning…';
+    setTimeout(()=>{ txt.textContent='Face ID enabled'; }, 1100);
+    setTimeout(()=>{ fid.classList.remove('show'); }, 1900);
+  }
+
+  // ---- save -> success ----
+  function resetSaveBtn(){
+    const b=document.getElementById('saveBtn'); if(!b) return;
+    b.classList.remove('success');
+    b.querySelector('.lbltxt').style.opacity='1';
+    b.querySelector('.spin').style.opacity='0';
+    const p=document.getElementById('checkPath'); if(p) p.style.strokeDashoffset='30';
+  }
+  function playSave(){
+    const b=document.getElementById('saveBtn');
+    b.querySelector('.lbltxt').style.opacity='0';
+    setTimeout(()=>{
+      b.classList.add('success');
+      b.querySelector('.spin').style.opacity='1';
+      const p=document.getElementById('checkPath');
+      p.style.transition='stroke-dashoffset .5s ease'; p.style.strokeDashoffset='0';
+      showToast('Changes saved');
+    },220);
+  }
+
+  // ---- manual interactions ----
+  stack.addEventListener('click', e => {
+    if(busy) return;
+    const back = e.target.closest('[data-back]');
+    if(back){ rippleAt(back); pop(); setCaption('<b>Pop transition.</b> The screen slides back to the right while the previous one eases in from its parallax offset.'); return; }
+    const go = e.target.closest('[data-go]');
+    if(go){ rippleAt(go); push(go.dataset.go); setCaption('<b>Push transition.</b> Tapping a list row pushes the next screen in from the right — iOS-style, with a subtle parallax dim on the outgoing screen.'); return; }
+    const tog = e.target.closest('[data-toggle]');
+    if(tog){ const on=flipToggle(tog); rippleAt(tog);
+      if(tog.hasAttribute('data-faceid') && on) playFaceId();
+      setCaption('<b>Toggle.</b> The knob springs across on a weighted ease and the track cross-fades to green — instant, tactile state feedback.'); return; }
+    const save = e.target.closest('[data-save]');
+    if(save){ rippleAt(save); playSave(); setCaption('<b>Save → success.</b> The label fades out and the button morphs to green as the checkmark stroke draws on — confirmation without a disruptive dialog.'); return; }
+  });
+
+  // ---- guided demo ----
+  const sleep = ms => new Promise(r=>setTimeout(r,ms));
+  async function tapEl(el){ if(!el) return; rippleAt(el); el.classList.add('tap'); await sleep(260); el.classList.remove('tap'); }
+
+  async function tour(){
+    if(busy) return; busy=true; reset(); await sleep(400);
+    setCaption('<b>1 · Navigate.</b> Opening Sign in &amp; Security with a push transition.');
+    await tapEl(screens.account.querySelector('[data-go="signin"]')); push('signin'); await sleep(900);
+    setCaption('<b>2 · Face ID.</b> Toggling Face ID off, then back on with the scan animation.');
+    const fTog = screens.signin.querySelector('[data-faceid]');
+    await tapEl(fTog); flipToggle(fTog); await sleep(700);
+    await tapEl(fTog); flipToggle(fTog); playFaceId(); await sleep(2100);
+    setCaption('<b>3 · Back.</b> Pop transition returns to Account.');
+    await tapEl(screens.signin.querySelector('[data-back]')); pop(); await sleep(900);
+    setCaption('<b>4 · Drill in.</b> Account → Profile → Edit personal info.');
+    await tapEl(screens.account.querySelector('[data-go="profile"]')); push('profile'); await sleep(900);
+    await tapEl(screens.profile.querySelector('[data-go="editinfo"]')); push('editinfo'); await sleep(900);
+    setCaption('<b>5 · Toggle.</b> Flipping “Show date of birth”.');
+    const dTog = screens.editinfo.querySelector('[data-toggle]');
+    await tapEl(dTog); flipToggle(dTog); await sleep(800);
+    setCaption('<b>6 · Save → success.</b> The button morphs into an animated checkmark.');
+    await tapEl(document.getElementById('saveBtn')); playSave(); await sleep(2000);
+    setCaption('<b>Done.</b> That’s the redesigned account flow end to end. Replay any single interaction from the panel, or tap through the phone yourself.');
+    busy=false;
+  }
+
+  // ---- panel controls ----
+  document.querySelectorAll('[data-demo]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const d = btn.dataset.demo;
+      if(d==='tour') return tour();
+      if(busy) return;
+      if(d==='reset'){ reset(); setCaption('<b>Reset.</b> Back to the Account root screen.'); }
+      if(d==='nav'){ reset(); await sleep(300); await tapEl(screens.account.querySelector('[data-go="addresses"]')); push('addresses');
+        setCaption('<b>Push / pop.</b> Watch the outgoing screen dim and shift left as the new one slides in. Tap “Back” on the phone to pop.'); }
+      if(d==='faceid'){ reset(); await sleep(300); push('signin'); await sleep(550);
+        const fTog = screens.signin.querySelector('[data-faceid]');
+        if(fTog.classList.contains('on')){ flipToggle(fTog); await sleep(500); }
+        await tapEl(fTog); flipToggle(fTog); playFaceId();
+        setCaption('<b>Face ID toggle.</b> Enabling it fires a scan overlay — animated corner brackets and a confirmation tick — so the security action feels deliberate and trustworthy.'); }
+      if(d==='save'){ reset(); await sleep(300); push('profile'); await sleep(500); push('editinfo'); await sleep(650);
+        resetSaveBtn(); await sleep(100); playSave();
+        setCaption('<b>Save → success.</b> No modal, no page reload — the primary button itself becomes the confirmation.'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

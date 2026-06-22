@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BagEquity — Interactive Prototype · Scott Jewell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#1BC55C;--green-dk:#12A94B;--green-bg:#E7F9EE;--ink:#0E100E;--bg:#FAFBFA;--card:#fff;
+    --line:#ECEDEA;--sec:#6B6F6B;--field:#F2F3F1;--gold:#E7C885;--stage:#0A0B0A;
+    --display:"Space Grotesk",sans-serif;--sans:"Inter",-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--sans);min-height:100vh;color:#fff;
+    background:radial-gradient(900px 520px at 80% -5%,rgba(27,197,92,.20),transparent 60%),
+               radial-gradient(700px 460px at 8% 12%,rgba(27,197,92,.12),transparent 58%),var(--stage);
+    display:flex;flex-direction:column;align-items:center;padding:40px 20px 70px;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .top{max-width:760px;text-align:center;margin-bottom:30px;}
+  .eyebrow{font-family:var(--display);font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#7be0a2;margin-bottom:14px;}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4.5vw,40px);letter-spacing:-1px;line-height:1.08;}
+  h1 .g{color:var(--green);}
+  .sub{margin-top:16px;color:#c7d2c9;font-size:16px;line-height:1.6;}
+  .stage{display:flex;gap:48px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:1000px;}
+
+  /* PHONE */
+  .device{width:340px;height:712px;background:#070807;border-radius:52px;padding:13px;
+    box-shadow:0 40px 90px rgba(0,0,0,.55),0 0 0 2px rgba(255,255,255,.05),inset 0 0 0 2px #232423;position:relative;flex:none;}
+  .screenframe{position:relative;width:100%;height:100%;border-radius:40px;overflow:hidden;background:var(--bg);}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:130px;height:26px;background:#070807;border-radius:0 0 18px 18px;z-index:60;}
+  .statusbar{position:absolute;top:0;left:0;right:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600;z-index:55;color:var(--ink);}
+  .sb-icons{display:flex;align-items:center;gap:6px;}
+
+  .stack{position:absolute;inset:0;}
+  .screen{position:absolute;inset:0;background:var(--bg);transform:translateX(100%);
+    transition:transform .44s cubic-bezier(.36,.66,.04,1);display:flex;flex-direction:column;overflow:hidden;}
+  .screen.active{transform:translateX(0);}
+  .screen.prev{transform:translateX(-26%);}
+  .screen .dim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .44s;}
+  .screen.prev .dim{opacity:.12;}
+
+  .hdr{padding:52px 20px 12px;flex:none;display:flex;align-items:center;gap:12px;background:var(--bg);}
+  .hdr .back{width:34px;height:34px;border-radius:50%;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;}
+  .hdr .back svg{width:13px;height:13px;color:var(--ink);}
+  .hdr .htitle{font-family:var(--display);font-weight:600;font-size:18px;color:var(--ink);}
+  .wordmark{font-family:var(--display);font-weight:700;font-size:16px;letter-spacing:-.02em;color:var(--ink);}
+  .wordmark b{color:var(--green);}
+
+  .body{flex:1;overflow-y:auto;padding:4px 18px 96px;}
+  .body::-webkit-scrollbar{width:0;}
+
+  .hi{font-size:13px;color:var(--sec);margin:6px 2px 2px;}
+  .hi b{color:var(--ink);font-weight:600;}
+
+  /* balance card (black) */
+  .bcard{background:linear-gradient(150deg,#161816,#0B0C0B);border-radius:22px;padding:20px;margin-top:12px;color:#fff;position:relative;overflow:hidden;box-shadow:0 14px 30px rgba(8,10,8,.28);}
+  .bcard::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(27,197,92,.35),transparent 70%);}
+  .bcard .lab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9aa39c;font-weight:600;}
+  .bcard .bal{font-family:var(--display);font-weight:700;font-size:34px;letter-spacing:-.02em;margin-top:8px;}
+  .bcard .grow{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:12.5px;font-weight:600;color:#0c0d0c;background:var(--green);padding:4px 10px;border-radius:30px;}
+  .bcard .num{font-size:12px;color:#7e857f;letter-spacing:.16em;margin-top:16px;}
+  .bcard .chip{position:absolute;left:20px;bottom:18px;width:30px;height:22px;border-radius:5px;background:linear-gradient(135deg,#f0d79a,#d4b063);}
+
+  .stat2{display:flex;gap:11px;margin-top:13px;}
+  .stat2 .s{flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 14px;}
+  .stat2 .s .n{font-family:var(--display);font-weight:700;font-size:18px;color:var(--ink);}
+  .stat2 .s .n.gr{color:var(--green-dk);}
+  .stat2 .s .l{font-size:11.5px;color:var(--sec);margin-top:2px;}
+
+  .actions{display:flex;gap:11px;margin-top:14px;}
+  .btn{flex:1;text-align:center;font-size:14px;font-weight:600;padding:14px;border-radius:14px;cursor:pointer;transition:transform .12s;}
+  .btn:active{transform:scale(.97);}
+  .btn.primary{background:var(--green);color:#08110a;}
+  .btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink);}
+
+  .label{font-family:var(--display);font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--sec);margin:22px 2px 11px;}
+
+  .rows{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;}
+  .rrow{display:flex;align-items:center;gap:12px;padding:13px 15px;}
+  .rrow+.rrow{border-top:1px solid var(--line);}
+  .rdot{width:38px;height:38px;border-radius:11px;background:var(--field);display:flex;align-items:center;justify-content:center;flex:none;}
+  .rdot svg{width:19px;height:19px;color:#565a56;}
+  .rinfo{flex:1;}
+  .rname{font-size:14px;font-weight:600;color:var(--ink);}
+  .rsub{font-size:12px;color:var(--sec);margin-top:1px;}
+  .rplus{font-size:14px;font-weight:700;color:var(--green-dk);font-family:var(--display);}
+
+  /* round-up dial screen */
+  .dialwrap{display:flex;flex-direction:column;align-items:center;margin-top:14px;}
+  .dial{position:relative;width:190px;height:190px;}
+  .dial svg{transform:rotate(-90deg);}
+  .dial .pct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .dial .pn{font-family:var(--display);font-weight:700;font-size:48px;color:var(--ink);letter-spacing:-.02em;line-height:1;}
+  .dial .pl{font-size:12px;color:var(--sec);margin-top:4px;}
+  .stepper{display:flex;align-items:center;gap:20px;margin-top:22px;}
+  .stepper button{width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:24px;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .12s,background .2s;}
+  .stepper button:active{transform:scale(.92);background:var(--field);}
+  .proj{margin-top:24px;background:var(--green-bg);border:1px solid #CBEFD8;border-radius:18px;padding:18px;text-align:center;width:100%;}
+  .proj .pl{font-size:12px;color:var(--green-dk);font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+  .proj .pv{font-family:var(--display);font-weight:700;font-size:32px;color:var(--ink);margin-top:6px;letter-spacing:-.02em;}
+  .proj .pd{font-size:12px;color:var(--sec);margin-top:4px;}
+
+  /* family */
+  .fhero{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;text-align:center;margin-top:12px;}
+  .fhero .pl{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--sec);font-weight:600;}
+  .fhero .pv{font-family:var(--display);font-weight:700;font-size:30px;color:var(--ink);margin-top:6px;}
+  .fhero .pd{font-size:12.5px;color:var(--green-dk);font-weight:600;margin-top:4px;}
+  .fmember{display:flex;align-items:center;gap:13px;padding:13px 15px;background:#fff;border:1px solid var(--line);border-radius:16px;margin-top:11px;}
+  .av{width:42px;height:42px;border-radius:13px;background:#EEEFEC;border:1px solid #E4E5E2;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:14px;color:#3A3D3A;flex:none;}
+  .fmember.pending{opacity:.6;border-style:dashed;}
+  .fname{flex:1;font-size:14px;font-weight:600;color:var(--ink);}
+  .fgive{font-size:13px;font-weight:700;color:var(--green-dk);font-family:var(--display);}
+  .fmember .tag{font-size:11px;color:var(--sec);font-weight:500;}
+
+  /* tab bar */
+  .tabbar{position:absolute;bottom:0;left:0;right:0;height:74px;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;z-index:40;padding-bottom:14px;}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#9aa09a;cursor:pointer;}
+  .tab.on{color:var(--green-dk);}
+  .tab svg{width:22px;height:22px;}.tab span{font-size:10px;font-weight:600;}
+
+  .ripple{position:absolute;width:46px;height:46px;border-radius:50%;background:rgba(27,197,92,.35);border:2px solid rgba(255,255,255,.9);transform:translate(-50%,-50%) scale(.2);opacity:0;z-index:90;pointer-events:none;}
+  .ripple.go{animation:rip .6s ease-out;}
+  @keyframes rip{0%{opacity:.9;transform:translate(-50%,-50%) scale(.2);}100%{opacity:0;transform:translate(-50%,-50%) scale(1.3);}}
+  .toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:#0E100E;color:#fff;font-size:13px;font-weight:500;padding:11px 18px;border-radius:30px;opacity:0;transition:all .3s;z-index:80;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .flash{position:absolute;inset:0;background:var(--green);opacity:0;pointer-events:none;z-index:70;transition:opacity .15s;}
+
+  /* panel */
+  .panel{flex:none;width:320px;max-width:100%;}
+  .panel h2{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.4px;margin-bottom:6px;}
+  .panel .pdesc{color:#c7d2c9;font-size:14.5px;line-height:1.6;margin-bottom:22px;}
+  .chip{width:100%;text-align:left;background:rgba(255,255,255,.05);border:1px solid rgba(120,220,160,.22);color:#fff;border-radius:14px;padding:14px 16px;margin-bottom:11px;cursor:pointer;transition:.2s;display:flex;gap:13px;align-items:center;}
+  .chip:hover{background:rgba(27,197,92,.16);border-color:rgba(120,220,160,.5);transform:translateX(3px);}
+  .chip .dot{width:34px;height:34px;border-radius:10px;background:var(--green);flex:none;display:flex;align-items:center;justify-content:center;}
+  .chip .dot svg{width:18px;height:18px;color:#08110a;}
+  .chip .ct .t{font-size:14.5px;font-weight:600;}
+  .chip .ct .d{font-size:12.5px;color:#9fb0a4;margin-top:2px;}
+  .chip.primary{background:var(--green);border:none;color:#08110a;}
+  .chip.primary .dot{background:rgba(0,0,0,.14);}
+  .chip.primary .dot svg{color:#08110a;}
+  .chip.primary .ct .d{color:#0c3a1e;}
+  .caption{margin-top:18px;background:rgba(255,255,255,.05);border-left:3px solid var(--green);border-radius:0 12px 12px 0;padding:13px 16px;font-size:13.5px;color:#dcefe3;min-height:54px;line-height:1.5;}
+  .caption b{color:#fff;}
+  .backlink{margin-top:40px;font-size:14px;color:#9fb0a4;}
+  .backlink a{color:#bfeacd;text-decoration:none;font-weight:600;}.backlink a:hover{color:#fff;}
+  @media(max-width:900px){.stage{gap:34px;}.panel{width:340px;}}
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="eyebrow">BagEquity · Interaction Showcase</div>
+    <h1>Turning everyday spending into <span class="g">savings</span> — as live UI.</h1>
+    <p class="sub">A working recreation of the BagEquity flow: set a round-up, watch the balance tick up, and invite family — with the micro-interactions that make saving feel effortless.</p>
+  </div>
+
+  <div class="stage">
+    <div class="device">
+      <div class="screenframe" id="frame">
+        <div class="notch"></div>
+        <div class="statusbar"><span id="clock">9:41</span>
+          <span class="sb-icons">
+            <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.4-1.5A11 11 0 0 0 8 0 11 11 0 0 0 .6 3.1L2 4.6A8.7 8.7 0 0 1 8 2.2Z"/><circle cx="8" cy="9.5" r="1.6"/></svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="1" y="1" width="20" height="10" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.5" y="2.5" width="16" height="7" rx="1.5" fill="currentColor"/><rect x="22.5" y="4" width="1.6" height="4" rx="0.8" fill="currentColor" fill-opacity=".5"/></svg>
+          </span>
+        </div>
+
+        <div class="stack" id="stack">
+
+          <!-- HOME -->
+          <section class="screen active" data-screen="home">
+            <div class="dim"></div>
+            <div class="body" style="padding-top:54px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div class="wordmark">BAG<b>EQUITY</b></div>
+                <div class="av" style="width:34px;height:34px;border-radius:10px;font-size:12px;">JF</div>
+              </div>
+              <div class="hi">Jordan's Fund · <b>Building their future</b></div>
+
+              <div class="bcard">
+                <div class="lab">Athlete Fund</div>
+                <div class="bal" id="balance">$1,248.50</div>
+                <div class="grow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 18 10 12l4 4 6-7"/><path d="M16 7h4v4"/></svg> +12.4% this year</div>
+                <div class="num">•••• •••• •••• 4821</div>
+                <div class="chip"></div>
+              </div>
+
+              <div class="stat2">
+                <div class="s"><div class="n gr" id="month">+$84.20</div><div class="l">Saved this month</div></div>
+                <div class="s"><div class="n">32</div><div class="l">Round-ups</div></div>
+              </div>
+
+              <div class="actions">
+                <div class="btn primary" data-go="roundup" data-tap="Set round-up">Set round-up</div>
+                <div class="btn ghost" data-go="family" data-tap="Family">Invite family</div>
+              </div>
+
+              <div class="label">Recent round-ups</div>
+              <div class="rows" id="recent">
+                <div class="rrow"><div class="rdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h13v7a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Z"/><path d="M17 9h2a2 2 0 0 1 0 6h-2"/></svg></div><div class="rinfo"><div class="rname">Corner Coffee</div><div class="rsub">$4.20 · rounded up</div></div><div class="rplus">+$0.80</div></div>
+                <div class="rrow"><div class="rdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="14" height="12" rx="2"/><path d="M17 10h2l2 3v3a1 1 0 0 1-1 1h-1"/><circle cx="7.5" cy="18" r="1.6"/></svg></div><div class="rinfo"><div class="rname">Shell Gas</div><div class="rsub">$48.10 · rounded up</div></div><div class="rplus">+$1.90</div></div>
+                <div class="rrow"><div class="rdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 7h14l-1.5 11a2 2 0 0 1-2 1.7H8.5a2 2 0 0 1-2-1.7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg></div><div class="rinfo"><div class="rname">Dick's Sporting</div><div class="rsub">$92.40 · rounded up</div></div><div class="rplus">+$0.60</div></div>
+              </div>
+
+              <div class="btn primary" id="roundNow" style="margin-top:16px;" data-roundnow>Round up a purchase now</div>
+            </div>
+            <div class="tabbar">
+              <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg><span>Home</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3v18M5 8l7-5 7 5M5 8v8l7 5 7-5V8"/></svg><span>Save</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9" r="2.6"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M15 19a4.5 4.5 0 0 1 6 0"/></svg><span>Family</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>You</span></div>
+            </div>
+          </section>
+
+          <!-- ROUND-UP -->
+          <section class="screen" data-screen="roundup">
+            <div class="dim"></div>
+            <div class="hdr"><div class="back" data-back><svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2 3 11l9 9"/></svg></div><div class="htitle">Set your round-up</div></div>
+            <div class="body">
+              <p style="font-size:14px;color:var(--sec);margin:2px 2px 4px;line-height:1.5;">Choose how much of everyday spending goes to Jordan's Athlete Fund.</p>
+              <div class="dialwrap">
+                <div class="dial">
+                  <svg width="190" height="190" viewBox="0 0 190 190">
+                    <circle cx="95" cy="95" r="80" fill="none" stroke="#ECEDEA" stroke-width="14"/>
+                    <circle id="ring" cx="95" cy="95" r="80" fill="none" stroke="#1BC55C" stroke-width="14" stroke-linecap="round" stroke-dasharray="502.6" stroke-dashoffset="301.6" style="transition:stroke-dashoffset .45s cubic-bezier(.3,.7,.2,1);"/>
+                  </svg>
+                  <div class="pct"><div class="pn" id="pctNum">10%</div><div class="pl">of each purchase</div></div>
+                </div>
+                <div class="stepper">
+                  <button data-step="-1">−</button>
+                  <button data-step="1">+</button>
+                </div>
+                <div class="proj">
+                  <div class="pl">Projected by age 18</div>
+                  <div class="pv" id="proj">$36,400</div>
+                  <div class="pd">Based on your average monthly spending</div>
+                </div>
+              </div>
+              <div class="btn primary" data-save style="margin-top:22px;position:relative;overflow:hidden;">
+                <span class="lt">Save round-up</span>
+                <span class="ck" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#08110a" stroke-width="3" stroke-linecap="round"><path class="ckp" d="M5 13l4 4 10-11" stroke-dasharray="30" stroke-dashoffset="30"/></svg></span>
+              </div>
+            </div>
+          </section>
+
+          <!-- FAMILY -->
+          <section class="screen" data-screen="family">
+            <div class="dim"></div>
+            <div class="hdr"><div class="back" data-back><svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2 3 11l9 9"/></svg></div><div class="htitle">Jordan's family</div></div>
+            <div class="body">
+              <div class="fhero">
+                <div class="pl">Gifted by family</div>
+                <div class="pv" id="gifted">$420.00</div>
+                <div class="pd">From 3 family members</div>
+              </div>
+              <div class="label">Contributors</div>
+              <div id="fam">
+                <div class="fmember"><div class="av">GP</div><div class="fname">Grandpa Joe</div><div class="fgive">+$200</div></div>
+                <div class="fmember"><div class="av">AK</div><div class="fname">Aunt Kim</div><div class="fgive">+$150</div></div>
+                <div class="fmember"><div class="av">UM</div><div class="fname">Uncle Marcus</div><div class="fgive">+$70</div></div>
+              </div>
+              <div class="btn primary" data-invite style="margin-top:18px;">Invite a family member</div>
+            </div>
+          </section>
+
+        </div>
+        <div class="flash" id="flash"></div>
+        <div class="ripple" id="ripple"></div>
+        <div class="toast" id="toast"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Try the flow</h2>
+      <p class="pdesc">Each control runs a real interaction in the prototype on the left.</p>
+      <button class="chip primary" data-demo="tour"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v14l11-7z"/></svg></span><span class="ct"><div class="t">Play guided walkthrough</div><div class="d">Auto-tour the whole flow</div></span></button>
+      <button class="chip" data-demo="dial"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ct"><div class="t">Round-up dial</div><div class="d">Adjust % → projection animates</div></span></button>
+      <button class="chip" data-demo="round"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M5 8l7-5 7 5"/></svg></span><span class="ct"><div class="t">Round up a purchase</div><div class="d">Balance ticks up in real time</div></span></button>
+      <button class="chip" data-demo="invite"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11V5M13 8h6M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM3 20a6 6 0 0 1 12 0"/></svg></span><span class="ct"><div class="t">Invite family</div><div class="d">Add a contributor</div></span></button>
+      <button class="chip" data-demo="reset"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/></svg></span><span class="ct"><div class="t">Reset</div><div class="d">Back to the dashboard</div></span></button>
+      <div class="caption" id="caption"><b>Tip:</b> tap the phone directly, or play the guided walkthrough to see every micro-interaction.</div>
+    </div>
+  </div>
+
+  <div class="backlink">← <a href="case-bagequity.html">Back to the BagEquity case study</a></div>
+
+<script>
+(()=>{
+  const stack=document.getElementById('stack'),screens={};
+  stack.querySelectorAll('.screen').forEach(s=>screens[s.dataset.screen]=s);
+  const ripple=document.getElementById('ripple'),toast=document.getElementById('toast'),caption=document.getElementById('caption'),frame=document.getElementById('frame'),flash=document.getElementById('flash');
+  let nav=['home'],busy=false,balance=1248.50,pct=10,gifted=420,famCount=3;
+  const clock=document.getElementById('clock');
+  const tick=()=>clock.textContent=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});tick();setInterval(tick,10000);
+  const cap=h=>caption.innerHTML=h;
+  const money=v=>'$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const money0=v=>'$'+Math.round(v).toLocaleString('en-US');
+  const showToast=m=>{toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1700);};
+  function rippleAt(el){const fr=frame.getBoundingClientRect(),r=el.getBoundingClientRect();
+    ripple.style.left=(r.left-fr.left+r.width/2)+'px';ripple.style.top=(r.top-fr.top+r.height/2)+'px';
+    ripple.classList.remove('go');void ripple.offsetWidth;ripple.classList.add('go');}
+  function animateNum(el,from,to,dur,fmt){const t0=performance.now();
+    function f(t){const p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,3),v=from+(to-from)*e;el.textContent=fmt(v);if(p<1)requestAnimationFrame(f);}requestAnimationFrame(f);}
+  function greenFlash(){flash.style.opacity='.16';setTimeout(()=>flash.style.opacity='0',180);}
+
+  const cur=()=>nav[nav.length-1];
+  function push(n){if(n===cur())return;const c=screens[cur()],x=screens[n];c.classList.remove('active');c.classList.add('prev');x.classList.remove('prev');x.classList.add('active');nav.push(n);}
+  function pop(){if(nav.length<2)return;const c=screens[nav.pop()],p=screens[cur()];c.classList.remove('active');p.classList.remove('prev');p.classList.add('active');}
+  function reset(){while(nav.length>1){screens[nav.pop()].classList.remove('active','prev');}screens.home.classList.add('active');screens.home.classList.remove('prev');resetSave();}
+
+  // round-up dial
+  const ring=document.getElementById('ring'),CIRC=502.6;
+  function setPct(v){pct=Math.max(5,Math.min(20,v));
+    document.getElementById('pctNum').textContent=pct+'%';
+    ring.style.strokeDashoffset=CIRC*(1-pct/25);
+    const cur=parseFloat((document.getElementById('proj').textContent||'0').replace(/[^0-9.]/g,''))||0;
+    animateNum(document.getElementById('proj'),cur,pct*3640,600,money0);}
+
+  // save morph
+  function resetSave(){const b=screens.roundup.querySelector('[data-save]');if(!b)return;const lt=b.querySelector('.lt'),ck=b.querySelector('.ck'),p=b.querySelector('.ckp');b.style.background='var(--green)';lt.style.opacity='1';ck.style.opacity='0';if(p)p.style.strokeDashoffset='30';}
+  function playSave(){const b=screens.roundup.querySelector('[data-save]'),lt=b.querySelector('.lt'),ck=b.querySelector('.ck'),p=b.querySelector('.ckp');
+    lt.style.opacity='0';setTimeout(()=>{ck.style.opacity='1';p.style.transition='stroke-dashoffset .5s ease';p.style.strokeDashoffset='0';showToast(pct+'% round-up saved');},200);}
+
+  // round up a purchase -> balance ticks
+  const PURCHASES=[['Corner Coffee',0.80],['Target',1.35],['Subway',0.55],['Shell Gas',1.90]];
+  let pIdx=0;
+  function roundNow(){const [name,amt]=PURCHASES[pIdx%PURCHASES.length];pIdx++;
+    const from=balance;balance=Math.round((balance+amt)*100)/100;
+    animateNum(document.getElementById('balance'),from,balance,800,money);
+    const mFrom=parseFloat(document.getElementById('month').textContent.replace(/[^0-9.]/g,''));
+    animateNum(document.getElementById('month'),mFrom,mFrom+amt,800,v=>'+'+money(v));
+    greenFlash();showToast('Rounded up '+money(amt)+' from '+name);}
+
+  // invite family
+  const NEW=[['Cousin Riley','RC'],['Coach Dana','CD']];let iIdx=0;
+  function invite(){const [name,init]=NEW[iIdx%NEW.length];iIdx++;famCount++;
+    const el=document.createElement('div');el.className='fmember pending';el.style.opacity='0';el.style.transform='translateY(8px)';el.style.transition='opacity .4s, transform .4s';
+    el.innerHTML='<div class="av">'+init+'</div><div class="fname">'+name+'</div><span class="tag">Invite sent</span>';
+    document.getElementById('fam').appendChild(el);requestAnimationFrame(()=>{el.style.opacity='';el.style.transform='';});
+    document.querySelector('.fhero .pd').textContent='From '+famCount+' family members';
+    showToast('Invite sent to '+name);}
+
+  stack.addEventListener('click',e=>{
+    if(busy)return;
+    const back=e.target.closest('[data-back]');if(back){rippleAt(back);pop();cap('<b>Pop transition.</b> The screen slides back with a parallax dim — iOS-style navigation.');return;}
+    const go=e.target.closest('[data-go]');if(go){rippleAt(go);push(go.dataset.go);cap('<b>Push transition.</b> Tapping an action pushes the next screen in from the right.');return;}
+    const st=e.target.closest('[data-step]');if(st){setPct(pct+parseInt(st.dataset.step));rippleAt(st);cap('<b>Round-up dial.</b> The ring fills and the projected balance counts to its new value — instant feedback on a financial decision.');return;}
+    const sv=e.target.closest('[data-save]');if(sv){rippleAt(sv);playSave();cap('<b>Save → success.</b> The button morphs into a check — confirmation without a disruptive dialog.');return;}
+    const rn=e.target.closest('[data-roundnow]');if(rn){rippleAt(rn);roundNow();cap('<b>Round up → balance ticks.</b> A purchase rounds up and the Athlete Fund counts upward with a green pulse, making invisible saving feel tangible.');return;}
+    const inv=e.target.closest('[data-invite]');if(inv){rippleAt(inv);invite();cap('<b>Invite family.</b> A new contributor animates into the list — turning saving into a team effort.');return;}
+  });
+
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  async function tapEl(el){if(!el)return;rippleAt(el);await sleep(260);}
+  async function tour(){
+    if(busy)return;busy=true;reset();await sleep(400);
+    cap('<b>1 · Round up a purchase.</b> The Athlete Fund balance ticks upward.');
+    await tapEl(screens.home.querySelector('[data-roundnow]'));roundNow();await sleep(1500);
+    cap('<b>2 · Set the round-up.</b> Opening the round-up dial.');
+    await tapEl(screens.home.querySelector('[data-go="roundup"]'));push('roundup');await sleep(900);
+    cap('<b>3 · Adjust the dial.</b> Raising the percentage — the projection animates.');
+    setPct(15);await sleep(800);setPct(20);await sleep(900);
+    cap('<b>4 · Save.</b> The button morphs into a success check.');
+    await tapEl(screens.roundup.querySelector('[data-save]'));playSave();await sleep(1700);
+    cap('<b>5 · Back, then family.</b> Returning home and opening the family circle.');
+    await tapEl(screens.roundup.querySelector('[data-back]'));pop();await sleep(800);
+    await tapEl(screens.home.querySelector('[data-go="family"]'));push('family');await sleep(900);
+    cap('<b>6 · Invite family.</b> A new contributor animates into the list.');
+    await tapEl(screens.family.querySelector('[data-invite]'));invite();await sleep(1700);
+    cap('<b>Done.</b> Round-ups, a saving dial, and family gifting — the BagEquity loop, end to end. Replay any step from the panel.');
+    busy=false;
+  }
+  document.querySelectorAll('[data-demo]').forEach(b=>b.addEventListener('click',async()=>{
+    const d=b.dataset.demo;if(d==='tour')return tour();if(busy)return;
+    if(d==='reset'){reset();cap('<b>Reset.</b> Back to the dashboard.');}
+    if(d==='dial'){reset();await sleep(250);push('roundup');await sleep(550);setPct(15);await sleep(800);setPct(20);cap('<b>Round-up dial.</b> The ring fills and the projection counts up as you change the percentage.');}
+    if(d==='round'){reset();await sleep(250);await tapEl(screens.home.querySelector('[data-roundnow]'));roundNow();cap('<b>Round up → balance ticks.</b> The Athlete Fund counts upward with a green pulse.');}
+    if(d==='invite'){reset();await sleep(250);push('family');await sleep(550);await tapEl(screens.family.querySelector('[data-invite]'));invite();cap('<b>Invite family.</b> A new contributor animates in — saving becomes a team effort.');}
+  }));
+})();
+</script>
+</body>
+</html>

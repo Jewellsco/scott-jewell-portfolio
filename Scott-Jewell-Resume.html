@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scott Jewell — Senior Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0C1322;
+    --ink-soft:#3a3f4a;
+    --muted:#6b7280;
+    --line:#e4ecfa;
+    --paper:#ffffff;
+    --cream:#f4f8ff;
+    --cream-deep:#dce7fb;
+    --accent:#1E66FF;
+    --accent-soft:#e7efff;
+    --grad:linear-gradient(120deg,#1E66FF,#13C8FF);
+    --display:"Fraunces", Georgia, serif;
+    --sans:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  html,body{
+    background:#e9e6df;
+    font-family:var(--sans);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+
+  .page{
+    width:8.5in;
+    min-height:11in;
+    margin:32px auto;
+    background:var(--paper);
+    box-shadow:0 24px 60px rgba(20,22,28,.16);
+    display:grid;
+    grid-template-columns:2.95in 1fr;
+    overflow:hidden;
+  }
+
+  /* ---------- HEADER (spans both columns) ---------- */
+  .masthead{
+    grid-column:1 / -1;
+    padding:46px 54px 30px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .masthead::after{
+    content:"";
+    position:absolute;left:54px;bottom:-1px;
+    width:64px;height:3px;background:var(--grad);
+  }
+  .name{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:46px;
+    letter-spacing:-.5px;
+    line-height:1;
+    color:var(--ink);
+  }
+  .name .last{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .role{
+    margin-top:10px;
+    font-size:13.5px;
+    font-weight:600;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .contact{
+    margin-top:16px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 22px;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+  .contact a{color:var(--muted);text-decoration:none;}
+  .contact span strong{color:var(--ink-soft);font-weight:600;}
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    background:var(--cream);
+    padding:34px 30px 40px 54px;
+    border-right:1px solid var(--line);
+  }
+  .sidebar .block{margin-bottom:28px;}
+  .sidebar .block:last-child{margin-bottom:0;}
+
+  .label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:13px;
+    display:flex;align-items:center;gap:9px;
+  }
+  .label::after{content:"";flex:1;height:1px;background:var(--line);}
+
+  .tag-wrap{display:flex;flex-wrap:wrap;gap:7px;}
+  .tag{
+    font-size:11.5px;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--paper);
+    border:1px solid var(--line);
+    padding:4px 10px;
+    border-radius:40px;
+  }
+
+  .strength{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    padding:6px 0 6px 16px;
+    position:relative;
+    line-height:1.35;
+    border-bottom:1px dashed var(--line);
+  }
+  .strength:last-child{border-bottom:none;}
+  .strength::before{
+    content:"";position:absolute;left:0;top:12px;
+    width:6px;height:6px;border-radius:50%;
+    background:var(--accent);
+  }
+
+  .tool-list{font-size:12.5px;color:var(--ink-soft);line-height:1.9;}
+  .tool-list strong{color:var(--ink);font-weight:600;}
+
+  /* ---------- MAIN ---------- */
+  .main{padding:34px 54px 42px 40px;}
+  .main .block{margin-bottom:26px;}
+
+  .summary{
+    font-family:var(--display);
+    font-weight:400;
+    font-size:16.5px;
+    line-height:1.5;
+    color:var(--ink-soft);
+  }
+  .summary b{color:var(--ink);font-weight:600;}
+
+  /* experience timeline */
+  .timeline{position:relative;padding-left:22px;}
+  .timeline::before{
+    content:"";position:absolute;left:4px;top:6px;bottom:6px;
+    width:2px;background:var(--cream-deep);
+  }
+  .job{position:relative;margin-bottom:21px;}
+  .job:last-child{margin-bottom:0;}
+  .job::before{
+    content:"";position:absolute;left:-22px;top:5px;
+    width:10px;height:10px;border-radius:50%;
+    background:var(--paper);border:2.5px solid var(--accent);
+  }
+  .job-head{
+    display:flex;justify-content:space-between;
+    align-items:baseline;gap:14px;flex-wrap:wrap;
+  }
+  .job-title{
+    font-size:15px;font-weight:700;color:var(--ink);
+    font-family:var(--display);
+  }
+  .job-co{
+    font-size:12.5px;font-weight:600;color:var(--accent);
+    margin-top:1px;
+  }
+  .job-meta{
+    font-size:11px;color:var(--muted);
+    letter-spacing:.04em;white-space:nowrap;
+    text-align:right;font-weight:500;
+  }
+  .job ul{list-style:none;margin-top:8px;}
+  .job li{
+    font-size:12.5px;color:var(--ink-soft);
+    line-height:1.5;padding-left:15px;position:relative;
+    margin-bottom:4px;
+  }
+  .job li::before{
+    content:"";position:absolute;left:0;top:8px;
+    width:5px;height:1.5px;background:var(--accent);
+  }
+  .badge{
+    display:inline-block;font-size:9.5px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent);background:var(--accent-soft);
+    padding:2px 8px;border-radius:4px;margin-left:8px;
+    vertical-align:middle;
+  }
+
+  .toolbar{position:fixed;top:16px;right:16px;display:flex;gap:8px;z-index:200;}
+  .tb-btn{font-family:var(--sans);font-size:13px;font-weight:600;padding:9px 15px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink);text-decoration:none;cursor:pointer;box-shadow:0 6px 18px rgba(20,30,60,.10);display:inline-flex;align-items:center;gap:7px;transition:border-color .15s,color .15s;}
+  .tb-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .tb-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .tb-btn.primary:hover{color:#fff;filter:brightness(1.06);}
+  @media print{.toolbar{display:none!important;}}
+  @media print{
+    @page{margin:0;size:Letter;}
+    html,body{background:#fff;}
+    .page{margin:0;box-shadow:none;width:100%;min-height:0;}
+    .tag,.job::before{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+
+  @media(max-width:760px){
+    .page{width:100%;grid-template-columns:1fr;margin:0;}
+    .sidebar{border-right:none;border-bottom:1px solid var(--line);padding-left:34px;}
+    .masthead,.main{padding-left:34px;padding-right:34px;}
+  }
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <a class="tb-btn primary" href="Scott-Jewell-Resume.pdf" download="Scott-Jewell-Resume.pdf"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5"/><path d="M5 21h14"/></svg> Download PDF</a>
+    <a class="tb-btn" href="mailto:?subject=Scott%20Jewell%20%E2%80%94%20Senior%20Product%20Designer&body=Hi%2C%0D%0A%0D%0AI%27d%20love%20to%20connect%20about%20Senior%20Product%20Designer%20roles.%20My%20r%C3%A9sum%C3%A9%20is%20attached%2C%20and%20you%20can%20see%20my%20work%20here%3A%20https%3A%2F%2Fscott-jewell-portfolio-site.vercel.app%2F%0D%0A%0D%0ABest%2C%0D%0AScott%20Jewell"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg> Email résumé</a>
+  </div>
+<div class="page">
+
+  <header class="masthead">
+    <div class="name">Scott <span class="last">Jewell</span></div>
+    <div class="role">Senior Product Designer · AI-native · Design Systems</div>
+    <div class="contact">
+      <span><strong>Denver, CO</strong> · Remote</span>
+      <span><a href="mailto:jewellsco@gmail.com">jewellsco@gmail.com</a></span>
+      <span><a href="https://www.linkedin.com/in/jewell-scott-sco/">linkedin.com/in/jewell-scott-sco</a></span>
+      <span>Portfolio: <a href="https://scott-jewell-portfolio-site.vercel.app/">scott-jewell-portfolio-site.vercel.app</a></span>
+    </div>
+  </header>
+
+  <aside class="sidebar">
+    <div class="block">
+      <div class="label">Expertise</div>
+      <div class="tag-wrap">
+        <span class="tag">UX Design</span>
+        <span class="tag">UI Design</span>
+        <span class="tag">Interaction Design</span>
+        <span class="tag">Design Systems</span>
+        <span class="tag">Prototyping</span>
+        <span class="tag">User Research</span>
+        <span class="tag">Usability Testing</span>
+        <span class="tag">Accessibility (WCAG)</span>
+        <span class="tag">Wireframing</span>
+        <span class="tag">Systems Thinking</span>
+        <span class="tag">Responsive Web</span>
+        <span class="tag">Native iOS & Android</span>
+        <span class="tag">Visual & Brand</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="label">Strengths</div>
+      <div class="strength">AI design &amp; AI-augmented workflows</div>
+      <div class="strength">AI design tools (Claude, Figma AI, prompt-driven UI)</div>
+      <div class="strength">Simplifying complex apps into intuitive flows</div>
+      <div class="strength">Login, identity & security UX</div>
+      <div class="strength">0 → 1 product design</div>
+      <div class="strength">Cross-functional leadership</div>
+      <div class="strength">Mentoring & design critique</div>
+    </div>
+
+    <div class="block">
+      <div class="label">Tools</div>
+      <div class="tool-list">
+        <strong>Figma</strong> · Adobe XD · Framer<br>
+        Illustrator · Photoshop<br>
+        Design tokens & UI kits
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="label">Highlights</div>
+      <div class="tool-list">
+        <strong>19+ yrs</strong> visual & product design<br>
+        <strong>10+ yrs</strong> UI / app design<br>
+        Enterprise-scale, regulated products
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="block">
+      <p class="summary">
+<b>Senior Product Designer</b> with 15+ years across product and visual design.
+        I'm AI-native — I ship working, code-backed prototypes and accessible design systems built for
+        AI to extend — and I thrive on <b>simplifying complex apps</b> into intuitive experiences,
+        end to end, from research to developer-ready handoff.
+      </p>
+    </div>
+
+    <div class="block">
+      <div class="label">Experience</div>
+      <div class="timeline">
+
+        <div class="job">
+          <div class="job-head">
+            <div>
+              <div class="job-title">Founder &amp; Lead Product Designer</div>
+              <div class="job-co">BagEquity <span class="badge">Fintech · 0→1</span></div>
+            </div>
+            <div class="job-meta">2025 – Present<br>Remote · Denver, CO</div>
+          </div>
+          <ul>
+            <li>Founding a fintech platform that helps families and youth-sports coaches manage money together — leading product design end to end.</li>
+            <li>Designed the full experience from zero to one: onboarding, account, and money-movement flows across web and native mobile.</li>
+            <li>Built the design system and UI kit in Figma, establishing accessible, scalable patterns aligned to WCAG.</li>
+            <li>Designed secure, compliance-aware flows — identity, consent, and account management — for a regulated product handling sensitive family data.</li>
+            <li>Partner closely with engineering on prototyping, usability validation, and dev-ready handoff.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-head">
+            <div>
+              <div class="job-title">Senior Product Designer</div>
+              <div class="job-co">CVS Health · Accounts Team</div>
+            </div>
+            <div class="job-meta">Sep 2022 – Present<br>Remote</div>
+          </div>
+          <ul>
+            <li>Design account experiences for iOS and Android, owning login, security, and identity flows used by millions of CVS customers (promoted to Senior, Feb 2024).</li>
+            <li>Redesigned biometric and secure-login flows, simplifying authentication and cutting friction across platforms.</li>
+            <li>Streamlined checkout and navigation, resolving significant user pain points and improving task completion.</li>
+            <li>Owned end-to-end design: user research, wireframes, interactive prototypes, usability testing, and developer handoff.</li>
+            <li>Partner cross-functionally with PMs, researchers, and engineers to ship validated, accessible solutions.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-head">
+            <div>
+              <div class="job-title">UI Designer</div>
+              <div class="job-co">Freebird Stores, Inc.</div>
+            </div>
+            <div class="job-meta">Mar 2022 – Oct 2022</div>
+          </div>
+          <ul>
+            <li>Led the website overhaul and laid the design foundation for the Freebird iOS app.</li>
+            <li>Built Freebird's first design system and migrated the design team to Figma.</li>
+            <li>Led customer interviews and design critiques; set long-term product vision with stakeholders.</li>
+            <li>Delivered accessible, dev-ready designs for enterprise-scale applications; coached fellow designers.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-head">
+            <div>
+              <div class="job-title">UI Designer</div>
+              <div class="job-co">Freelance</div>
+            </div>
+            <div class="job-meta">2020 – Present<br>Denver, CO</div>
+          </div>
+          <ul>
+            <li>Designing an AI-powered pre-store planning app that helps users locate products in unfamiliar cities.</li>
+            <li>Translate product concepts into detailed mockups and workflows with PMs, within established design systems.</li>
+            <li>Build accessible, scalable enterprise UI and interactive prototypes for clean developer integration.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-head">
+            <div>
+              <div class="job-title">Visual Designer</div>
+              <div class="job-co">Freelance</div>
+            </div>
+            <div class="job-meta">2006 – 2022<br>Denver, CO</div>
+          </div>
+          <ul>
+            <li>15+ years across print, marketing, and digital design for agencies and enterprise clients.</li>
+            <li>Built brand and marketing assets in Figma, Adobe XD, Framer, and Illustrator; transitioned from print into UI and app design.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+</div>
+</body>
+</html>
