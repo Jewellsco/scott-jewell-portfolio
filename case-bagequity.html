@@ -74,6 +74,103 @@
   .next .btn{margin-top:28px;display:inline-flex;align-items:center;gap:9px;background:var(--grad);color:#fff;padding:14px 26px;border-radius:44px;font-weight:600;box-shadow:0 12px 30px rgba(30,102,255,.4);}
   footer{background:var(--navy-2);color:#8090b0;text-align:center;padding:26px 0;font-size:13px;}
   @media(max-width:760px){.meta-card{grid-template-columns:repeat(2,1fr);}.meta-card div:nth-child(2){border-right:none;}.impact-grid{grid-template-columns:1fr;}}
+
+  /* ===== BagEquity product surfaces (shared design system: green + black) ===== */
+  .be{--be-green:#1BC55C;--be-green-dk:#12A94B;--be-green-bg:#E7F9EE;--be-ink:#0E100E;--be-bg:#FAFBFA;
+      --be-line:#ECEDEA;--be-sec:#6B6F6B;--be-field:#F2F3F1;--be-stage:#0A0B0A;--be-disp:"Inter",sans-serif;}
+  /* browser/desktop frame */
+  .browser{margin-top:28px;border-radius:16px;overflow:hidden;border:1px solid var(--line);
+    box-shadow:0 26px 60px rgba(8,12,8,.18);background:#fff;opacity:0;transform:translateY(26px);
+    transition:opacity .8s,transform .8s;}
+  .browser.in{opacity:1;transform:none;}
+  .br-bar{height:42px;background:#16181a;display:flex;align-items:center;gap:8px;padding:0 16px;}
+  .br-dot{width:11px;height:11px;border-radius:50%;background:#3a3d3a;}
+  .br-dot.r{background:#ff5f56;}.br-dot.y{background:#ffbd2e;}.br-dot.g{background:#27c93f;}
+  .br-url{margin-left:14px;flex:1;max-width:340px;height:24px;border-radius:7px;background:#26292b;
+    display:flex;align-items:center;gap:7px;padding:0 11px;color:#8b918b;font-size:11.5px;font-weight:500;letter-spacing:.01em;}
+  .br-url svg{width:11px;height:11px;color:#5fd98a;flex:none;}
+  /* desktop app shell */
+  .dash{display:grid;grid-template-columns:200px 1fr;background:var(--be-bg);font-family:var(--be-disp);color:var(--be-ink);min-height:520px;}
+  .dash-side{background:#fff;border-right:1px solid var(--be-line);padding:20px 16px;display:flex;flex-direction:column;gap:4px;}
+  .dash-wm{font-weight:700;font-size:16px;letter-spacing:-.02em;margin:2px 6px 18px;}
+  .dash-wm b{color:var(--be-green);}
+  .dnav{display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:10px;font-size:13.5px;font-weight:500;color:var(--be-sec);cursor:default;transition:background .2s,color .2s;}
+  .dnav svg{width:17px;height:17px;flex:none;}
+  .dnav.on{background:var(--be-green-bg);color:var(--be-green-dk);font-weight:600;}
+  .dnav:not(.on):hover{background:var(--be-field);color:var(--be-ink);}
+  .dash-main{padding:26px 28px 30px;overflow:hidden;}
+  .dash-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .dash-h h3{font-size:20px;font-weight:700;letter-spacing:-.02em;}
+  .dash-h .who{font-size:12.5px;color:var(--be-sec);margin-top:2px;}
+  .dash-pill{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--be-line);border-radius:30px;padding:7px 13px;font-size:12.5px;font-weight:600;}
+  .dash-pill .av{width:22px;height:22px;border-radius:7px;background:#EEEFEC;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#3A3D3A;}
+  .dash-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;}
+  .dash-col{display:flex;flex-direction:column;gap:18px;}
+  /* desktop Visa card — same system as mobile */
+  .dcard{position:relative;border-radius:18px;padding:20px 22px;color:#fff;overflow:hidden;aspect-ratio:1.9/1;display:flex;flex-direction:column;
+    background:radial-gradient(120% 90% at 88% -10%,rgba(27,197,92,.30),transparent 55%),linear-gradient(152deg,#1c1f1d 0%,#101210 46%,#0A0B0A 100%);
+    box-shadow:0 18px 38px rgba(6,8,6,.4),inset 0 1px 0 rgba(255,255,255,.07);}
+  .dcard::before{content:"";position:absolute;inset:0;background:linear-gradient(125deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,0) 34%,rgba(255,255,255,0) 70%,rgba(255,255,255,.05) 100%);pointer-events:none;}
+  .dc-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;}
+  .dc-brand{font-weight:700;font-size:13px;}.dc-brand b{color:var(--be-green);}
+  .dc-wave{width:18px;height:22px;color:rgba(255,255,255,.7);}
+  .dc-chip{position:relative;z-index:2;width:44px;height:33px;border-radius:6px;margin-top:13px;
+    background:linear-gradient(135deg,#f6e6b0 0%,#d8b765 38%,#bd9a4a 60%,#efdca0 100%);box-shadow:inset 0 0 0 1px rgba(120,90,30,.35),0 1px 2px rgba(0,0,0,.35);overflow:hidden;}
+  .dc-chip svg{position:absolute;inset:0;width:100%;height:100%;}
+  .dc-sp{flex:1;}
+  .dc-num{font-size:15px;letter-spacing:.14em;color:#d6dbd6;position:relative;z-index:2;text-shadow:0 1px 1px rgba(0,0,0,.4);}
+  .dc-foot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:11px;position:relative;z-index:2;}
+  .dc-holder{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:#aeb4ad;font-weight:600;line-height:1.5;}
+  .dc-holder .nm{display:block;font-size:12px;color:#fff;letter-spacing:.04em;}
+  .dc-exp{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:#9aa39c;font-weight:600;text-align:right;margin-right:9px;}
+  .dc-exp b{display:block;color:#fff;font-size:12px;margin-top:1px;}
+  .dc-visa{font-style:italic;font-weight:700;font-size:22px;letter-spacing:-.02em;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);}
+  /* balance block */
+  .dbal{background:#fff;border:1px solid var(--be-line);border-radius:16px;padding:20px 22px;}
+  .dbal .lab{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--be-sec);font-weight:600;}
+  .dbal .v{font-size:38px;font-weight:700;letter-spacing:-.02em;margin-top:6px;}
+  .dbal .gr{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:12px;font-weight:600;color:#0c0d0c;background:var(--be-green);padding:3px 10px;border-radius:30px;}
+  /* mini chart */
+  .dchart{margin-top:16px;height:74px;width:100%;}
+  .dchart path.fill{fill:url(#beFill);}
+  .dchart path.line{fill:none;stroke:var(--be-green);stroke-width:2.4;stroke-linecap:round;
+    stroke-dasharray:1;stroke-dashoffset:1;}
+  .browser.in .dchart path.line{animation:beDraw 1.4s .3s ease forwards;}
+  @keyframes beDraw{to{stroke-dashoffset:0;}}
+  /* stat tiles */
+  .dstats{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .dstat{background:#fff;border:1px solid var(--be-line);border-radius:14px;padding:15px 16px;}
+  .dstat .n{font-size:20px;font-weight:700;letter-spacing:-.02em;}
+  .dstat .n.gr{color:var(--be-green-dk);}
+  .dstat .l{font-size:11.5px;color:var(--be-sec);margin-top:3px;}
+  /* panels */
+  .dpanel{background:#fff;border:1px solid var(--be-line);border-radius:16px;padding:16px 18px;}
+  .dpanel .ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .dpanel .ph h4{font-size:14px;font-weight:700;}
+  .dpanel .ph a{font-size:12px;font-weight:600;color:var(--be-green-dk);}
+  .drow{display:flex;align-items:center;gap:12px;padding:10px 0;}
+  .drow+.drow{border-top:1px solid var(--be-line);}
+  .drow .av{width:34px;height:34px;border-radius:10px;background:#EEEFEC;border:1px solid #E4E5E2;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#3A3D3A;flex:none;}
+  .drow .ic{width:34px;height:34px;border-radius:10px;background:var(--be-field);display:flex;align-items:center;justify-content:center;flex:none;}
+  .drow .ic svg{width:17px;height:17px;color:#565a56;}
+  .drow .info{flex:1;}
+  .drow .nm{font-size:13.5px;font-weight:600;}
+  .drow .sub{font-size:11.5px;color:var(--be-sec);margin-top:1px;}
+  .drow .plus{font-size:13.5px;font-weight:700;color:var(--be-green-dk);}
+  /* goal progress */
+  .dgoal{margin-top:12px;}
+  .dgoal .gt{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;font-weight:600;margin-bottom:7px;}
+  .dgoal .gt span{color:var(--be-sec);font-weight:500;}
+  .dtrack{height:8px;border-radius:30px;background:var(--be-field);overflow:hidden;}
+  .dtrack i{display:block;height:100%;border-radius:30px;background:linear-gradient(90deg,var(--be-green),var(--be-green-dk));width:0;transition:width 1.2s cubic-bezier(.3,.7,.2,1);}
+  .browser.in .dtrack i{width:var(--w);}
+  .browser.in .dtrack i.w2{transition-delay:.15s;}
+  @media(max-width:760px){.dash{grid-template-columns:1fr;}.dash-side{flex-direction:row;flex-wrap:wrap;border-right:none;border-bottom:1px solid var(--be-line);}.dash-wm{width:100%;}.dash-grid{grid-template-columns:1fr;}.dstats{grid-template-columns:1fr 1fr;}}
+  @media(prefers-reduced-motion:reduce){
+    .browser{transition:none;opacity:1;transform:none;}
+    .browser.in .dchart path.line{animation:none;stroke-dashoffset:0;}
+    .dtrack i{transition:none;}
+  }
 </style>
 </head>
 <body>
@@ -122,6 +219,97 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
+  </div>
+</section>
+
+<section style="padding-top:18px;">
+  <div class="wrap reveal">
+    <div class="kick">One product, two surfaces</div>
+    <h2 class="sec">The same system on the web</h2>
+    <p class="body">The mobile flow above and the desktop dashboard below are <b>one design system</b> — the same black-and-green card, the same round-up language, the same typography. On the web, parents get the wider canvas: balance, the family circle, round-up activity, and goal progress at a glance.</p>
+    <div class="browser be" id="desktop">
+      <div class="br-bar">
+        <span class="br-dot r"></span><span class="br-dot y"></span><span class="br-dot g"></span>
+        <span class="br-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="11" width="16" height="10" rx="2.4"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>app.bagequity.com/dashboard</span>
+      </div>
+      <div class="dash">
+        <aside class="dash-side">
+          <div class="dash-wm">BAG<b>EQUITY</b></div>
+          <div class="dnav on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>Dashboard</div>
+          <div class="dnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3v18M5 8l7-5 7 5M5 8v8l7 5 7-5V8"/></svg>Round-ups</div>
+          <div class="dnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9" r="2.6"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M15 19a4.5 4.5 0 0 1 6 0"/></svg>Family</div>
+          <div class="dnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Goals</div>
+          <div class="dnav" style="margin-top:auto;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Account</div>
+        </aside>
+        <main class="dash-main">
+          <div class="dash-h">
+            <div>
+              <h3>Jordan's Athlete Fund</h3>
+              <div class="who">Building their future · since 2025</div>
+            </div>
+            <span class="dash-pill"><span class="av">JF</span>Jordan Fields</span>
+          </div>
+          <div class="dash-grid">
+            <div class="dash-col">
+              <div class="dcard">
+                <div class="dc-top"><div class="dc-brand">BAG<b>EQUITY</b></div>
+                  <svg class="dc-wave" viewBox="0 0 18 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 5a9 9 0 0 1 0 12"/><path d="M8 3a13 13 0 0 1 0 16"/><path d="M12 1.5a16.5 16.5 0 0 1 0 19"/></svg>
+                </div>
+                <div class="dc-chip">
+                  <svg viewBox="0 0 44 33" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="rgba(120,90,30,.45)" stroke-width="1"><rect x="1" y="1" width="42" height="31" rx="5"/><line x1="1" y1="11.5" x2="15" y2="11.5"/><line x1="29" y1="11.5" x2="43" y2="11.5"/><line x1="1" y1="21.5" x2="15" y2="21.5"/><line x1="29" y1="21.5" x2="43" y2="21.5"/><line x1="15" y1="1" x2="15" y2="32"/><line x1="29" y1="1" x2="29" y2="32"/></g></svg>
+                </div>
+                <div class="dc-sp"></div>
+                <div class="dc-num">••••&nbsp;&nbsp;••••&nbsp;&nbsp;••••&nbsp;&nbsp;4729</div>
+                <div class="dc-foot">
+                  <div class="dc-holder">Cardholder<span class="nm">JORDAN FIELDS</span></div>
+                  <div style="display:flex;align-items:flex-end;"><div class="dc-exp">Valid thru<b>08 / 29</b></div><div class="dc-visa">VISA</div></div>
+                </div>
+              </div>
+              <div class="dbal">
+                <div class="lab">Total balance</div>
+                <div class="v" id="dbalance">$1,248.50</div>
+                <div class="gr"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 18 10 12l4 4 6-7"/><path d="M16 7h4v4"/></svg> +12.4% this year</div>
+                <svg class="dchart" viewBox="0 0 360 74" preserveAspectRatio="none">
+                  <defs><linearGradient id="beFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1BC55C" stop-opacity=".18"/><stop offset="1" stop-color="#1BC55C" stop-opacity="0"/></linearGradient></defs>
+                  <path class="fill" d="M0,60 C40,56 60,48 90,46 C130,43 150,34 190,30 C230,26 250,20 290,15 C320,11 340,9 360,6 L360,74 L0,74 Z"/>
+                  <path class="line" d="M0,60 C40,56 60,48 90,46 C130,43 150,34 190,30 C230,26 250,20 290,15 C320,11 340,9 360,6"/>
+                </svg>
+              </div>
+              <div class="dstats">
+                <div class="dstat"><div class="n gr">+$84.20</div><div class="l">Saved this month</div></div>
+                <div class="dstat"><div class="n">32</div><div class="l">Round-ups</div></div>
+              </div>
+            </div>
+            <div class="dash-col">
+              <div class="dpanel">
+                <div class="ph"><h4>Family circle</h4><a>Invite</a></div>
+                <div class="drow"><div class="av">GP</div><div class="info"><div class="nm">Grandpa Joe</div><div class="sub">Monthly gift</div></div><div class="plus">+$200</div></div>
+                <div class="drow"><div class="av">AK</div><div class="info"><div class="nm">Aunt Kim</div><div class="sub">One-time</div></div><div class="plus">+$150</div></div>
+                <div class="drow"><div class="av">UM</div><div class="info"><div class="nm">Uncle Marcus</div><div class="sub">One-time</div></div><div class="plus">+$70</div></div>
+              </div>
+              <div class="dpanel">
+                <div class="ph"><h4>Recent round-ups</h4><a>See all</a></div>
+                <div class="drow"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h13v7a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Z"/><path d="M17 9h2a2 2 0 0 1 0 6h-2"/></svg></div><div class="info"><div class="nm">Corner Coffee</div><div class="sub">$4.20 · rounded up</div></div><div class="plus">+$0.80</div></div>
+                <div class="drow"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="14" height="12" rx="2"/><path d="M17 10h2l2 3v3a1 1 0 0 1-1 1h-1"/><circle cx="7.5" cy="18" r="1.6"/></svg></div><div class="info"><div class="nm">Shell Gas</div><div class="sub">$48.10 · rounded up</div></div><div class="plus">+$1.90</div></div>
+                <div class="drow"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 7h14l-1.5 11a2 2 0 0 1-2 1.7H8.5a2 2 0 0 1-2-1.7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg></div><div class="info"><div class="nm">Dick's Sporting</div><div class="sub">$92.40 · rounded up</div></div><div class="plus">+$0.60</div></div>
+              </div>
+              <div class="dpanel">
+                <div class="ph"><h4>Goals</h4></div>
+                <div class="dgoal">
+                  <div class="gt">First season gear <span>$640 / $800</span></div>
+                  <div class="dtrack"><i style="--w:80%"></i></div>
+                </div>
+                <div class="dgoal">
+                  <div class="gt">College fund <span>$1,248 / $5,000</span></div>
+                  <div class="dtrack"><i class="w2" style="--w:25%"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <p class="ph-note">Desktop dashboard — a live recreation built in the BagEquity design system, shown alongside the mobile prototype above.</p>
   </div>
 </section>
 
@@ -212,6 +400,25 @@
   document.getElementById('yr').textContent=new Date().getFullYear();
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Desktop dashboard: reveal + balance count-up on scroll-in
+  (function(){
+    const desk=document.getElementById('desktop'),bal=document.getElementById('dbalance');
+    if(!desk||!bal)return;
+    const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    const target=1248.50;
+    const money=v=>'$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    function countUp(){
+      if(reduce){bal.textContent=money(target);return;}
+      const t0=performance.now(),dur=1100;
+      (function f(t){const p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,3);
+        bal.textContent=money(target*e);if(p<1)requestAnimationFrame(f);})(performance.now());
+    }
+    const dio=new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting){desk.classList.add('in');countUp();dio.unobserve(e.target);}
+    }),{threshold:.25});
+    dio.observe(desk);
+  })();
 </script>
 </body>
 </html>

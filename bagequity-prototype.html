@@ -27,8 +27,9 @@
   .stage{display:flex;gap:48px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:1000px;}
 
   /* PHONE */
-  .device{width:340px;height:712px;background:#070807;border-radius:52px;padding:13px;
+  .device{width:340px;height:712px;background:#070807;border-radius:54px;padding:14px;
     box-shadow:0 40px 90px rgba(0,0,0,.55),0 0 0 2px rgba(255,255,255,.05),inset 0 0 0 2px #232423;position:relative;flex:none;}
+  /* inner screen radius nests inside bezel: 54 outer - 14 padding = 40 */
   .screenframe{position:relative;width:100%;height:100%;border-radius:40px;overflow:hidden;background:var(--bg);}
   .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:130px;height:26px;background:#070807;border-radius:0 0 18px 18px;z-index:60;}
   .statusbar{position:absolute;top:0;left:0;right:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600;z-index:55;color:var(--ink);}
@@ -55,14 +56,42 @@
   .hi{font-size:13px;color:var(--sec);margin:6px 2px 2px;}
   .hi b{color:var(--ink);font-weight:600;}
 
-  /* balance card (black) */
-  .bcard{background:linear-gradient(150deg,#161816,#0B0C0B);border-radius:22px;padding:20px;margin-top:12px;color:#fff;position:relative;overflow:hidden;box-shadow:0 14px 30px rgba(8,10,8,.28);}
-  .bcard::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(27,197,92,.35),transparent 70%);}
-  .bcard .lab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9aa39c;font-weight:600;}
-  .bcard .bal{font-family:var(--display);font-weight:700;font-size:34px;letter-spacing:-.02em;margin-top:8px;}
-  .bcard .grow{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:12.5px;font-weight:600;color:#0c0d0c;background:var(--green);padding:4px 10px;border-radius:30px;}
-  .bcard .num{font-size:12px;color:#7e857f;letter-spacing:.16em;margin-top:16px;}
-  .bcard .chip{position:absolute;left:20px;bottom:18px;width:30px;height:22px;border-radius:5px;background:linear-gradient(135deg,#f0d79a,#d4b063);}
+  /* ===== Premium Visa-style card (shared design system) ===== */
+  .bcard{position:relative;margin-top:14px;border-radius:18px;padding:18px 20px 18px;color:#fff;overflow:hidden;
+    aspect-ratio:1.586/1;
+    background:
+      radial-gradient(120% 90% at 88% -10%,rgba(27,197,92,.30),transparent 55%),
+      linear-gradient(152deg,#1c1f1d 0%,#101210 46%,#0A0B0A 100%);
+    box-shadow:0 18px 38px rgba(6,8,6,.45),inset 0 1px 0 rgba(255,255,255,.07);
+    display:flex;flex-direction:column;}
+  /* soft gloss sweep */
+  .bcard::before{content:"";position:absolute;inset:0;
+    background:linear-gradient(125deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,0) 32%,rgba(255,255,255,0) 70%,rgba(255,255,255,.05) 100%);
+    pointer-events:none;}
+  .bcard::after{content:"";position:absolute;right:-46px;top:-54px;width:170px;height:170px;border-radius:50%;
+    background:radial-gradient(circle,rgba(27,197,92,.22),transparent 70%);pointer-events:none;}
+  /* top row: brand + contactless */
+  .bc-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;}
+  .bc-brand{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:-.01em;}
+  .bc-brand b{color:var(--green);}
+  .bc-wave{width:18px;height:22px;color:rgba(255,255,255,.7);flex:none;}
+  /* EMV chip — metallic, upper-left third */
+  .bc-chip{position:relative;z-index:2;width:42px;height:32px;border-radius:6px;margin-top:14px;
+    background:linear-gradient(135deg,#f6e6b0 0%,#d8b765 38%,#bd9a4a 60%,#efdca0 100%);
+    box-shadow:inset 0 0 0 1px rgba(120,90,30,.35),0 1px 2px rgba(0,0,0,.35);overflow:hidden;}
+  .bc-chip svg{position:absolute;inset:0;width:100%;height:100%;}
+  /* spacer pushes number/details to lower half */
+  .bc-spacer{flex:1;}
+  .bcard .bal{font-family:var(--display);font-weight:700;font-size:30px;letter-spacing:-.02em;position:relative;z-index:2;}
+  .bcard .lab{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#9aa39c;font-weight:600;position:relative;z-index:2;}
+  .bcard .grow{display:inline-flex;align-items:center;gap:5px;margin-top:7px;font-size:11.5px;font-weight:600;color:#0c0d0c;background:var(--green);padding:3px 9px;border-radius:30px;position:relative;z-index:2;align-self:flex-start;}
+  .bcard .num{font-family:var(--display);font-size:14px;color:#d6dbd6;letter-spacing:.14em;margin-top:12px;position:relative;z-index:2;text-shadow:0 1px 1px rgba(0,0,0,.4);}
+  .bc-foot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:10px;position:relative;z-index:2;}
+  .bc-holder{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#aeb4ad;font-weight:600;line-height:1.5;}
+  .bc-holder .nm{font-size:11.5px;color:#fff;letter-spacing:.04em;}
+  .bc-exp{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:#9aa39c;font-weight:600;text-align:right;margin-right:8px;}
+  .bc-exp b{display:block;color:#fff;font-size:11.5px;letter-spacing:.04em;margin-top:1px;}
+  .bc-visa{font-family:var(--display);font-style:italic;font-weight:700;font-size:21px;letter-spacing:-.02em;color:#fff;line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.4);}
 
   .stat2{display:flex;gap:11px;margin-top:13px;}
   .stat2 .s{flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 14px;}
@@ -181,11 +210,32 @@
               <div class="hi">Jordan's Fund · <b>Building their future</b></div>
 
               <div class="bcard">
+                <div class="bc-top">
+                  <div class="bc-brand">BAG<b>EQUITY</b></div>
+                  <svg class="bc-wave" viewBox="0 0 18 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 5a9 9 0 0 1 0 12"/><path d="M8 3a13 13 0 0 1 0 16"/><path d="M12 1.5a16.5 16.5 0 0 1 0 19"/></svg>
+                </div>
+                <div class="bc-chip">
+                  <svg viewBox="0 0 42 32" preserveAspectRatio="none" aria-hidden="true">
+                    <g fill="none" stroke="rgba(120,90,30,.45)" stroke-width="1">
+                      <rect x="1" y="1" width="40" height="30" rx="5"/>
+                      <line x1="1" y1="11" x2="14" y2="11"/><line x1="28" y1="11" x2="41" y2="11"/>
+                      <line x1="1" y1="21" x2="14" y2="21"/><line x1="28" y1="21" x2="41" y2="21"/>
+                      <line x1="14" y1="1" x2="14" y2="31"/><line x1="28" y1="1" x2="28" y2="31"/>
+                    </g>
+                  </svg>
+                </div>
+                <div class="bc-spacer"></div>
                 <div class="lab">Athlete Fund</div>
                 <div class="bal" id="balance">$1,248.50</div>
                 <div class="grow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 18 10 12l4 4 6-7"/><path d="M16 7h4v4"/></svg> +12.4% this year</div>
-                <div class="num">•••• •••• •••• 4821</div>
-                <div class="chip"></div>
+                <div class="num">••••&nbsp;&nbsp;••••&nbsp;&nbsp;••••&nbsp;&nbsp;4729</div>
+                <div class="bc-foot">
+                  <div class="bc-holder">Cardholder<span class="nm">JORDAN FIELDS</span></div>
+                  <div style="display:flex;align-items:flex-end;">
+                    <div class="bc-exp">Valid thru<b>08 / 29</b></div>
+                    <div class="bc-visa">VISA</div>
+                  </div>
+                </div>
               </div>
 
               <div class="stat2">

@@ -44,14 +44,15 @@
   .sb-icons{display:flex;align-items:center;gap:6px;}
   .sb-icons svg{display:block;}
 
-  /* screen stack */
+  /* screen stack — iOS-native push/pop */
   .stack{position:absolute;inset:0;}
   .screen{position:absolute;inset:0;background:#f4f5f7;transform:translateX(100%);
-    transition:transform .44s cubic-bezier(.36,.66,.04,1);display:flex;flex-direction:column;overflow:hidden;}
-  .screen.active{transform:translateX(0);}
-  .screen.prev{transform:translateX(-26%);}
-  .screen .dim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .44s;}
-  .screen.prev .dim{opacity:.14;}
+    transition:transform .5s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;overflow:hidden;
+    box-shadow:-8px 0 24px rgba(0,0,0,0);will-change:transform;}
+  .screen.active{transform:translateX(0);box-shadow:-8px 0 30px rgba(0,0,0,.18);}
+  .screen.prev{transform:translateX(-22%);}
+  .screen .dim{position:absolute;inset:0;background:#0a0c14;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.32,.72,0,1);z-index:30;}
+  .screen.prev .dim{opacity:.22;}
 
   /* header */
   .hdr{background:var(--cvs-red);color:#fff;padding:46px 16px 13px;display:flex;align-items:center;
@@ -186,6 +187,20 @@
   .backlink a:hover{color:#fff;}
 
   @media(max-width:900px){.stage{gap:34px;}.panel{width:340px;}}
+
+  /* device subtle hover lift */
+  .device{transition:transform .6s cubic-bezier(.16,1,.3,1),box-shadow .6s cubic-bezier(.16,1,.3,1);}
+  .stage:hover .device{box-shadow:0 50px 110px rgba(0,0,0,.55),0 0 0 2px rgba(255,255,255,.08),inset 0 0 0 2px #2a2a2e;}
+
+  /* count-up draw for status / confirmations handled in JS */
+
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
+    .screen{transition:none;}
+    .screen.prev{transform:translateX(-22%);}
+    .ripple{display:none;}
+    .device{transition:none;}
+  }
 </style>
 </head>
 <body>
@@ -396,6 +411,15 @@
   const frame = document.getElementById('frame');
   let navStack = ['account'];
   let busy = false;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // brief tap-press feedback on an element
+  function press(el){
+    if(!el || reduce) return;
+    el.style.transition='transform .1s ease';
+    el.style.transform='scale(.97)';
+    setTimeout(()=>{ el.style.transform=''; setTimeout(()=>{ el.style.transition=''; },120); },110);
+  }
 
   // live clock
   const clock = document.getElementById('clock');
@@ -481,9 +505,9 @@
   stack.addEventListener('click', e => {
     if(busy) return;
     const back = e.target.closest('[data-back]');
-    if(back){ rippleAt(back); pop(); setCaption('<b>Pop transition.</b> The screen slides back to the right while the previous one eases in from its parallax offset.'); return; }
+    if(back){ press(back); rippleAt(back); pop(); setCaption('<b>Pop transition.</b> The screen slides back to the right while the previous one eases in from its parallax offset.'); return; }
     const go = e.target.closest('[data-go]');
-    if(go){ rippleAt(go); push(go.dataset.go); setCaption('<b>Push transition.</b> Tapping a list row pushes the next screen in from the right — iOS-style, with a subtle parallax dim on the outgoing screen.'); return; }
+    if(go){ press(go); rippleAt(go); push(go.dataset.go); setCaption('<b>Push transition.</b> Tapping a list row pushes the next screen in from the right — iOS-style, with a subtle parallax dim on the outgoing screen.'); return; }
     const tog = e.target.closest('[data-toggle]');
     if(tog){ const on=flipToggle(tog); rippleAt(tog);
       if(tog.hasAttribute('data-faceid') && on) playFaceId();

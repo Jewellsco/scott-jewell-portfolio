@@ -38,11 +38,12 @@
 
   .stack{position:absolute;inset:0;}
   .screen{position:absolute;inset:0;background:var(--bg);transform:translateX(100%);
-    transition:transform .44s cubic-bezier(.36,.66,.04,1);display:flex;flex-direction:column;overflow:hidden;}
-  .screen.active{transform:translateX(0);}
-  .screen.prev{transform:translateX(-26%);}
-  .screen .dim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .44s;}
-  .screen.prev .dim{opacity:.12;}
+    transition:transform .5s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;overflow:hidden;
+    box-shadow:-8px 0 24px rgba(0,0,0,0);will-change:transform;}
+  .screen.active{transform:translateX(0);box-shadow:-8px 0 30px rgba(10,12,20,.14);}
+  .screen.prev{transform:translateX(-22%);}
+  .screen .dim{position:absolute;inset:0;background:#0a0c14;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.32,.72,0,1);z-index:30;}
+  .screen.prev .dim{opacity:.18;}
 
   .hdr{padding:54px 22px 14px;flex:none;display:flex;align-items:center;gap:12px;background:var(--bg);}
   .hdr .back{width:34px;height:34px;border-radius:50%;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;}
@@ -147,7 +148,16 @@
   .caption b{color:#fff;}
   .backlink{margin-top:40px;font-size:14px;color:var(--slate);}
   .backlink a{color:#9fb0d0;text-decoration:none;font-weight:600;}.backlink a:hover{color:#fff;}
+  .device{transition:transform .6s cubic-bezier(.16,1,.3,1),box-shadow .6s cubic-bezier(.16,1,.3,1);}
+  .stage:hover .device{box-shadow:0 50px 110px rgba(0,0,0,.55),0 0 0 2px rgba(255,255,255,.08),inset 0 0 0 2px #2a2a2e;}
   @media(max-width:900px){.stage{gap:34px;}.panel{width:340px;}}
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
+    .screen{transition:none;}
+    .screen.prev{transform:translateX(-22%);}
+    .ripple{display:none;}
+    .device{transition:none;}
+  }
 </style>
 </head>
 <body>
@@ -310,6 +320,9 @@
   stack.querySelectorAll('.screen').forEach(s=>screens[s.dataset.screen]=s);
   const ripple=document.getElementById('ripple'),toast=document.getElementById('toast'),caption=document.getElementById('caption'),frame=document.getElementById('frame');
   let nav=['home'],busy=false;
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function press(el){if(!el||reduce)return;el.style.transition='transform .1s ease';el.style.transform='scale(.97)';
+    setTimeout(()=>{el.style.transform='';setTimeout(()=>{el.style.transition='';},120);},110);}
   const clock=document.getElementById('clock');
   const tick=()=>clock.textContent=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});tick();setInterval(tick,10000);
   const cap=h=>caption.innerHTML=h;
@@ -318,7 +331,16 @@
     ripple.style.left=(r.left-fr.left+r.width/2)+'px';ripple.style.top=(r.top-fr.top+r.height/2)+'px';
     ripple.classList.remove('go');void ripple.offsetWidth;ripple.classList.add('go');}
   const cur=()=>nav[nav.length-1];
-  function push(n){if(n===cur())return;const c=screens[cur()],x=screens[n];c.classList.remove('active');c.classList.add('prev');x.classList.remove('prev');x.classList.add('active');nav.push(n);}
+  function countUp(el){
+    const target=parseInt(el.textContent,10);
+    if(isNaN(target)||reduce)return;
+    const dur=550,start=performance.now();
+    function step(t){const p=Math.min((t-start)/dur,1);const eased=1-Math.pow(1-p,3);
+      el.textContent=Math.round(eased*target);if(p<1)requestAnimationFrame(step);}
+    el.textContent='0';requestAnimationFrame(step);
+  }
+  function push(n){if(n===cur())return;const c=screens[cur()],x=screens[n];c.classList.remove('active');c.classList.add('prev');x.classList.remove('prev');x.classList.add('active');nav.push(n);
+    if(n==='member'){x.querySelectorAll('.chip .n').forEach(countUp);}}
   function pop(){if(nav.length<2)return;const c=screens[nav.pop()],p=screens[cur()];c.classList.remove('active');p.classList.remove('prev');p.classList.add('active');}
   function reset(){while(nav.length>1){screens[nav.pop()].classList.remove('active','prev');}screens.home.classList.add('active');screens.home.classList.remove('prev');resetAll();}
   function resetAll(){document.querySelectorAll('.refill,.cta').forEach(b=>{b.classList.remove('done');const lt=b.querySelector('.lt'),ck=b.querySelector('.ck'),p=b.querySelector('.ckp');if(lt)lt.style.opacity='1';if(ck)ck.style.opacity='0';if(p)p.style.strokeDashoffset='30';});}
@@ -327,8 +349,8 @@
 
   stack.addEventListener('click',e=>{
     if(busy)return;
-    const back=e.target.closest('[data-back]');if(back){rippleAt(back);pop();cap('<b>Pop transition.</b> The detail slides back to the right with a parallax dim on Home.');return;}
-    const go=e.target.closest('[data-go]');if(go){rippleAt(go);push(go.dataset.go);cap('<b>Push transition.</b> Tapping a card opens it with an iOS-style slide — calm, predictable navigation.');return;}
+    const back=e.target.closest('[data-back]');if(back){press(back);rippleAt(back);pop();cap('<b>Pop transition.</b> The detail slides back to the right with a parallax dim on Home.');return;}
+    const go=e.target.closest('[data-go]');if(go){press(go);rippleAt(go);push(go.dataset.go);cap('<b>Push transition.</b> Tapping a card opens it with an iOS-style slide — calm, predictable navigation.');return;}
     const rel=e.target.closest('[data-rel]');if(rel){rel.parentElement.querySelectorAll('[data-rel]').forEach(c=>c.classList.remove('sel'));rel.classList.add('sel');rippleAt(rel);cap('<b>Segmented choice.</b> Relationship is a single tap, not a dropdown — faster and friendlier.');return;}
     const tog=e.target.closest('[data-toggle]');if(tog){tog.classList.toggle('on');rippleAt(tog);cap('<b>Reminders toggle.</b> Weighted spring + green track = instant, tactile feedback.');return;}
     const rf=e.target.closest('[data-refill]');if(rf){rippleAt(rf);morph(rf,'Refill requested');cap('<b>Refill → success.</b> The button morphs to a green check in place — confirmation without a disruptive dialog.');return;}
