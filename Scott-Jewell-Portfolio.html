@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scott Jewell — Senior Product Designer</title>
-<meta name="description" content="Scott Jewell — Senior Product Designer. AI-native prototyping and accessible design systems; fifteen years turning complex products into intuitive experiences.">
+<title>Scott Jewell, Senior Product Designer</title>
+<meta name="description" content="Scott Jewell, Senior Product Designer. AI-native prototyping and accessible design systems; fifteen years turning complex products into intuitive experiences.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -136,6 +136,110 @@
   @media (prefers-reduced-motion:reduce){
     .thumb.cg .hp-gs,.thumb.cg .hp-gb,.thumb.cg .hp-meta,.thumb.cg .hp-attn,.thumb.cg .hp-label,.thumb.cg .hp-card,.thumb.cg .badge{opacity:1!important;transform:none!important;transition:none!important;}
   }
+
+  /* ===== refined per-card life ===== */
+  /* image covers: slow parallax scale + warm vignette wash on hover */
+  .card .thumb img{transform:scale(1.012);}
+  .card:hover .thumb img{transform:scale(1.06);}
+  .card .thumb::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(180deg,rgba(12,12,13,0) 60%,rgba(12,12,13,.10) 100%);
+    opacity:0;transition:opacity .55s cubic-bezier(.16,.84,.28,1);}
+  .card:hover .thumb::before{opacity:1;}
+  .card .thumb.cg::before,.card .thumb.be-cover::before{display:none;}
+  /* caregiver phone gets a gentle parallax lift on hover beyond its entrance */
+  .card .thumb.cg .hp-card{transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1);}
+  .card:hover .thumb.cg .hp-card:nth-child(6){transform:translateY(-3px);}
+  .card:hover .thumb.cg .hp-card:nth-child(7){transform:translateY(-5px);}
+  .card:hover .thumb.cg .hp-attn{transform:translateY(-2px);}
+
+  /* ===== BAGEQUITY ANIMATED COVER ===== */
+  .be-cover{--be-green:#1BC55C;background:radial-gradient(140% 120% at 78% -15%,#15211a 0%,#0d120f 46%,#080a08 100%);
+    display:flex;align-items:center;justify-content:center;overflow:hidden;}
+  .be-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+  /* drifting green corner glow */
+  .be-glow{position:absolute;top:-34%;right:-22%;width:74%;height:120%;border-radius:50%;pointer-events:none;z-index:0;
+    background:radial-gradient(circle at center,rgba(27,197,92,.34),rgba(27,197,92,0) 64%);
+    animation:beGlow 8s ease-in-out infinite;will-change:transform;}
+  @keyframes beGlow{0%,100%{transform:translate3d(0,0,0) scale(1);}50%{transform:translate3d(-7%,5%,0) scale(1.08);}}
+  /* faint dotted-grid texture for product depth */
+  .be-grid{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:18px 18px;
+    -webkit-mask-image:radial-gradient(120% 120% at 70% 0%,#000 30%,transparent 78%);mask-image:radial-gradient(120% 120% at 70% 0%,#000 30%,transparent 78%);}
+
+  /* desktop / browser frame behind */
+  .be-desktop{position:absolute;z-index:1;left:9%;top:20%;width:55%;border-radius:11px 11px 9px 9px;overflow:hidden;
+    background:linear-gradient(160deg,#1a201c,#11150f);border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 16px 34px rgba(0,0,0,.42);transform:translate3d(var(--bx,0),var(--by,0),0);
+    transition:transform .7s cubic-bezier(.16,.84,.28,1);will-change:transform;}
+  .be-desk-bar{height:18px;display:flex;align-items:center;gap:5px;padding:0 9px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);}
+  .be-desk-bar i{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.22);}
+  .be-desk-body{padding:13px 13px 16px;display:flex;flex-direction:column;gap:7px;}
+  .be-desk-line{height:6px;border-radius:30px;background:rgba(255,255,255,.10);}
+  .be-desk-line.w1{width:62%;background:rgba(27,197,92,.5);}
+  .be-desk-line.w2{width:88%;}
+  .be-desk-line.w3{width:74%;}
+
+  /* phone frame beside, peeking from the right */
+  .be-phone{position:absolute;z-index:1;right:7%;bottom:9%;width:62px;border-radius:14px;padding:4px;
+    background:#0c0f0c;border:1px solid rgba(255,255,255,.10);box-shadow:0 16px 30px rgba(0,0,0,.46);
+    transform:translate3d(var(--fx,0),var(--fy,0),0);transition:transform .7s cubic-bezier(.16,.84,.28,1);will-change:transform;}
+  .be-notch{position:absolute;top:7px;left:50%;transform:translateX(-50%);width:20px;height:3px;border-radius:30px;background:rgba(255,255,255,.2);z-index:2;}
+  .be-phone-scr{border-radius:11px;background:linear-gradient(165deg,#12150f,#0a0c09);padding:14px 9px 11px;display:flex;flex-direction:column;gap:6px;align-items:flex-start;}
+  .be-ph-line{height:5px;border-radius:30px;background:rgba(255,255,255,.12);}
+  .be-ph-line.w1{width:70%;background:rgba(27,197,92,.55);}
+  .be-ph-line.w2{width:90%;}
+  .be-ph-chip{margin-top:5px;width:100%;height:20px;border-radius:6px;background:rgba(27,197,92,.12);border:1px solid rgba(27,197,92,.28);}
+
+  /* the BagEquity Visa debit card, front and centre */
+  .be-card{position:relative;z-index:3;width:67%;max-width:236px;border-radius:15px;padding:15px 16px;color:#fff;overflow:hidden;
+    aspect-ratio:1.9/1;display:flex;flex-direction:column;
+    background:radial-gradient(120% 90% at 88% -10%,rgba(27,197,92,.30),transparent 55%),linear-gradient(152deg,#1c1f1d 0%,#101210 46%,#0A0B0A 100%);
+    box-shadow:0 20px 40px rgba(6,8,6,.5),inset 0 1px 0 rgba(255,255,255,.07);
+    transition:transform .7s cubic-bezier(.16,.84,.28,1);will-change:transform;transform:translateY(0);}
+  @keyframes beFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+  .card.in .be-card{animation:beFloat 7s ease-in-out .9s infinite;}
+  /* on hover the perpetual float is paused and JS-driven pointer tilt takes over */
+  .card:hover .be-card{animation-play-state:paused;
+    transform:translate3d(var(--cx,0),var(--cy,0),0) rotateX(var(--crx,0deg)) rotateY(var(--cry,0deg));}
+  .be-card::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(125deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,0) 34%,rgba(255,255,255,0) 70%,rgba(255,255,255,.05) 100%);}
+  /* sheen sweep on hover */
+  .be-card::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:42%;pointer-events:none;z-index:4;
+    background:linear-gradient(105deg,transparent,rgba(255,255,255,.16),transparent);transform:skewX(-18deg);}
+  .card:hover .be-card::after{animation:beSheen 1.05s cubic-bezier(.16,.84,.28,1);}
+  @keyframes beSheen{0%{left:-60%;}100%{left:130%;}}
+  .be-card-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;}
+  .be-brand{font-weight:700;font-size:11px;letter-spacing:.02em;font-family:var(--sans);}
+  .be-brand b{color:var(--be-green);}
+  .be-wave{width:15px;height:18px;color:rgba(255,255,255,.7);}
+  .card:hover .be-wave{animation:beWave 1.6s ease-in-out infinite;}
+  @keyframes beWave{0%,100%{opacity:.55;}50%{opacity:1;}}
+  .be-chip{position:relative;z-index:2;width:38px;height:29px;border-radius:5px;margin-top:11px;
+    background:linear-gradient(135deg,#f6e6b0 0%,#d8b765 38%,#bd9a4a 60%,#efdca0 100%);
+    box-shadow:inset 0 0 0 1px rgba(120,90,30,.35),0 1px 2px rgba(0,0,0,.35);overflow:hidden;}
+  .be-chip svg{position:absolute;inset:0;width:100%;height:100%;}
+  .be-sp{flex:1;}
+  .be-num{font-size:12.5px;letter-spacing:.13em;color:#d6dbd6;position:relative;z-index:2;text-shadow:0 1px 1px rgba(0,0,0,.4);font-family:var(--sans);}
+  .be-foot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:9px;position:relative;z-index:2;}
+  .be-holder{font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#aeb4ad;font-weight:600;line-height:1.5;font-family:var(--sans);}
+  .be-holder .be-nm{display:block;font-size:10px;color:#fff;letter-spacing:.04em;}
+  .be-visa{font-style:italic;font-weight:700;font-size:18px;letter-spacing:-.02em;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);font-family:var(--sans);}
+  /* the badge on the BagEquity cover reads light on dark */
+  .be-cover .badge{background:rgba(27,197,92,.18);color:#cdf6dd;border:1px solid rgba(27,197,92,.4);backdrop-filter:blur(6px);}
+  /* scroll-in entrance for the three surfaces */
+  .be-card,.be-desktop,.be-phone{opacity:0;}
+  .card.in .be-desktop{opacity:1;transition:opacity .7s ease .18s,transform .7s cubic-bezier(.16,.84,.28,1);}
+  .card.in .be-phone{opacity:1;transition:opacity .7s ease .3s,transform .7s cubic-bezier(.16,.84,.28,1);}
+  .card.in .be-card{opacity:1;transition:opacity .7s ease .08s,transform .7s cubic-bezier(.16,.84,.28,1);}
+
+  @media (prefers-reduced-motion:reduce){
+    .be-glow{animation:none!important;}
+    .be-card,.be-card.in,.card.in .be-card{animation:none!important;}
+    .be-card,.be-desktop,.be-phone{opacity:1!important;transform:none!important;transition:none!important;}
+    .be-card::after{display:none;}
+    .be-wave{animation:none!important;opacity:.7!important;}
+  }
+
   .card-body{padding:22px 2px 0;}
   .card .ctags{font-size:12.5px;font-weight:500;color:var(--muted);letter-spacing:.01em;}
   .card h3{font-family:var(--display);font-weight:500;font-size:23px;letter-spacing:-.015em;margin-top:9px;transition:color .25s;}
@@ -180,7 +284,7 @@
   footer .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:26px;padding-bottom:26px;flex-wrap:wrap;gap:10px;font-size:13px;}
   footer .brand{font-size:16px;color:#fff;}
 
-  /* HERO PRODUCT VISUAL — caregiver redesign */
+  /* HERO PRODUCT VISUAL, caregiver redesign */
   .hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:56px;align-items:center;}
   .hero-visual{display:flex;justify-content:center;perspective:1400px;}
   .hp-wrap{width:300px;}
@@ -354,7 +458,7 @@
   <div class="wrap">
     <div class="status"><span class="dot"></span><span>Open to senior &amp; lead product design roles</span></div>
     <h1 class="lead">Designing intuitive experiences for <span class="accent it">complex products.</span></h1>
-    <p class="intro">I'm Scott Jewell — a <b>Senior Product Designer</b> with fifteen years turning complex products into clear, accessible experiences. <b>AI-native</b>: I ship working, code-backed prototypes and design systems built for AI to extend — across healthcare, fintech, and commerce.</p>
+    <p class="intro">I'm Scott Jewell, a <b>Senior Product Designer</b> with fifteen years turning complex products into clear, accessible experiences. <b>AI-native</b>. I ship working, code-backed prototypes and design systems built for AI to extend, across healthcare, fintech, and commerce.</p>
     <div class="hero-actions">
       <a href="#work" class="btn-line">View selected work
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -382,8 +486,8 @@
         <div class="thumb"><span class="badge">Live prototype</span><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/668c152f7bd26d0002aa21a3/iEIbtq6uoVE9qbXi.png" alt="CVS mobile app redesign"></div>
         <div class="card-body">
           <div class="ctags">Healthcare · iOS / Android · Prototype</div>
-          <h3>CVS Health — Mobile App Redesign</h3>
-          <p>Redesigned the account, profile, and sign-in experience used by millions — with an animated, interactive prototype recreating the flow screen by screen.</p>
+          <h3>CVS Health Mobile App Redesign</h3>
+          <p>Redesigned the account, profile, and sign-in experience used by millions, with an animated, interactive prototype that recreates the flow screen by screen.</p>
           <span class="more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </a>
@@ -418,8 +522,8 @@
         </div>
         <div class="card-body">
           <div class="ctags">Healthcare · UX Research · Mobile</div>
-          <h3>CVS Health — Caregiver Experience</h3>
-          <p>A native app that lets caregivers manage a loved one's prescriptions from one place — born from a personal caregiving experience, with a modern redesign.</p>
+          <h3>CVS Health Caregiver Experience</h3>
+          <p>A native app that lets caregivers manage a loved one's prescriptions from one place, born from a personal caregiving experience and shaped into a modern redesign.</p>
           <span class="more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </a>
@@ -428,8 +532,8 @@
         <div class="thumb"><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/63193e7a3b7a930003306740/cd9YssCwvrRFhY6o.jpeg" alt="Freebird product page redesign"></div>
         <div class="card-body">
           <div class="ctags">eCommerce · Product Vision · Redesign</div>
-          <h3>Freebird — Product Page Redesign</h3>
-          <p>Led the vision to take Freebird's highest-leverage page from outdated to modern — competitive analysis, stakeholder buy-in, and a converting redesign.</p>
+          <h3>Freebird Product Page Redesign</h3>
+          <p>Led the vision to take Freebird's highest-leverage page from outdated to modern, pairing competitive analysis and stakeholder buy-in with a converting redesign.</p>
           <span class="more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </a>
@@ -438,18 +542,58 @@
         <div class="thumb"><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/62028bc6b0dc93000367ca77/ss9gV8z6BNOB1GCA.png" alt="Brand GO social shopping"></div>
         <div class="card-body">
           <div class="ctags">Social Commerce · Concept · Mobile</div>
-          <h3>Brand GO — Social Shopping</h3>
-          <p>A concept that brings the entire catalogue of online apparel into one place to find, buy, and build a wardrobe — social shopping and peer reviews baked in.</p>
+          <h3>Brand GO Social Shopping</h3>
+          <p>A concept that brings the entire catalogue of online apparel into one place to find, buy, and build a wardrobe, with social shopping and peer reviews baked in.</p>
           <span class="more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </a>
 
       <a class="card reveal" href="case-bagequity.html" style="--i:0">
-        <div class="thumb"><div class="brandfill"><div class="bg">BagEquity</div></div></div>
+        <div class="thumb be-cover" aria-label="BagEquity Visa debit card across phone and desktop">
+          <span class="badge">Live product</span>
+          <div class="be-stage">
+            <span class="be-glow" aria-hidden="true"></span>
+            <span class="be-grid" aria-hidden="true"></span>
+            <!-- desktop / browser surface behind -->
+            <div class="be-desktop" aria-hidden="true">
+              <div class="be-desk-bar"><i></i><i></i><i></i></div>
+              <div class="be-desk-body">
+                <div class="be-desk-line w1"></div>
+                <div class="be-desk-line w2"></div>
+                <div class="be-desk-line w3"></div>
+              </div>
+            </div>
+            <!-- phone surface beside -->
+            <div class="be-phone" aria-hidden="true">
+              <span class="be-notch"></span>
+              <div class="be-phone-scr">
+                <div class="be-ph-line w1"></div>
+                <div class="be-ph-line w2"></div>
+                <div class="be-ph-chip"></div>
+              </div>
+            </div>
+            <!-- the BagEquity Visa debit card -->
+            <div class="be-card">
+              <div class="be-card-top">
+                <div class="be-brand">BAG<b>EQUITY</b></div>
+                <svg class="be-wave" viewBox="0 0 18 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 5a9 9 0 0 1 0 12"/><path d="M8 3a13 13 0 0 1 0 16"/><path d="M12 1.5a16.5 16.5 0 0 1 0 19"/></svg>
+              </div>
+              <div class="be-chip" aria-hidden="true">
+                <svg viewBox="0 0 44 33" preserveAspectRatio="none"><g fill="none" stroke="rgba(120,90,30,.45)" stroke-width="1"><rect x="1" y="1" width="42" height="31" rx="5"/><line x1="1" y1="11.5" x2="15" y2="11.5"/><line x1="29" y1="11.5" x2="43" y2="11.5"/><line x1="1" y1="21.5" x2="15" y2="21.5"/><line x1="29" y1="21.5" x2="43" y2="21.5"/><line x1="15" y1="1" x2="15" y2="32"/><line x1="29" y1="1" x2="29" y2="32"/></g></svg>
+              </div>
+              <div class="be-sp"></div>
+              <div class="be-num">••••&nbsp;&nbsp;••••&nbsp;&nbsp;••••&nbsp;&nbsp;<span class="be-last" data-be-last>4729</span></div>
+              <div class="be-foot">
+                <div class="be-holder">Cardholder<span class="be-nm">JORDAN FIELDS</span></div>
+                <div class="be-visa">VISA</div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="card-body">
           <div class="ctags">Fintech · 0 → 1 · Founder</div>
-          <h3>BagEquity — Fintech Platform</h3>
-          <p>Founder and lead designer of a platform helping families and youth-sports coaches manage money together — onboarding, money-movement, and the full design system.</p>
+          <h3>BagEquity Fintech Platform</h3>
+          <p>Founder and lead designer of a platform helping families and youth-sports coaches manage money together, spanning onboarding, money-movement, and the full design system.</p>
           <span class="more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </a>
@@ -465,7 +609,7 @@
       <span class="idx">Designer · Artist · Father</span>
     </div>
     <div class="about-grid reveal">
-      <div class="about-statement">I'm a designer with over a decade in visual design and a decade in UI. I thrive on <span style="color:var(--accent);">simplifying complex apps</span> — and I care about the customer journey and the details that make products feel effortless.<span class="mut"> Creative, collaborative, and dedicated to outstanding user experiences.</span></div>
+      <div class="about-statement">I'm a designer with over a decade in visual design and a decade in UI. I thrive on <span style="color:var(--accent);">simplifying complex apps</span>, and I care about the customer journey and the details that make products feel effortless.<span class="mut"> Creative, collaborative, and dedicated to outstanding user experiences.</span></div>
       <div class="about-body">
         <p>From print and visual design into product, I've spent fifteen years learning what makes interfaces feel inevitable: <b>research, clear hierarchy, accessible patterns,</b> and a relentless focus on the person on the other side of the screen.</p>
         <p>Today I design for healthcare and fintech, lead 0&nbsp;→&nbsp;1 product work, and bring AI-first practices into how I design and ship.</p>
@@ -483,16 +627,16 @@
   <div class="wrap">
     <div class="sec-head reveal">
       <h2>Experience</h2>
-      <span class="idx">2006 — present</span>
+      <span class="idx">2006 to present</span>
     </div>
     <div class="reveal">
       <div class="xp-row">
-        <div class="xp-date">2025 — Present</div>
+        <div class="xp-date">2025 to Present</div>
         <div><div class="xp-role">Founder &amp; Lead Product Designer</div><div class="xp-co">BagEquity · Fintech</div>
-          <div class="xp-desc">Leading product design end to end for a regulated fintech — onboarding, money-movement, and a scalable, accessible design system.</div></div>
+          <div class="xp-desc">Leading product design end to end for a regulated fintech, spanning onboarding, money movement, and a scalable, accessible design system.</div></div>
       </div>
       <div class="xp-row">
-        <div class="xp-date">2022 — Present</div>
+        <div class="xp-date">2022 to Present</div>
         <div><div class="xp-role">Senior Product Designer</div><div class="xp-co">CVS Health · Accounts Team</div>
           <div class="xp-desc">Own login, security, and identity experiences for iOS and Android at scale. Promoted to Senior in 2024.</div></div>
       </div>
@@ -502,9 +646,9 @@
           <div class="xp-desc">Led the site overhaul and product-page vision; built the first design system and migrated the team to Figma.</div></div>
       </div>
       <div class="xp-row">
-        <div class="xp-date">2006 — 2022</div>
+        <div class="xp-date">2006 to 2022</div>
         <div><div class="xp-role">Visual &amp; UI Designer</div><div class="xp-co">Independent · Denver, CO</div>
-          <div class="xp-desc">Fifteen years across print, brand, and digital for agencies and enterprise clients — transitioning from print into product design.</div></div>
+          <div class="xp-desc">Fifteen years across print, brand, and digital for agencies and enterprise clients, transitioning from print into product design.</div></div>
       </div>
     </div>
   </div>
@@ -544,7 +688,7 @@
     <div class="cx-head">
       <div class="cx-eyebrow">Reach out</div>
       <div class="cx-title" id="cxTitle">Let's start a <span class="it">conversation.</span></div>
-      <div class="cx-sub">Pick what fits — I'll tailor a starting note. Copy it or send it straight to my inbox.</div>
+      <div class="cx-sub">Pick what fits and I'll tailor a starting note. Copy it or send it straight to my inbox.</div>
       <button class="cx-close" id="cxClose" type="button" aria-label="Close">
         <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
       </button>
@@ -571,7 +715,7 @@
         <path d="M27 41l9 9 18-20" stroke="var(--accent)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       <h3>Thank you for reaching out.</h3>
-      <p id="cxThanksMsg">Your note is on its way — I read every message and reply within a day.</p>
+      <p id="cxThanksMsg">Your note is on its way. I read every message and reply within a day.</p>
       <button class="cx-again" id="cxAgain" type="button">Write another</button>
     </div>
   </div>
@@ -589,7 +733,7 @@
       {key:'collab',label:'Collaborator',subject:"Let's build something together",
        body:"Hi Scott,\n\nI'm working on a product and your blend of design craft and AI-native prototyping is exactly the kind of partner I've been looking for. I'd love to tell you about it and explore working together.\n\nDo you have time for a quick chat?\n\nThanks,"},
       {key:'hello',label:'Just saying hi',subject:'Loved your portfolio',
-       body:"Hi Scott,\n\nI just spent time in your portfolio and wanted to say the work is fantastic — thoughtful, polished, and clearly cared for. No agenda here, just wanted to reach out and stay in touch.\n\nWarmly,"}
+       body:"Hi Scott,\n\nI just spent time in your portfolio and wanted to say the work is fantastic, thoughtful, polished, and clearly cared for. No agenda here, just wanted to reach out and stay in touch.\n\nWarmly,"}
     ];
     var scrim=document.getElementById('cxScrim'),chips=document.getElementById('cxChips'),
         msg=document.getElementById('cxMsg'),copyBtn=document.getElementById('cxCopy'),
@@ -657,8 +801,8 @@
       var href='mailto:'+EMAIL+'?subject='+encodeURIComponent(t.subject)+'&body='+encodeURIComponent(msg.value+'\n');
       sendBtn.classList.add('sending');
       thanksMsg.textContent=t.key==='hello'
-        ? 'Message ready in your email app — thank you for the kind words. I read every note and reply within a day.'
-        : 'Your email is ready to send — thank you for reaching out. I read every message and reply within a day.';
+        ? 'Message ready in your email app. Thank you for the kind words. I read every note and reply within a day.'
+        : 'Your email is ready to send. Thank you for reaching out. I read every message and reply within a day.';
       setTimeout(function(){window.location.href=href;},120);
       setTimeout(function(){sendBtn.classList.remove('sending');thanks.classList.add('show');},560);
     });
@@ -754,7 +898,7 @@
     }
     window.addEventListener('resize',function(){if(current)moveIndicatorTo(current);},{passive:true});
 
-    /* smooth in-page anchor scrolling (skip contact — overlay handles it) */
+    /* smooth in-page anchor scrolling (skip contact, overlay handles it) */
     document.querySelectorAll('a[href^="#"]').forEach(function(a){
       if(a.hasAttribute('data-cx-open'))return;
       a.addEventListener('click',function(e){
@@ -795,6 +939,60 @@
           }
         }
       }
+    }
+
+    /* BagEquity cover: pointer-reactive tilt + multi-surface parallax (fine pointer only) */
+    if(!REDUCED&&window.matchMedia&&window.matchMedia('(pointer:fine)').matches){
+      var beCover=document.querySelector('.be-cover');
+      if(beCover){
+        var beCard=beCover.querySelector('.be-card'),
+            beDesk=beCover.querySelector('.be-desktop'),
+            bePhone=beCover.querySelector('.be-phone');
+        var beRaf=null,bmx=0,bmy=0;
+        function beApply(){
+          beRaf=null;
+          if(beCard){
+            beCard.style.setProperty('--cry',(bmx*7)+'deg');
+            beCard.style.setProperty('--crx',(bmy*-7)+'deg');
+            beCard.style.setProperty('--cx',(bmx*8)+'px');
+            beCard.style.setProperty('--cy',(bmy*8)+'px');
+          }
+          if(beDesk){beDesk.style.setProperty('--bx',(bmx*-12)+'px');beDesk.style.setProperty('--by',(bmy*-8)+'px');}
+          if(bePhone){bePhone.style.setProperty('--fx',(bmx*14)+'px');bePhone.style.setProperty('--fy',(bmy*10)+'px');}
+        }
+        beCover.addEventListener('mousemove',function(e){
+          var r=beCover.getBoundingClientRect();
+          bmx=(e.clientX-r.left)/r.width-0.5;
+          bmy=(e.clientY-r.top)/r.height-0.5;
+          if(!beRaf)beRaf=requestAnimationFrame(beApply);
+        });
+        beCover.addEventListener('mouseleave',function(){
+          bmx=0;bmy=0;if(!beRaf)beRaf=requestAnimationFrame(beApply);
+        });
+      }
+    }
+
+    /* BagEquity card number: gentle count-up of the last four digits on first view */
+    var beLast=document.querySelector('[data-be-last]');
+    if(beLast){
+      var beNum=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(!e.isIntersecting)return;
+          beNum.unobserve(e.target);
+          var fin=4729;
+          if(REDUCED){e.target.textContent=fin;return;}
+          var dur=900,start=null;
+          function step(ts){
+            if(!start)start=ts;
+            var p=Math.min((ts-start)/dur,1);
+            var eased=1-Math.pow(1-p,3);
+            e.target.textContent=String(Math.round(eased*fin)).padStart(4,'0');
+            if(p<1)requestAnimationFrame(step);else e.target.textContent=fin;
+          }
+          requestAnimationFrame(step);
+        });
+      },{threshold:.5});
+      beNum.observe(beLast);
     }
 
     /* init */
