@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card In Use — Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#ECE9E6; --card:#fff; --ink:#0C0C0D; --ink-2:#44444A; --muted:#7d7a75; --line:#E2DED9;
+    --sans:"Inter",-apple-system,sans-serif; --serif:"Fraunces",Georgia,serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--sans);background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 28px;}
+
+  /* shared liquid art */
+  .art-field{position:absolute;inset:0;overflow:hidden;}
+  .blob{position:absolute;border-radius:50%;filter:blur(40px);opacity:.95;mix-blend-mode:screen;animation:drift 17s ease-in-out infinite;}
+  .blob.b2{animation-duration:22s;animation-direction:reverse;}
+  .blob.b3{animation-duration:27s;}
+  @keyframes drift{0%{transform:translate(0,0) scale(1);}33%{transform:translate(12%,-10%) scale(1.18);}66%{transform:translate(-10%,8%) scale(.9);}100%{transform:translate(0,0) scale(1);}}
+  .gloss{position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.22),rgba(255,255,255,0) 42%);pointer-events:none;}
+  .grain{position:absolute;inset:0;opacity:.06;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.8) .5px,transparent .5px);background-size:3px 3px;}
+  /* CVS electric blue set */
+  .cvs-1{width:62%;height:78%;left:-8%;top:-12%;background:#2f6bff;}
+  .cvs-2{width:58%;height:70%;right:-10%;bottom:-18%;background:#16c0ff;}
+  .cvs-3{width:40%;height:50%;left:30%;top:30%;background:#7aa0ff;}
+
+  /* ===== GRID VIEW ===== */
+  .stage{position:relative;}
+  .gridview{padding:70px 0 110px;transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1);}
+  .stage.open .gridview{opacity:0;transform:scale(.97);pointer-events:none;}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+  h1.lead{font-family:var(--serif);font-weight:400;font-size:clamp(30px,4.4vw,52px);letter-spacing:-.02em;margin-top:12px;}
+  h1.lead .it{font-style:italic;}
+  .hint{color:var(--muted);font-size:14.5px;margin-top:12px;}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:40px;}
+
+  .card{position:relative;border-radius:26px;overflow:hidden;aspect-ratio:16/10;color:#fff;cursor:pointer;
+    box-shadow:0 24px 50px rgba(20,20,30,.16);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s;}
+  .card:hover{transform:translateY(-6px);box-shadow:0 40px 76px rgba(20,20,30,.26);}
+  .card.muted{opacity:.5;filter:saturate(.6);}
+  .card.muted:hover{opacity:.7;}
+  .card .inner{position:absolute;inset:0;padding:26px 28px;display:flex;flex-direction:column;justify-content:space-between;z-index:2;}
+  .pill{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:rgba(12,12,13,.5);backdrop-filter:blur(6px);
+    padding:7px 14px;border-radius:40px;font-size:12px;font-weight:600;}
+  .pill .dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:pulse 2.6s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.5);}70%{box-shadow:0 0 0 9px rgba(255,255,255,0);}100%{box-shadow:0 0 0 0 rgba(255,255,255,0);}}
+  .card .tag{font-size:12px;font-weight:600;opacity:.85;}
+  .card h2{font-weight:800;font-size:clamp(22px,3vw,34px);line-height:1.03;letter-spacing:-.02em;margin-top:8px;}
+  .card h2 .it{font-family:var(--serif);font-style:italic;font-weight:500;}
+  .card .foot{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;margin-top:12px;}
+  .card .foot svg{width:15px;height:15px;transition:transform .3s;}
+  .card:hover .foot svg{transform:translateX(5px);}
+  .ph{display:flex;align-items:center;justify-content:center;background:#dfdbd5;color:#9a958d;font-weight:700;font-size:15px;}
+
+  /* ===== DETAIL VIEW ===== */
+  .detail{position:fixed;inset:0;z-index:40;background:var(--paper);overflow-y:auto;
+    opacity:0;pointer-events:none;transform:translateY(28px);transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1);}
+  .stage.open .detail{opacity:1;pointer-events:auto;transform:none;}
+  .back{position:fixed;top:22px;left:22px;z-index:50;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.86);
+    backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:40px;padding:10px 18px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;
+    box-shadow:0 8px 24px rgba(20,20,30,.12);transition:transform .2s;}
+  .back:hover{transform:translateX(-3px);}
+  .back svg{width:15px;height:15px;}
+
+  .hero{position:relative;height:62vh;min-height:420px;color:#fff;overflow:hidden;display:flex;align-items:flex-end;}
+  .hero .inner{position:relative;z-index:2;padding:0 0 54px;}
+  .stage.open .hero .h-el{opacity:1;transform:none;}
+  .h-el{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1);}
+  .h-el.d1{transition-delay:.18s;} .h-el.d2{transition-delay:.3s;} .h-el.d3{transition-delay:.42s;}
+  .hero .pill{margin-bottom:18px;}
+  .hero h1{font-weight:800;font-size:clamp(32px,6vw,68px);line-height:1.0;letter-spacing:-.03em;max-width:16ch;}
+  .hero h1 .it{font-family:var(--serif);font-style:italic;font-weight:500;}
+  .hero .lead{margin-top:18px;font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.9);max-width:54ch;line-height:1.5;}
+
+  .meta{background:var(--ink);color:#fff;}
+  .meta .row{display:grid;grid-template-columns:repeat(4,1fr);}
+  .meta .m{padding:26px 0;border-right:1px solid rgba(255,255,255,.12);padding-right:22px;}
+  .meta .m:last-child{border-right:none;}
+  .meta .mk{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8fb0ff;}
+  .meta .mv{margin-top:7px;font-size:15px;font-weight:600;}
+
+  section.body{padding:70px 0;}
+  .kick{font-size:12.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#2f6bff;margin-bottom:14px;}
+  h3.sec{font-family:var(--serif);font-weight:600;font-size:clamp(24px,3.2vw,34px);letter-spacing:-.02em;}
+  p.copy{font-size:17px;color:var(--ink-2);margin-top:16px;max-width:64ch;line-height:1.7;}
+  p.copy b{color:var(--ink);}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px;}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;}
+  .tile h4{font-weight:700;font-size:16px;}
+  .tile p{font-size:14.5px;color:var(--muted);margin-top:7px;line-height:1.6;}
+  .next{text-align:center;padding:60px 0 90px;}
+  .next .lab{font-size:12.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+  .next .btn{margin-top:18px;display:inline-flex;align-items:center;gap:9px;background:var(--ink);color:#fff;padding:15px 26px;border-radius:44px;font-weight:600;cursor:pointer;border:0;font-size:15px;}
+
+  @media(max-width:760px){ .grid{grid-template-columns:1fr;} .meta .row{grid-template-columns:repeat(2,1fr);} .split{grid-template-columns:1fr;} }
+  @media(prefers-reduced-motion:reduce){
+    .blob,.pill .dot{animation:none!important;}
+    .gridview,.detail,.card,.h-el{transition:none!important;}
+    .h-el{opacity:1;transform:none;}
+  }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <!-- GRID VIEW -->
+  <div class="gridview">
+    <div class="wrap">
+      <div class="eyebrow">Selected work</div>
+      <h1 class="lead">Pick a project to see the card <span class="it">open</span>.</h1>
+      <p class="hint">This is a prototype. Click the CVS Health card and watch it expand into the full case study, using the same gradient as the hero. The others are dimmed for context.</p>
+
+      <div class="grid">
+        <!-- CVS card, interactive -->
+        <div class="card" id="cvsCard" onclick="openCase()">
+          <div class="art-field"><div class="blob cvs-1"></div><div class="blob b2 cvs-2"></div><div class="blob b3 cvs-3"></div></div>
+          <div class="gloss"></div><div class="grain"></div>
+          <div class="inner">
+            <span class="pill"><span class="dot"></span> Healthcare · iOS / Android</span>
+            <div>
+              <div class="tag">CVS Health</div>
+              <h2>Mobile App <span class="it">Redesign</span></h2>
+              <div class="foot">View case study
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- muted context cards -->
+        <div class="card muted ph">Freebird</div>
+        <div class="card muted ph">Brand GO</div>
+        <div class="card muted ph">BagEquity</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL VIEW -->
+  <div class="detail" id="detail">
+    <button class="back" onclick="closeCase()">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      All work
+    </button>
+
+    <header class="hero" style="background:#0b1a3a;">
+      <div class="art-field"><div class="blob cvs-1"></div><div class="blob b2 cvs-2"></div><div class="blob b3 cvs-3"></div></div>
+      <div class="gloss"></div><div class="grain"></div>
+      <div class="wrap inner">
+        <span class="pill h-el"><span class="dot"></span> Healthcare · iOS / Android · Prototype</span>
+        <h1 class="h-el d1">Mobile App <span class="it">Redesign</span></h1>
+        <p class="lead h-el d2">Redesigned the account, profile, and sign in experience used by millions, with an animated, interactive prototype that recreates the flow screen by screen.</p>
+      </div>
+    </header>
+
+    <div class="meta"><div class="wrap"><div class="row">
+      <div class="m"><div class="mk">Role</div><div class="mv">Senior Product Designer</div></div>
+      <div class="m"><div class="mk">Platform</div><div class="mv">iOS and Android</div></div>
+      <div class="m"><div class="mk">Focus</div><div class="mv">Accounts, identity, security</div></div>
+      <div class="m"><div class="mk">Scale</div><div class="mv">Millions of users</div></div>
+    </div></div></div>
+
+    <section class="body"><div class="wrap">
+      <div class="kick">Overview</div>
+      <h3 class="sec">Make a daily, high stakes flow feel effortless</h3>
+      <p class="copy">Account, profile, and sign in are the doors to the whole CVS app, and they carry real security weight. I redesigned these flows for iOS and Android so they feel calm and quick, then built an animated prototype that recreates the experience screen by screen so the team could feel it, not just review static frames.</p>
+
+      <div class="split">
+        <div class="tile"><h4>Biometric and secure sign in</h4><p>Faster entry that still meets a high security bar, designed for both platforms.</p></div>
+        <div class="tile"><h4>Profile and account clarity</h4><p>A cleaner information hierarchy so people find and change the right thing without second guessing.</p></div>
+        <div class="tile"><h4>Code backed prototype</h4><p>A real, tappable prototype that tested the flow before engineering invested.</p></div>
+        <div class="tile"><h4>Accessible by default</h4><p>Contrast, targets, and labels checked so the experience works for everyone.</p></div>
+      </div>
+    </div></section>
+
+    <div class="next">
+      <div class="lab">Next project</div>
+      <button class="btn" onclick="closeCase()">Back to all work
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var stage=document.getElementById('stage');
+  function openCase(){ stage.classList.add('open'); document.body.style.overflow='hidden'; document.getElementById('detail').scrollTop=0; }
+  function closeCase(){ stage.classList.remove('open'); document.body.style.overflow=''; }
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeCase(); });
+</script>
+</body>
+</html>
