@@ -46,7 +46,7 @@
 
   /* screen stack — iOS-native push/pop */
   .stack{position:absolute;inset:0;}
-  .screen{position:absolute;inset:0;background:#f4f5f7;transform:translateX(100%);
+  .screen{position:absolute;inset:0;background:#f4f5f7;transform:translateX(100%);border-radius:40px;
     transition:transform .5s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;overflow:hidden;
     box-shadow:-8px 0 24px rgba(0,0,0,0);will-change:transform;}
   .screen.active{transform:translateX(0);box-shadow:-8px 0 30px rgba(0,0,0,.18);}
@@ -135,7 +135,7 @@
   .addr .acts span{font-size:14px;font-weight:600;color:var(--cvs-red);cursor:pointer;}
 
   /* face id overlay */
-  .faceid{position:absolute;inset:0;background:rgba(8,10,20,.55);backdrop-filter:blur(3px);z-index:70;
+  .faceid{position:absolute;inset:0;border-radius:40px;background:rgba(8,10,20,.55);backdrop-filter:blur(3px);z-index:70;
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;opacity:0;pointer-events:none;
     transition:opacity .3s;}
   .faceid.show{opacity:1;}
@@ -143,7 +143,7 @@
   .faceid .txt{color:#fff;font-size:15px;font-weight:500;}
 
   /* tab bar */
-  .tabbar{position:absolute;bottom:0;left:0;right:0;height:74px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);
+  .tabbar{position:absolute;bottom:0;left:0;right:0;height:74px;background:#ffffff;
     border-top:1px solid var(--line);display:flex;z-index:40;padding-bottom:14px;}
   .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9aa0aa;cursor:pointer;}
   .tab.on{color:var(--cvs-red);}
