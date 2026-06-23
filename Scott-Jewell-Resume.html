@@ -22,14 +22,16 @@
     padding:0.66in 0.7in 0.7in;}
 
   /* ---------- header ---------- */
-  .name{font-family:var(--display);font-weight:600;font-size:42px;line-height:1;letter-spacing:-.6px;}
-  .name .last{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
-  .role{margin-top:11px;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);}
-  .contact{margin-top:12px;font-size:12.5px;color:var(--muted);line-height:1.7;}
-  .contact a{color:var(--muted);text-decoration:none;}
-  .contact b{color:var(--ink-soft);font-weight:600;}
-  .contact .sep{color:var(--line-2);margin:0 9px;}
-  .rule{height:2px;width:100%;background:var(--grad);margin:18px 0 0;border-radius:2px;}
+  .masthead{display:flex;justify-content:space-between;align-items:flex-end;gap:36px;}
+  .eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+  .name{font-family:var(--display);font-weight:600;font-size:48px;line-height:.96;letter-spacing:-1.4px;color:var(--ink);}
+  .tagline{margin-top:12px;font-family:var(--display);font-weight:400;font-style:italic;font-size:15.5px;color:var(--ink-soft);line-height:1.4;max-width:34ch;}
+  .mast-right{text-align:right;font-size:12px;color:var(--muted);line-height:1.95;white-space:nowrap;}
+  .mast-right a{color:var(--muted);text-decoration:none;}
+  .mast-right b{color:var(--ink);font-weight:600;}
+  .mast-right .top{font-family:var(--display);font-size:12.5px;font-weight:600;color:var(--ink);letter-spacing:.02em;}
+  .rule{position:relative;height:1px;background:var(--line);margin-top:22px;}
+  .rule::before{content:"";position:absolute;left:0;top:-0.5px;width:60px;height:2px;background:var(--accent);border-radius:2px;}
 
   /* ---------- summary ---------- */
   .summary{font-family:var(--display);font-weight:400;font-size:15.5px;line-height:1.6;color:var(--ink-soft);
@@ -95,12 +97,18 @@
 
   <div class="sheet">
     <header>
-      <div class="name">Scott <span class="last">Jewell</span></div>
-      <div class="role">Senior Product Designer, AI-native, Design Systems</div>
-      <div class="contact">
-        <b>Denver, CO</b> · Remote <span class="sep">|</span> <a href="mailto:jewellsco@gmail.com">jewellsco@gmail.com</a>
-        <span class="sep">|</span> <a href="https://www.linkedin.com/in/jewell-scott-sco/">linkedin.com/in/jewell-scott-sco</a>
-        <span class="sep">|</span> <a href="https://jewellsco.vercel.app/">jewellsco.vercel.app</a>
+      <div class="masthead">
+        <div class="mast-left">
+          <div class="eyebrow">Senior Product Designer</div>
+          <h1 class="name">Scott Jewell</h1>
+          <div class="tagline">AI-native product design for healthcare, fintech, and commerce.</div>
+        </div>
+        <div class="mast-right">
+          <div class="top"><b>Denver, CO</b> · Remote</div>
+          <div><a href="mailto:jewellsco@gmail.com">jewellsco@gmail.com</a></div>
+          <div><a href="https://www.linkedin.com/in/jewell-scott-sco/">linkedin.com/in/jewell-scott-sco</a></div>
+          <div><a href="https://jewellsco.vercel.app/">jewellsco.vercel.app</a></div>
+        </div>
       </div>
       <div class="rule"></div>
     </header>
