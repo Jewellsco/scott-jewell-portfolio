@@ -294,6 +294,53 @@
   .hero-stage .hero-visual .hp-device{opacity:0;transform:translateY(34px) rotateX(4deg);}
   .hero-stage.go .hero-visual .hp-device{opacity:1;transform:translate3d(var(--px,0),var(--py,0),0) rotateX(var(--ry,0deg)) rotateY(var(--rx,0deg));transition-delay:.42s;}
   .hp-device{width:300px;background:#0c0c0d;border-radius:46px;padding:11px;box-shadow:0 44px 80px rgba(18,20,30,.20),0 0 0 1px rgba(0,0,0,.05);}
+
+  /* hero brand card (right column) */
+  .hero-card{position:relative;width:100%;max-width:460px;aspect-ratio:4/5;min-height:560px;border-radius:36px;background:#2418c9;
+    overflow:hidden;display:flex;flex-direction:column;padding:30px;color:#fff;
+    box-shadow:0 44px 96px rgba(20,16,80,.36),inset 0 0 0 1px rgba(255,255,255,.2);}
+  .hero-card .bgimg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;filter:blur(3px);transform:scale(1.1);}
+  .hero-card .wash{position:absolute;inset:0;z-index:0;background:radial-gradient(130% 90% at 50% -12%,rgba(255,255,255,.08),transparent 55%),linear-gradient(180deg,rgba(40,20,125,.05),rgba(16,8,60,.42));}
+  .hero-card .pill-open{position:relative;z-index:2;align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:#000;color:#fff;
+    padding:9px 18px;border-radius:999px;font-size:13.5px;font-weight:500;box-shadow:0 8px 20px rgba(0,0,0,.25);}
+  .hero-card .pill-open .d{width:9px;height:9px;border-radius:50%;background:#fcd34d;}
+  .hero-card .status-card{position:absolute;top:32px;right:-14px;width:234px;background:#121214;border:1px solid rgba(255,255,255,.1);
+    border-radius:22px;padding:18px;z-index:3;box-shadow:0 24px 50px rgba(0,0,0,.4);animation:hcFloat 5s ease-in-out infinite;will-change:transform;}
+  @keyframes hcFloat{0%,100%{transform:rotate(-10deg) translateY(0);}50%{transform:rotate(-8.5deg) translateY(-12px);}}
+  .hero-card .sc-top{display:flex;align-items:center;gap:8px;}
+  .hero-card .sc-dot{position:relative;display:inline-flex;width:10px;height:10px;}
+  .hero-card .sc-dot .ping{position:absolute;inset:0;border-radius:50%;background:#4ade80;opacity:.75;animation:hcPing 1.6s cubic-bezier(0,0,.2,1) infinite;}
+  .hero-card .sc-dot .core{position:relative;width:10px;height:10px;border-radius:50%;background:#4ade80;}
+  @keyframes hcPing{75%,100%{transform:scale(2);opacity:0;}}
+  .hero-card .sc-lbl{color:rgba(255,255,255,.8);font-size:12px;font-weight:500;letter-spacing:.02em;}
+  .hero-card .sc-title{font-size:22px;font-weight:700;line-height:1.1;margin-top:12px;}
+  .hero-card .sc-meta{color:rgba(255,255,255,.4);font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;margin-top:14px;}
+  .hero-card .hc-spacer{flex:1;}
+  .hero-card .hc-main{position:relative;z-index:2;display:flex;flex-direction:column;gap:22px;}
+  .hero-card .hc-h{font-family:var(--sans);font-weight:800;font-size:clamp(40px,4.6vw,58px);letter-spacing:-.02em;line-height:1.05;color:#fff;}
+  .hero-card .hc-sub{color:rgba(255,255,255,.92);font-size:17px;margin-top:14px;font-weight:500;line-height:1.5;}
+  .hero-card .hc-cta{display:block;width:100%;text-align:center;background:#fff;color:#0c0c0d;padding:17px;border-radius:18px;font-size:18px;font-weight:700;
+    box-shadow:0 10px 24px rgba(0,0,0,.18);transition:transform .2s;}
+  .hero-card .hc-cta:hover{transform:scale(1.02);}
+  .hero-card .hc-foot{position:relative;z-index:2;margin-top:26px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .hero-card .hc-foot .who{display:flex;align-items:center;gap:13px;}
+  .hero-card .hc-av{position:relative;width:52px;height:52px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,.8);
+    background:#2a2440;display:flex;align-items:center;justify-content:center;flex:none;}
+  .hero-card .hc-av span{font-weight:700;font-size:17px;color:#fff;}
+  .hero-card .hc-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero-card .hc-foot .t1{font-weight:600;font-size:15px;}
+  .hero-card .hc-foot .t2{color:rgba(255,255,255,.7);font-size:13.5px;}
+  .hero-card .hc-arrow{width:48px;height:48px;border-radius:50%;background:#fff;color:#0c0c0d;display:flex;align-items:center;justify-content:center;
+    flex:none;box-shadow:0 8px 20px rgba(0,0,0,.18);transition:transform .2s;}
+  .hero-card .hc-arrow:hover{transform:scale(1.06);}
+  .hero-stage .hero-visual .hero-card{opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.16,.84,.28,1),transform .9s cubic-bezier(.16,.84,.28,1);}
+  .hero-stage.go .hero-visual .hero-card{opacity:1;transform:none;transition-delay:.42s;}
+  @media(prefers-reduced-motion:reduce){
+    .hero-stage .hero-visual .hero-card{opacity:1!important;transform:none!important;}
+    .hero-card .status-card{animation:none;transform:rotate(-10deg);}
+    .hero-card .sc-dot .ping{animation:none;}
+  }
+  @media(max-width:920px){ .hero-visual .hero-card{max-width:420px;} }
   .hp-screen{background:#F6F7F9;border-radius:36px;overflow:hidden;position:relative;}
   .hp-status{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 22px 0 26px;font-size:12.5px;font-weight:600;color:#16181F;}
   .hp-status .bars{display:flex;gap:5px;align-items:center;color:#16181F;}
@@ -456,6 +503,8 @@
 <header class="hero hero-stage" id="top">
   <div class="hero-glow" id="heroGlow" aria-hidden="true"></div>
   <div class="wrap">
+    <div class="hero-grid">
+    <div class="hero-left">
     <div class="status"><span class="dot"></span><span>Open to senior &amp; lead product design roles</span></div>
     <h1 class="lead">Designing intuitive experiences for <span class="accent it">complex products.</span></h1>
     <p class="intro">I'm Scott Jewell, a <b>Senior Product Designer</b> with fifteen years turning complex products into clear, accessible experiences. <b>AI-native</b>. I ship working, code-backed prototypes and design systems built for AI to extend, across healthcare, fintech, and commerce.</p>
@@ -471,6 +520,36 @@
       <div class="hm"><div class="n">iOS · Android</div><div class="l">Native &amp; responsive</div></div>
       <div class="hm"><div class="n">WCAG</div><div class="l">Accessibility-first</div></div>
     </div>
+    </div><!-- /hero-left -->
+
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="bgimg" style="background-image:url('https://cdn.midjourney.com/ad2beae4-f996-4fdb-907e-449d264b10eb/0_2_640_N.webp?method=shortest')"></div>
+        <div class="wash"></div>
+        <span class="pill-open"><span class="d"></span> Open to new work</span>
+        <div class="status-card">
+          <div class="sc-top"><span class="sc-dot"><span class="ping"></span><span class="core"></span></span><span class="sc-lbl">Available for work</span></div>
+          <div class="sc-title">Senior<br>Product Designer</div>
+          <div class="sc-meta">Jewell Co · Est. 2006</div>
+        </div>
+        <div class="hc-spacer"></div>
+        <div class="hc-main">
+          <div>
+            <h2 class="hc-h">Design<br>that ships.</h2>
+            <p class="hc-sub">I'm Scott Jewell, a senior product designer turning complex products into clear, accessible experiences. AI-native.</p>
+          </div>
+          <a href="#work" class="hc-cta">View selected work</a>
+        </div>
+        <div class="hc-foot">
+          <div class="who">
+            <div class="hc-av"><span>SJ</span><img src="data:image/jpeg;base64,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" alt="Scott Jewell" onerror="this.style.display='none'"></div>
+            <div><div class="t1">Book a 15-min intro call</div><div class="t2">Schedule now</div></div>
+          </div>
+          <a href="#contact" class="hc-arrow" data-cx-open aria-label="Get in touch"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    </div>
+    </div><!-- /hero-grid -->
   </div>
 </header>
 
