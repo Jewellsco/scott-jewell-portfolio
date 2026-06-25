@@ -70,6 +70,7 @@
 
   /* ---------- toolbar (screen only) ---------- */
   .toolbar{position:fixed;top:16px;right:16px;display:flex;gap:8px;z-index:200;}
+  .toolbar-l{position:fixed;top:16px;left:16px;display:flex;gap:8px;z-index:200;}
   .tb-btn{font-family:var(--sans);font-size:13px;font-weight:600;padding:9px 15px;border-radius:9px;border:1px solid var(--line-2);
     background:#fff;color:var(--ink);text-decoration:none;cursor:pointer;box-shadow:0 6px 18px rgba(20,30,60,.10);
     display:inline-flex;align-items:center;gap:7px;transition:border-color .15s,color .15s;}
@@ -82,7 +83,7 @@
     @page{size:Letter;margin:0.55in 0.62in;}
     html,body{background:#fff;}
     .sheet{width:auto;margin:0;padding:0;box-shadow:none;}
-    .toolbar{display:none!important;}
+    .toolbar,.toolbar-l{display:none!important;}
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .section{margin-top:20px;}
   }
@@ -90,6 +91,9 @@
 </style>
 </head>
 <body>
+  <div class="toolbar-l">
+    <a class="tb-btn" href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> Back to portfolio</a>
+  </div>
   <div class="toolbar">
     <a class="tb-btn primary" href="Scott-Jewell-Resume.pdf" download="Scott-Jewell-Resume.pdf"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5"/><path d="M5 21h14"/></svg> Download PDF</a>
     <a class="tb-btn" href="mailto:?subject=Scott%20Jewell%2C%20Senior%20Product%20Designer&body=Hi%2C%0D%0A%0D%0AI%27d%20love%20to%20connect%20about%20Senior%20Product%20Designer%20roles.%20My%20r%C3%A9sum%C3%A9%20is%20attached%2C%20and%20my%20work%20is%20here%20https%3A%2F%2Fjewellsco.vercel.app%2F%0D%0A%0D%0ABest%2C%0D%0AScott%20Jewell"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg> Email résumé</a>
@@ -131,8 +135,8 @@
         </div>
         <div class="col">
           <div class="kv">
-            <b>Tools.</b> Figma, Adobe XD, Framer, Illustrator, Photoshop, design tokens and UI kits.<br>
-            <b>Focus.</b> Login, identity and security UX, 0 to 1 product design, cross functional leadership, mentoring.
+            <b>Tools.</b> Figma, Framer, Midjourney, Illustrator, Photoshop, AI-native prototyping, design tokens and UI kits.<br>
+            <b>Focus.</b> AI-native product design, 0 to 1 products, identity and security UX, design systems, accessibility.
           </div>
         </div>
       </div>
