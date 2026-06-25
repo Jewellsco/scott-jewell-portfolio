@@ -13,6 +13,7 @@
     --paper:#FBFAF8;--paper-2:#F3F1EC;--ink:#0C0C0D;--ink-2:#44444A;--muted:#86868B;
     --line:#E7E4DD;--line-2:#DAD6CC;--accent:#1E66FF;--accent-soft:#ECF0FF;--near:#0C0C0D;
     --display:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+    --brand-cover:radial-gradient(115% 90% at 14% 6%,rgba(124,86,255,.55),transparent 52%),radial-gradient(120% 95% at 86% 16%,rgba(232,74,160,.42),transparent 54%),radial-gradient(120% 120% at 72% 104%,rgba(40,150,255,.42),transparent 56%),linear-gradient(150deg,#3a20cf 0%,#2014ad 52%,#160c63 100%);
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -116,10 +117,10 @@
   .card .badge{position:absolute;top:14px;left:14px;z-index:4;font-size:11px;font-weight:600;letter-spacing:.04em;
     color:var(--ink);background:rgba(255,255,255,.92);backdrop-filter:blur(6px);padding:5px 11px;border-radius:30px;}
   /* caregiver redesign as a live product cover */
-  .card .thumb.cg{background:#E9ECF2;display:flex;justify-content:center;align-items:flex-start;padding-top:30px;}
-  .card .thumb.cg .hp-device{width:282px;box-shadow:0 22px 44px rgba(18,20,30,.16);transition:transform .55s cubic-bezier(.2,.7,.2,1);}
-  .card:hover .thumb.cg .hp-device{transform:translateY(-5px);}
-  .card .thumb.cg::after{content:"";position:absolute;left:0;right:0;bottom:0;height:66px;background:linear-gradient(transparent,#E9ECF2);z-index:2;pointer-events:none;}
+  .card .thumb.cg{background:var(--brand-cover);box-shadow:inset 0 0 70px rgba(8,4,40,.4);display:flex;justify-content:center;align-items:flex-start;padding-top:36px;}
+  .card .thumb.cg .hp-device{width:268px;box-shadow:0 34px 58px rgba(8,6,42,.5),0 8px 18px rgba(8,6,42,.34);transition:transform .55s cubic-bezier(.2,.7,.2,1);}
+  .card:hover .thumb.cg .hp-device{transform:translateY(-6px);}
+  .card .thumb.cg::after{content:"";position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(transparent,#160c63);z-index:2;pointer-events:none;}
   /* the screen populates with a stagger as the card scrolls into view */
   .thumb.cg .hp-gs,.thumb.cg .hp-gb,.thumb.cg .hp-meta,.thumb.cg .hp-attn,.thumb.cg .hp-label,.thumb.cg .hp-card{
     opacity:0;transform:translateY(12px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1);}
@@ -153,13 +154,24 @@
   .card:hover .thumb.cg .hp-card:nth-child(7){transform:translateY(-5px);}
   .card:hover .thumb.cg .hp-attn{transform:translateY(-2px);}
 
+  /* ===== lifted brand covers (screenshots float on the hero gradient) ===== */
+  .card .thumb:not(.cg):not(.be-cover){background:var(--brand-cover);border-color:transparent;
+    box-shadow:inset 0 0 70px rgba(8,4,40,.4);}
+  .card .thumb:not(.cg):not(.be-cover)::before{display:none;}
+  .card .thumb:not(.cg):not(.be-cover) img{inset:auto;top:50%;left:50%;width:84%;height:80%;
+    object-fit:cover;object-position:top center;border-radius:13px;border:1px solid rgba(255,255,255,.16);
+    box-shadow:0 30px 56px rgba(8,6,42,.5),0 6px 16px rgba(8,6,42,.34);
+    transform:translate(-50%,-50%) rotate(-2.2deg);}
+  .card:hover .thumb:not(.cg):not(.be-cover) img{transform:translate(-50%,-50%) rotate(-2.2deg) scale(1.035);}
+  .card:hover .thumb:not(.cg):not(.be-cover){box-shadow:inset 0 0 70px rgba(8,4,40,.4),0 30px 56px rgba(20,16,80,.22);}
+
   /* ===== BAGEQUITY ANIMATED COVER ===== */
-  .be-cover{--be-green:#1BC55C;background:radial-gradient(140% 120% at 78% -15%,#15211a 0%,#0d120f 46%,#080a08 100%);
+  .be-cover{--be-green:#1BC55C;background:var(--brand-cover);box-shadow:inset 0 0 70px rgba(8,4,40,.4);
     display:flex;align-items:center;justify-content:center;overflow:hidden;}
   .be-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
   /* drifting green corner glow */
   .be-glow{position:absolute;top:-34%;right:-22%;width:74%;height:120%;border-radius:50%;pointer-events:none;z-index:0;
-    background:radial-gradient(circle at center,rgba(27,197,92,.34),rgba(27,197,92,0) 64%);
+    background:radial-gradient(circle at center,rgba(150,100,255,.36),rgba(150,100,255,0) 64%);
     animation:beGlow 8s ease-in-out infinite;will-change:transform;}
   @keyframes beGlow{0%,100%{transform:translate3d(0,0,0) scale(1);}50%{transform:translate3d(-7%,5%,0) scale(1.08);}}
   /* faint dotted-grid texture for product depth */
