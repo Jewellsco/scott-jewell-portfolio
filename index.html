@@ -154,16 +154,17 @@
   .card:hover .thumb.cg .hp-card:nth-child(7){transform:translateY(-5px);}
   .card:hover .thumb.cg .hp-attn{transform:translateY(-2px);}
 
-  /* ===== lifted brand covers (screenshots float on the hero gradient) ===== */
-  .card .thumb:not(.cg):not(.be-cover){background:var(--brand-cover);border-color:transparent;
+  /* ===== brand-gradient covers (code-rendered mockups) ===== */
+  .card .thumb.cv-cover,.card .thumb.win-cover{background:var(--brand-cover);border-color:transparent;
     box-shadow:inset 0 0 70px rgba(8,4,40,.4);}
-  .card .thumb:not(.cg):not(.be-cover)::before{display:none;}
-  .card .thumb:not(.cg):not(.be-cover) img{inset:auto;top:50%;left:50%;width:84%;height:80%;
-    object-fit:cover;object-position:top center;border-radius:13px;border:1px solid rgba(255,255,255,.16);
-    box-shadow:0 30px 56px rgba(8,6,42,.5),0 6px 16px rgba(8,6,42,.34);
-    transform:translate(-50%,-50%) rotate(-2.2deg);}
-  .card:hover .thumb:not(.cg):not(.be-cover) img{transform:translate(-50%,-50%) rotate(-2.2deg) scale(1.035);}
-  .card:hover .thumb:not(.cg):not(.be-cover){box-shadow:inset 0 0 70px rgba(8,4,40,.4),0 30px 56px rgba(20,16,80,.22);}
+  .card .thumb.cv-cover::before,.card .thumb.win-cover::before{display:none;}
+  .card:hover .thumb.cv-cover,.card:hover .thumb.win-cover{box-shadow:inset 0 0 70px rgba(8,4,40,.4),0 30px 56px rgba(20,16,80,.22);}
+  /* full-bleed image cover (polished mockup fills the tile) */
+  .card .thumb.img-cover{background:#0c0c0d;}
+  .card .thumb.img-cover::before{display:none;}
+  .card .thumb.img-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;
+    border:0;border-radius:0;box-shadow:none;transform:scale(1.01);}
+  .card:hover .thumb.img-cover img{transform:scale(1.05);}
 
   /* ===== BAGEQUITY ANIMATED COVER ===== */
   .be-cover{--be-green:#1BC55C;background:var(--brand-cover);box-shadow:inset 0 0 70px rgba(8,4,40,.4);
@@ -692,21 +693,7 @@
       </a>
 
       <a class="card reveal" href="case-freebird.html" style="--i:0">
-        <div class="thumb win-cover">
-          <div class="win">
-            <div class="win-bar"><i></i><i></i><i></i><span class="win-url"></span></div>
-            <div class="fb-body">
-              <div class="fb-img"></div>
-              <div class="fb-info">
-                <div class="fb-brand">FREEBIRD</div>
-                <div class="fb-title">Heritage Boot</div>
-                <div class="fb-price">$498</div>
-                <div class="fb-sizes"><span></span><span class="on"></span><span></span><span></span></div>
-                <div class="fb-btn">Add to bag</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="thumb img-cover"><img loading="lazy" src="assets/freebird-cover.png" alt="Freebird product page redesign"></div>
         <div class="card-body">
           <div class="ctags">eCommerce · Product Vision · Redesign</div>
           <h3>Freebird Product Page Redesign</h3>
