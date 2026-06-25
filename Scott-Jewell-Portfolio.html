@@ -253,6 +253,56 @@
     .be-wave{animation:none!important;opacity:.7!important;}
   }
 
+  /* ===== code-rendered work covers (CVS phone, Freebird + Brand GO browsers) ===== */
+  .thumb.cv-cover{display:flex;justify-content:center;align-items:flex-start;padding-top:34px;}
+  .thumb.cv-cover .hp-device{width:248px;box-shadow:0 34px 58px rgba(8,6,42,.5),0 8px 18px rgba(8,6,42,.34);transition:transform .55s cubic-bezier(.2,.7,.2,1);}
+  .card:hover .thumb.cv-cover .hp-device{transform:translateY(-6px);}
+  .thumb.cv-cover::after{content:"";position:absolute;left:0;right:0;bottom:0;height:74px;background:linear-gradient(transparent,#160c63);z-index:2;pointer-events:none;}
+  .cv-head{display:flex;align-items:center;gap:8px;padding:6px 16px 12px;font-weight:700;font-size:15px;color:#16181F;letter-spacing:-.01em;}
+  .cv-head svg{color:#CC0000;flex:none;}
+  .cv-prof{display:flex;align-items:center;gap:11px;margin:0 16px 13px;}
+  .cv-prof .cv-av{width:42px;height:42px;border-radius:50%;background:#FBE6E6;color:#CC0000;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex:none;}
+  .cv-nm{font-size:14px;font-weight:600;color:#16181F;}
+  .cv-sub{font-size:11.5px;color:#6B7280;margin-top:1px;}
+  .cv-list{margin:0 16px;border-top:1px solid #ECEEF2;}
+  .cv-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 2px;border-bottom:1px solid #ECEEF2;font-size:13px;color:#16181F;}
+  .cv-row .cv-val{color:#9097A2;font-size:12px;}
+  .cv-tog{width:34px;height:20px;border-radius:30px;background:#D6D8DE;position:relative;flex:none;}
+  .cv-tog::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:left .25s;}
+  .cv-tog.on{background:#1FA971;}
+  .cv-tog.on::after{left:16px;}
+  .cv-btn{margin:15px 16px 0;height:40px;border-radius:12px;background:#CC0000;color:#fff;font-weight:700;font-size:13.5px;display:flex;align-items:center;justify-content:center;}
+
+  .thumb.win-cover{display:flex;align-items:center;justify-content:center;padding:0 20px;}
+  .win{width:100%;max-width:432px;border-radius:13px;overflow:hidden;background:#fff;border:1px solid rgba(255,255,255,.16);
+    box-shadow:0 34px 60px rgba(8,6,42,.5),0 8px 18px rgba(8,6,42,.34);transform:rotate(-1.4deg);transition:transform .55s cubic-bezier(.2,.7,.2,1);}
+  .card:hover .win{transform:rotate(-1.4deg) translateY(-6px);}
+  .win-bar{height:30px;display:flex;align-items:center;gap:6px;padding:0 12px;background:#F1F2F5;border-bottom:1px solid #E7E8ED;}
+  .win-bar i{width:9px;height:9px;border-radius:50%;background:#D2D4DB;flex:none;}
+  .win-url{flex:1;height:15px;border-radius:30px;background:#fff;border:1px solid #E2E3E9;margin-left:8px;}
+  /* Freebird product page */
+  .fb-body{display:flex;gap:14px;padding:16px;}
+  .fb-img{width:46%;aspect-ratio:1/1.05;border-radius:10px;background:radial-gradient(120% 100% at 30% 18%,#cba884,#8a5a36 68%,#5a3720);box-shadow:inset 0 0 0 1px rgba(0,0,0,.06);}
+  .fb-info{flex:1;display:flex;flex-direction:column;}
+  .fb-brand{font-size:9px;font-weight:800;letter-spacing:.22em;color:#9a4a1a;}
+  .fb-title{font-family:var(--display);font-size:18px;font-weight:600;color:#16181F;margin-top:6px;letter-spacing:-.01em;line-height:1.08;}
+  .fb-price{font-size:14px;font-weight:700;color:#16181F;margin-top:6px;}
+  .fb-sizes{display:flex;gap:6px;margin-top:12px;}
+  .fb-sizes span{width:24px;height:24px;border-radius:7px;border:1px solid #E2E3E9;}
+  .fb-sizes span.on{border-color:#16181F;background:#16181F;}
+  .fb-btn{margin-top:auto;height:34px;border-radius:9px;background:#16181F;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;}
+  /* Brand GO social shopping */
+  .bg-banner{height:62px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:22px;letter-spacing:.06em;
+    background:linear-gradient(120deg,#2438e6,#5b3ff0 58%,#8a3ff0);}
+  .bg-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:16px;}
+  .bg-grid span{aspect-ratio:1;border-radius:50%;background:linear-gradient(160deg,#E7E8ED,#cfd2da);}
+  .bg-grid span:nth-child(1){background:linear-gradient(160deg,#9db4ff,#3a5bff);}
+  .bg-grid span:nth-child(4){background:linear-gradient(160deg,#ffd29d,#ff9b3a);}
+  .bg-grid span:nth-child(7){background:linear-gradient(160deg,#a7e8c0,#36b56a);}
+  .bg-grid span:nth-child(9){background:linear-gradient(160deg,#f3a8d0,#e8569f);}
+  .bg-chips{display:flex;gap:8px;padding:0 16px 16px;}
+  .bg-chips i{height:16px;border-radius:30px;background:#EEF0F3;flex:1;}
+
   .card-body{padding:22px 2px 0;}
   .card .ctags{font-size:12.5px;font-weight:500;color:var(--muted);letter-spacing:.01em;}
   .card h3{font-family:var(--display);font-weight:500;font-size:23px;letter-spacing:-.015em;margin-top:9px;transition:color .25s;}
@@ -576,7 +626,27 @@
     <div class="work-grid">
 
       <a class="card reveal" href="case-cvs.html" style="--i:0">
-        <div class="thumb"><span class="badge">Live prototype</span><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/668c152f7bd26d0002aa21a3/iEIbtq6uoVE9qbXi.png" alt="CVS mobile app redesign"></div>
+        <div class="thumb cv-cover"><span class="badge">Live prototype</span>
+          <div class="hp-device">
+            <div class="hp-screen">
+              <div class="hp-status"><span>9:41</span>
+                <span class="bars">
+                  <svg width="16" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+                  <svg width="24" height="12" viewBox="0 0 25 12" fill="none"><rect x="1" y="1" width="20" height="10" rx="3" stroke="currentColor" stroke-opacity=".4"/><rect x="2.5" y="2.5" width="16" height="7" rx="1.5" fill="currentColor"/><rect x="22.5" y="4" width="1.6" height="4" rx="0.8" fill="currentColor" fill-opacity=".5"/></svg>
+                </span>
+              </div>
+              <div class="cv-head"><svg width="10" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> Sign in &amp; security</div>
+              <div class="cv-prof"><div class="cv-av">AS</div><div><div class="cv-nm">Alex Smith</div><div class="cv-sub">asmith@email.com</div></div></div>
+              <div class="cv-list">
+                <div class="cv-row"><span>Email</span><span class="cv-val">asmith@email.com</span></div>
+                <div class="cv-row"><span>Password</span><span class="cv-val">••••••••</span></div>
+                <div class="cv-row"><span>Fingerprint sign in</span><span class="cv-tog on"></span></div>
+                <div class="cv-row"><span>Keep me signed in</span><span class="cv-tog on"></span></div>
+              </div>
+              <div class="cv-btn">Update</div>
+            </div>
+          </div>
+        </div>
         <div class="card-body">
           <div class="ctags">Healthcare · iOS / Android · Prototype</div>
           <h3>CVS Health Mobile App Redesign</h3>
@@ -622,7 +692,21 @@
       </a>
 
       <a class="card reveal" href="case-freebird.html" style="--i:0">
-        <div class="thumb"><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/63193e7a3b7a930003306740/cd9YssCwvrRFhY6o.jpeg" alt="Freebird product page redesign"></div>
+        <div class="thumb win-cover">
+          <div class="win">
+            <div class="win-bar"><i></i><i></i><i></i><span class="win-url"></span></div>
+            <div class="fb-body">
+              <div class="fb-img"></div>
+              <div class="fb-info">
+                <div class="fb-brand">FREEBIRD</div>
+                <div class="fb-title">Heritage Boot</div>
+                <div class="fb-price">$498</div>
+                <div class="fb-sizes"><span></span><span class="on"></span><span></span><span></span></div>
+                <div class="fb-btn">Add to bag</div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="card-body">
           <div class="ctags">eCommerce · Product Vision · Redesign</div>
           <h3>Freebird Product Page Redesign</h3>
@@ -632,7 +716,14 @@
       </a>
 
       <a class="card reveal" href="case-brandgo.html" style="--i:1">
-        <div class="thumb"><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/62028bc6b0dc93000367ca77/ss9gV8z6BNOB1GCA.png" alt="Brand GO social shopping"></div>
+        <div class="thumb win-cover">
+          <div class="win">
+            <div class="win-bar"><i></i><i></i><i></i><span class="win-url"></span></div>
+            <div class="bg-banner">SHOP</div>
+            <div class="bg-grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="bg-chips"><i></i><i></i><i></i></div>
+          </div>
+        </div>
         <div class="card-body">
           <div class="ctags">Social Commerce · Concept · Mobile</div>
           <h3>Brand GO Social Shopping</h3>
