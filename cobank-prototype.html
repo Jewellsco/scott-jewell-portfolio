@@ -32,6 +32,8 @@
   .stage{display:flex;flex-direction:column;align-items:center;gap:26px;max-width:1300px;width:100%;}
   .duo{display:grid;grid-template-columns:1fr;gap:34px;width:100%;max-width:1100px;}
   .fhead{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#7FB3D3;margin:0 0 10px 6px;}
+  .fsub{font-size:13.5px;color:#B9CBD9;line-height:1.6;margin:-2px 6px 14px;max-width:820px;}
+  .fsub b{color:#E4D9C4;font-weight:600;}
 
   /* browser frame */
   .bframe{width:100%;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 44px 100px rgba(2,16,28,.55),0 0 0 1px rgba(255,255,255,.06);}
@@ -252,6 +254,7 @@
 
       <div class="side">
         <div class="fhead">After, my redesign, everything works, click around</div>
+        <p class="fsub"><b>Why I designed it this way.</b> CoBank's customers are not just customers, they each own a piece of the bank. So this screen leads with the person, what you own, what the bank paid you back, when you get a vote, and how it reaches you. Every number explains itself in plain words, one tap away, and nothing they already had was lost, the balances and reports are all still here, just easier to read.</p>
         <div class="bframe">
           <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="urlbar">cobank.com/portal/profile &middot; concept</div></div>
           <div class="modewrap">
@@ -571,6 +574,16 @@
   @media(min-width:1560px){.dn2-rail-l{display:block;}}
   .dn2-rail-l .dn2-note{width:222px;}
   .dn2-dot.l{left:11px;right:auto;}
+  .dn2-note.dn2-key{background:linear-gradient(160deg,#FFFEFA,#FCF3E2);
+    box-shadow:0 18px 48px rgba(154,96,12,.26),0 0 0 1.5px rgba(200,129,30,.42);
+    animation:dnFloat 5.5s ease-in-out 1.4s infinite;}
+  .dn2-note.dn2-key .dn2-head span{color:#A96A12;}
+  .dn2-note.dn2-key .dn2-head img{box-shadow:0 0 0 2px #fff,0 0 0 3.5px rgba(200,129,30,.5);}
+  .dn2-note.dn2-key .dn2-txt a{color:#A96A12;border-bottom-color:#C8811E;}
+  @keyframes dnFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+  .dn2-svg path.k{stroke:#C8811E;stroke-width:1.6;opacity:.95;}
+  .dn2-dot.k{background:#C8811E;box-shadow:0 0 0 3px rgba(200,129,30,.18);}
+  @media (prefers-reduced-motion:reduce){.dn2-note.dn2-key{animation:none;}}
   @media(min-width:1400px){
     .dn2-rail{position:absolute;top:0;left:calc(100% + 22px);width:232px;margin:0;display:block;}
     .dn2-note{position:absolute;left:0;width:232px;opacity:0;transform:translateY(8px);
@@ -599,7 +612,7 @@
   const AV='assets/scott-avatar.jpg';
   const NOTES=[
     {sel:'#gMeter',txt:'Completion needs a next action, not a score. One tap finishes the job. This pattern lifted profile completion in my CVS account work.'},
-    {sel:'#gNav',side:'left',txt:'One screen or many. I kept the whole concept on one screen so a member’s daily answers never hide behind navigation, and the full argument stays visible. The case for separate screens is real though, deeper tasks, calmer pages, cleaner routes. I built that version too. <a href="cobank-prototype-screens.html">Open the multi screen variant</a>.'},
+    {sel:'#gNav',side:'left',key:true,txt:'One screen or many. I kept the whole concept on one screen so a member’s daily answers never hide behind navigation, and the full argument stays visible. The case for separate screens is real though, deeper tasks, calmer pages, cleaner routes. I built that version too. <a href="cobank-prototype-screens.html">Open the multi screen variant</a>.'},
     {sel:'#tProfile',txt:'This box is the whole argument. Their manual gives the person one paragraph while balances get a system. Everything in the redesign below fixes exactly that.'},
     {sel:'#gOwn',txt:'Members own this bank and the old portal never says so. Stock, patronage, and five years of history, one glance, and one tap for the proof.'},
     {sel:'#gPrefs',txt:'Consent should read like a choice. Every channel names its purpose, and legal notices can never silently switch off.'}
@@ -621,9 +634,11 @@
     if(getComputedStyle(t).position==='static')t.style.position='relative';
     const dot=document.createElement('span');dot.className='dn2-dot';dot.setAttribute('aria-hidden','true');t.appendChild(dot);
     const note=document.createElement('div');note.className='dn2-note';note.setAttribute('role','note');
-    note.innerHTML='<div class="dn2-head"><img src="'+AV+'" alt=""><div><b>Scott Jewell</b><span>Design note</span></div></div><div class="dn2-txt">'+n.txt+'</div>';
+    const lbl=n.key?'Key decision':'Design note';
+    note.innerHTML='<div class="dn2-head"><img src="'+AV+'" alt=""><div><b>Scott Jewell</b><span>'+lbl+'</span></div></div><div class="dn2-txt">'+n.txt+'</div>';
     S.rail.appendChild(note);
     const path=document.createElementNS('http://www.w3.org/2000/svg','path');S.svg.appendChild(path);
+    if(n.key){note.classList.add('dn2-key');dot.classList.add('k');path.classList.add('k');}
     S.items.push({t,dot,note,path,side:n.side||'right'});
   });
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
