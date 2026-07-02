@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoBank Concept · Multi Screen Variant · Scott Jewell</title>
+<meta name="description" content="The multi screen variant of the CoBank member concept, the left rail navigates between focused screens.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#061C2C;--cb:#005288;--cb-navy:#0A2A42;--cb-tint:#E8F0F6;--cb-tint-2:#F4F8FB;--cb-line:#D8E4EE;
+    --cb-accent:#C8811E;--cb-pos:#1C7C54;
+    --display:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,sans-serif;--ui:"Figtree",-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--sans);min-height:100vh;color:#fff;
+    background:radial-gradient(1000px 560px at 82% -6%,rgba(0,82,136,.45),transparent 62%),
+               radial-gradient(760px 480px at 8% 8%,rgba(63,151,196,.22),transparent 58%),
+               radial-gradient(560px 380px at 55% 108%,rgba(200,129,30,.10),transparent 60%),var(--navy);
+    display:flex;flex-direction:column;align-items:center;padding:40px 20px 70px;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .top{max-width:820px;text-align:center;margin-bottom:28px;}
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#7FB3D3;margin-bottom:14px;}
+  h1.pg{font-family:var(--display);font-weight:600;font-size:clamp(26px,4.2vw,38px);letter-spacing:-.5px;line-height:1.12;}
+  h1.pg .g{background:linear-gradient(120deg,#9CCBEA,#E4B96B);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .sub{margin-top:14px;color:#B9CBD9;font-size:15.5px;line-height:1.65;}
+  .sub a{color:#CBE2F1;font-weight:600;border-bottom:1px dotted #7FB3D3;}
+  .bframe{width:min(1060px,96vw);background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 44px 100px rgba(2,16,28,.55),0 0 0 1px rgba(255,255,255,.06);}
+  .chrome{display:flex;align-items:center;gap:12px;padding:11px 16px;background:#EEF0F3;border-bottom:1px solid #E0E3E8;}
+  .dots{display:flex;gap:6px;}
+  .dots i{width:10px;height:10px;border-radius:50%;background:#D3D7DE;}
+  .urlbar{flex:1;max-width:400px;font-size:12px;color:#6B7280;background:#fff;border:1px solid #E0E3E8;border-radius:7px;padding:4px 11px;}
+  .modewrap{position:relative;height:640px;overflow:hidden;}
+  .mode{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;}
+  .mode::-webkit-scrollbar{width:0;}
+  .backlink{margin-top:30px;font-size:13.5px;color:#8AA6B8;}
+  .backlink a{color:#CBE2F1;}
+
+  .cbk{font-family:var(--ui);color:var(--cb-navy);background:var(--cb-tint-2);display:grid;grid-template-columns:250px 1fr;min-height:100%;}
+  .cbk *{line-height:1.5;}
+  .cbk-rail{background:#fff;border-right:1px solid var(--cb-line);padding:22px 16px;display:flex;flex-direction:column;position:sticky;top:0;align-self:start;height:640px;overflow-y:auto;scrollbar-width:none;z-index:20;}
+  .cbk-rail::-webkit-scrollbar{display:none;}
+  .cbk-mark{width:32px;height:32px;border-radius:9px;background:var(--cb);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;}
+  .cbk-brand{display:flex;align-items:center;gap:10px;padding-bottom:18px;border-bottom:1px solid var(--cb-line);margin-bottom:16px;}
+  .cbk-brand b{font-size:14px;font-weight:800;}
+  .cbk-brand span{display:block;font-size:10.5px;color:#5B7285;font-weight:600;}
+  .cbk-org{display:flex;gap:10px;align-items:center;padding:10px;background:var(--cb-tint);border-radius:11px;margin-bottom:16px;}
+  .cbk-org .av{width:34px;height:34px;border-radius:9px;background:var(--cb-navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex:none;}
+  .cbk-org b{font-size:12.5px;display:block;}
+  .cbk-org span{font-size:11px;color:#4A6478;}
+  .cbk-nav a{display:block;padding:9px 11px;border-radius:8px;font-size:13px;font-weight:600;color:#3D5A70;cursor:pointer;transition:background .2s,color .2s;}
+  .cbk-nav a:hover{background:var(--cb-tint-2);}
+  .cbk-nav a.on{background:var(--cb);color:#fff;}
+  .cbk-railfoot{margin-top:auto;padding-top:14px;border-top:1px solid var(--cb-line);font-size:10px;color:#5B7285;line-height:1.5;}
+  .cbk-main{padding:26px 30px 44px;}
+  .scr{display:none;}
+  .scr.on{display:block;animation:scrIn .42s cubic-bezier(.16,.84,.28,1);}
+  @keyframes scrIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+  .cbk-main h1{font-family:var(--ui);font-size:23px;font-weight:800;letter-spacing:-.02em;}
+  .sub2{font-size:13.5px;color:#4A6478;margin-top:3px;}
+  .meter{margin-top:16px;background:#fff;border:1px solid var(--cb-line);border-radius:13px;padding:15px 18px;display:grid;grid-template-columns:1fr auto;gap:7px 16px;align-items:center;}
+  .meter .lbl{font-size:12.5px;font-weight:700;}
+  .meter .lbl em{font-style:normal;color:var(--cb-accent);font-weight:800;}
+  .chipbtn2{font-family:var(--ui);font-size:11.5px;font-weight:700;color:var(--cb);background:var(--cb-tint);border:1px solid var(--cb-line);border-radius:999px;padding:6px 13px;white-space:nowrap;cursor:pointer;}
+  .chipbtn2.done{background:#E7F4EE;color:var(--cb-pos);border-color:#BFE3D2;}
+  .track{grid-column:1 / -1;height:8px;background:var(--cb-tint);border-radius:99px;overflow:hidden;}
+  .track i{display:block;height:100%;width:80%;background:var(--cb-accent);border-radius:99px;transition:width .9s cubic-bezier(.16,1,.3,1);}
+  .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+  .ccard{background:#fff;border:1px solid var(--cb-line);border-radius:13px;padding:17px;}
+  .ccard h3{font-size:13.5px;font-weight:800;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+  .ccard h3 a{font-size:11px;font-weight:700;color:var(--cb);cursor:pointer;}
+  .wide{grid-column:1 / -1;}
+  .fld{padding:9px 0;border-top:1px solid var(--cb-tint);display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;}
+  .fld:first-of-type{border-top:none;padding-top:0;}
+  .fld .k{font-size:10.5px;font-weight:700;color:#5B7285;text-transform:uppercase;letter-spacing:.06em;}
+  .fld .v{font-size:13.5px;font-weight:600;grid-column:1;}
+  .fld .note{grid-column:1 / -1;font-size:11px;color:#4A6478;}
+  .badge2{font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;grid-row:span 2;}
+  .badge2.ok{background:#E7F4EE;color:var(--cb-pos);}
+  .badge2.cb{background:var(--cb-tint);color:var(--cb);}
+  .role{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;padding:9px 0;border-top:1px solid var(--cb-tint);align-items:baseline;cursor:pointer;}
+  .role:first-of-type{border-top:none;padding-top:0;}
+  .role .tag{font-size:10.5px;font-weight:800;color:var(--cb);background:var(--cb-tint);border-radius:6px;padding:2px 9px;white-space:nowrap;}
+  .role span{font-size:12px;color:#3D5A70;}
+  .own-line{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;padding:8px 0;border-top:1px solid var(--cb-tint);cursor:pointer;}
+  .own-line .rx{flex-basis:100%;}
+  .own-line:first-of-type{border-top:none;padding-top:0;}
+  .own-line .k{font-size:12px;font-weight:600;color:#3D5A70;}
+  .own-line .v{font-size:16.5px;font-weight:800;font-variant-numeric:tabular-nums;}
+  .own-note{font-size:11px;color:#4A6478;margin-top:8px;}
+  .rx{grid-column:1 / -1;max-height:0;overflow:hidden;transition:max-height .35s ease;}
+  .rx.open{max-height:240px;}
+  .rx-in{padding:9px 0 3px;font-size:11.5px;color:#4A6478;border-top:1px dashed var(--cb-line);margin-top:8px;line-height:1.55;}
+  .rx table{width:100%;border-collapse:collapse;font-size:11px;margin-top:6px;}
+  .rx th{text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:#5B7285;padding:4px 6px;border-bottom:1px solid var(--cb-tint);}
+  .rx td{padding:5px 6px;border-bottom:1px solid var(--cb-tint);font-variant-numeric:tabular-nums;}
+  .prefrow{display:grid;grid-template-columns:1fr auto auto;gap:4px 22px;align-items:center;padding:10px 0;border-top:1px solid var(--cb-tint);}
+  .prefrow:first-of-type{border-top:none;}
+  .prefrow .t{font-size:13px;font-weight:700;}
+  .prefrow .d{grid-column:1;font-size:11px;color:#4A6478;}
+  .sw{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;color:#5B7285;background:none;border:none;cursor:pointer;grid-row:span 2;font-family:var(--ui);}
+  .sw .pill{width:32px;height:19px;border-radius:99px;background:#C9D7E2;position:relative;transition:background .2s;flex:none;}
+  .sw .pill::after{content:"";position:absolute;top:2.5px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(10,42,66,.3);}
+  .sw[aria-checked="true"] .pill{background:var(--cb);}
+  .sw[aria-checked="true"] .pill::after{left:15px;}
+  .pref-note{font-size:11px;color:#4A6478;margin-top:11px;padding-top:11px;border-top:1px solid var(--cb-tint);}
+  .devlist{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+  .devlist.open{max-height:200px;}
+  .devrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-top:1px dashed var(--cb-line);font-size:12px;}
+  .devrow:first-of-type{margin-top:8px;}
+  .devrow b{font-size:12.5px;display:block;}
+  .devrow span{color:#4A6478;font-size:11px;}
+  .devrow .this{font-size:9.5px;font-weight:800;color:var(--cb-pos);background:#E7F4EE;border-radius:999px;padding:2px 8px;}
+  .devrow button{font-family:var(--ui);font-size:10.5px;font-weight:700;color:#B42318;background:#FEE4E2;border:none;border-radius:999px;padding:4px 10px;cursor:pointer;}
+  .devrow.gone{opacity:.45;}
+  .devrow.gone button{visibility:hidden;}
+  .pinput{font-family:var(--ui);font-weight:600;font-size:13.5px;color:var(--cb-navy);border:1.5px solid var(--cb);border-radius:7px;padding:3px 9px;width:150px;outline:none;}
+  .shrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 4px;border-top:1px solid var(--cb-tint);font-size:13px;font-weight:600;cursor:pointer;border-radius:6px;}
+  .shrow:first-of-type{border-top:none;}
+  .shrow:hover{background:var(--cb-tint-2);}
+  .shrow span{font-size:11px;color:#4A6478;font-weight:400;display:block;}
+  .shrow .go{color:var(--cb);font-size:11.5px;font-weight:700;white-space:nowrap;}
+  .ctoast{position:absolute;left:50%;bottom:16px;transform:translateX(-50%) translateY(16px);background:var(--cb-navy);color:#fff;font-family:var(--ui);font-size:12px;font-weight:600;padding:9px 16px;border-radius:999px;opacity:0;transition:all .3s ease;z-index:70;pointer-events:none;white-space:nowrap;}
+  .ctoast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  @media(max-width:900px){
+    .cgrid{grid-template-columns:1fr;}
+    .cbk{grid-template-columns:1fr;}
+    .cbk-rail{flex-direction:row;align-items:center;gap:12px;overflow-x:auto;padding:12px 16px;height:auto;border-right:none;border-bottom:1px solid var(--cb-line);}
+    .cbk-brand{border:none;padding:0;margin:0;}
+    .cbk-org{margin:0;}
+    .cbk-nav{display:flex;}
+    .cbk-railfoot{display:none;}
+  }
+  @media (prefers-reduced-motion:reduce){.scr.on{animation:none;}}
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="eyebrow">CoBank concept &middot; Variant B</div>
+    <h1 class="pg">The same concept, <span class="g">one screen per job.</span></h1>
+    <p class="sub">In this version the left menu actually navigates, each section gets its own calm, focused screen, the way a production build would route. Compare it with the <a href="cobank-prototype.html">single screen version</a>, where everything lives on one page. Same components, same data, two philosophies.</p>
+  </div>
+
+  <div class="bframe">
+    <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="urlbar" id="urlbar">cobank.com/portal/home</div></div>
+    <div class="modewrap">
+      <div class="mode">
+        <div class="cbk">
+          <aside class="cbk-rail">
+            <div class="cbk-brand"><div class="cbk-mark">CB</div><div><b>CoBank</b><span>Digital Banking</span></div></div>
+            <div class="cbk-org"><div class="av">JF</div><div><b>Jewell Farms Cooperative</b><span id="orgWho">Scott &middot; Admin</span></div></div>
+            <nav class="cbk-nav">
+              <a class="on" data-scr="home">Home</a>
+              <a data-scr="profile">Profile</a>
+              <a data-scr="security">Security</a>
+              <a data-scr="ownership">Ownership</a>
+              <a data-scr="documents">Documents</a>
+              <a data-scr="preferences">Preferences</a>
+              <a data-scr="support">Support</a>
+            </nav>
+            <div class="cbk-railfoot">Proud member of the Farm Credit System. Equal Housing Lender. Equal Credit Opportunity Lender.</div>
+          </aside>
+          <main class="cbk-main">
+
+            <section class="scr on" data-scr="home">
+              <h1>Home</h1>
+              <p class="sub2">Your money today, at a glance.</p>
+              <div class="meter">
+                <div class="lbl">Profile strength, <em id="meterVal">80 percent</em></div>
+                <button class="chipbtn2" type="button" id="phoneChip">Add a backup phone to reach 100</button>
+                <div class="track"><i id="meterBar"></i></div>
+              </div>
+              <div class="cgrid">
+                <div class="ccard">
+                  <h3>Accounts at a glance <a data-na>All accounts</a></h3>
+                  <div class="own-line" data-acc><span class="k">Operating line of credit &middot; ...4412</span><span class="v">$186,300</span><div class="rx"><div class="rx-in">Drawn $186,300 of your $300,000 line, $113,700 available today. Interest accrues daily at 7.1 percent, shown per draw on tap.</div></div></div>
+                  <div class="own-line" data-acc><span class="k">Term loan, equipment &middot; ...7208</span><span class="v">$412,750</span><div class="rx"><div class="rx-in">Next payment $8,914 on August 1, autopay is on. Two taps to see the full schedule or pay ahead.</div></div></div>
+                  <div class="own-line" data-acc><span class="k">Today's settlement</span><span class="v">$3,118.42</span><div class="rx"><div class="rx-in">Settles by 5 pm Mountain. The full settlement report opens on screen, line by line, and downloads if you want the file.</div></div></div>
+                  <p class="own-note">Balances and settlement, readable at a glance, detailed on tap.</p>
+                </div>
+                <div class="ccard">
+                  <h3>Reports and alerts</h3>
+                  <div class="prefrow"><span class="t">Transaction activity</span>
+                    <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                    <button class="sw" type="button" role="switch" aria-checked="false"><span class="pill"></span>Text</button>
+                    <span class="d">A daily digest of anything that moved.</span></div>
+                  <div class="prefrow"><span class="t">Balance changes</span>
+                    <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                    <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Text</button>
+                    <span class="d">The moment a balance crosses a line you set.</span></div>
+                  <div class="prefrow"><span class="t">Rate changes</span>
+                    <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                    <button class="sw" type="button" role="switch" aria-checked="false"><span class="pill"></span>Text</button>
+                    <span class="d">When a rate on your credit moves, old and new side by side.</span></div>
+                  <p class="pref-note">Alerts by purpose, in app first, email and text your choice.</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="scr" data-scr="profile">
+              <h1>Profile</h1>
+              <p class="sub2">Who you are to this bank, in your words.</p>
+              <div class="cgrid">
+                <div class="ccard">
+                  <h3>Personal details <a id="editBtn" role="button" tabindex="0">Edit</a></h3>
+                  <div class="fld"><span class="k">Preferred name</span><span class="v" id="pnameVal">Scott</span><span class="note">We use this everywhere we talk to you.</span></div>
+                  <div class="fld"><span class="k">Mobile phone</span><span class="badge2 cb">Your sign in</span><span class="v">(720) 555-0164</span></div>
+                  <div class="fld"><span class="k">Email</span><span class="badge2 ok" id="mailBadge" style="cursor:pointer;">Verified</span><span class="v">scott@jewellfarms.coop</span></div>
+                </div>
+                <div class="ccard">
+                  <h3>Your roles</h3>
+                  <div class="role" data-acc><span class="tag">Borrower</span><span>Active credit relationship since 2019.</span><div class="rx"><div class="rx-in">Operating line and equipment term loan, both current. Your relationship manager is Dana Ortiz, one tap away in Support.</div></div></div>
+                  <div class="role" data-acc><span class="tag">Member owner</span><span>You hold stock in CoBank.</span><div class="rx"><div class="rx-in">Class A stock, $18,400. Your ownership grows as patronage is retained each year, and it is yours when you leave.</div></div></div>
+                  <div class="role" data-acc><span class="tag">Voting member</span><span>Board election opens March 2027.</span><div class="rx"><div class="rx-in">One member, one vote, regardless of stock held. Your region elects two directors this cycle, candidate statements arrive in February.</div></div></div>
+                  <div class="role" data-acc><span class="tag">Admin</span><span>You manage access for 3 people at Jewell Farms Cooperative.</span><div class="rx"><div class="rx-in">Maria, Tom, and Alex have access today. You decide what each person can see and do, and every change is logged.</div></div></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="scr" data-scr="security">
+              <h1>Security</h1>
+              <p class="sub2">Where you are signed in, in plain language.</p>
+              <div class="cgrid">
+                <div class="ccard wide">
+                  <h3>Security <a id="devBtn" role="button" tabindex="0">Review devices</a></h3>
+                  <div class="fld"><span class="k">Two step sign in</span><span class="badge2 ok">On</span><span class="v">Text code to (720) 555-0164</span></div>
+                  <div class="fld"><span class="k">Last sign in</span><span class="v">Today, 7:42 am &middot; iPhone &middot; Greeley, CO</span></div>
+                  <div class="devlist" id="devList">
+                    <div class="devrow"><div><b>iPhone 15</b><span>Greeley, CO &middot; active now</span></div><span class="this">This device</span></div>
+                    <div class="devrow" id="devMac"><div><b>Mac, Safari</b><span>Fort Collins, CO &middot; yesterday, 4:18 pm</span></div><button type="button" id="macOut">Sign out</button></div>
+                  </div>
+                  <div class="fld"><span class="k">Password</span><span class="v">Updated 2 months ago</span></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="scr" data-scr="ownership">
+              <h1>Ownership</h1>
+              <p class="sub2">You do not just bank here, you own part of this.</p>
+              <div class="cgrid">
+                <div class="ccard wide">
+                  <h3>Ownership at a glance</h3>
+                  <div class="own-line" data-acc><span class="k">Your stock in CoBank</span><span class="v">$18,400</span><div class="rx"><div class="rx-in">Class A stock, $15,000 purchased at origination plus $3,400 in retained patronage. Paid out to you if you ever leave the cooperative.</div></div></div>
+                  <div class="own-line" data-acc><span class="k">2025 patronage distribution</span><span class="v">$1,265</span><div class="rx"><div class="rx-in"><table><tr><th>Year</th><th>Cash paid</th><th>Retained</th></tr><tr><td>2025</td><td>$885</td><td>$380</td></tr><tr><td>2024</td><td>$777</td><td>$333</td></tr><tr><td>2023</td><td>$714</td><td>$306</td></tr><tr><td>2022</td><td>$633</td><td>$272</td></tr><tr><td>2021</td><td>$588</td><td>$252</td></tr></table></div></div></div>
+                  <p class="own-note">As a cooperative, we return a share of our earnings to members every year.</p>
+                  <svg viewBox="0 0 280 56" width="100%" height="56" role="img" aria-label="Patronage rising over five years">
+                    <polyline points="10,42 75,38 140,30 205,25 270,12" fill="none" stroke="#C8811E" stroke-width="2.5" stroke-linecap="round"/>
+                    <g fill="#C8811E"><circle cx="10" cy="42" r="3"/><circle cx="75" cy="38" r="3"/><circle cx="140" cy="30" r="3"/><circle cx="205" cy="25" r="3"/><circle cx="270" cy="12" r="3.5"/></g>
+                    <g fill="#5B7285" font-size="9" font-family="Figtree"><text x="4" y="54">2021</text><text x="254" y="54">2025</text></g>
+                  </svg>
+                </div>
+              </div>
+            </section>
+
+            <section class="scr" data-scr="documents">
+              <h1>Documents</h1>
+              <p class="sub2">Statements and tax forms, readable first, downloadable always.</p>
+              <div class="cgrid"><div class="ccard wide">
+                <div class="shrow" data-shrow><div>2026 statements, January through June<span>Six monthly statements</span></div><span class="go">View</span></div>
+                <div class="shrow" data-shrow><div>2025 annual statement<span>Full year, all accounts</span></div><span class="go">View</span></div>
+                <div class="shrow" data-shrow><div>Form 1099-PATR, 2025<span>Patronage income for your taxes</span></div><span class="go">Download</span></div>
+              </div></div>
+            </section>
+
+            <section class="scr" data-scr="preferences">
+              <h1>Preferences</h1>
+              <p class="sub2">How we reach you, and why.</p>
+              <div class="cgrid"><div class="ccard wide">
+                <div class="prefrow"><span class="t">Statements</span>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                  <button class="sw" type="button" role="switch" aria-checked="false"><span class="pill"></span>Text</button>
+                  <span class="d">Monthly account statements the day they post.</span></div>
+                <div class="prefrow"><span class="t">Rate updates</span>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Text</button>
+                  <span class="d">Changes that affect your credit lines, as they happen.</span></div>
+                <div class="prefrow"><span class="t">Patronage notices</span>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                  <button class="sw" type="button" role="switch" aria-checked="false"><span class="pill"></span>Text</button>
+                  <span class="d">Your annual distribution, announced and paid.</span></div>
+                <div class="prefrow"><span class="t">Board elections</span>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                  <button class="sw" type="button" role="switch" aria-checked="false"><span class="pill"></span>Text</button>
+                  <span class="d">Ballots, candidates, and results for your voting region.</span></div>
+                <p class="pref-note">You choose how we reach you. Required legal notices always arrive by mail or email.</p>
+              </div></div>
+            </section>
+
+            <section class="scr" data-scr="support">
+              <h1>Support</h1>
+              <p class="sub2">A person, with your context already attached.</p>
+              <div class="cgrid"><div class="ccard wide">
+                <div class="shrow" data-shrow><div>Message Dana Ortiz<span>Your relationship manager, replies within one business day</span></div><span class="go">Message</span></div>
+                <div class="shrow" data-shrow><div>Call member services<span>Weekdays 6 am to 6 pm Mountain</span></div><span class="go">800 542 8072</span></div>
+                <div class="shrow" data-shrow><div>Report something suspicious<span>Straight to the security team, day or night</span></div><span class="go">Report</span></div>
+              </div></div>
+            </section>
+
+          </main>
+        </div>
+      </div>
+      <div class="ctoast" id="cToast"></div>
+    </div>
+  </div>
+
+  <div class="backlink">&larr; <a href="cobank-prototype.html">Back to the single screen version and the before comparison</a></div>
+
+<script>
+(()=>{
+  'use strict';
+  const cToast=document.getElementById('cToast');let toastT=null;
+  const toast=m=>{cToast.textContent=m;cToast.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>cToast.classList.remove('show'),1700);};
+  const urlbar=document.getElementById('urlbar');
+  const mode=document.querySelector('.mode');
+  document.querySelectorAll('[data-scr]').forEach(el=>{
+    if(el.tagName!=='A')return;
+    el.addEventListener('click',()=>{
+      const n=el.dataset.scr;
+      document.querySelectorAll('a[data-scr]').forEach(a=>a.classList.toggle('on',a===el));
+      document.querySelectorAll('section.scr').forEach(sc=>sc.classList.toggle('on',sc.dataset.scr===n));
+      urlbar.textContent='cobank.com/portal/'+n;
+      mode.scrollTop=0;
+    });
+  });
+  document.querySelectorAll('[data-acc]').forEach(el=>el.addEventListener('click',e=>{
+    if(e.target.closest('.rx'))return;
+    const x=el.querySelector('.rx');if(x)x.classList.toggle('open');
+  }));
+  document.querySelectorAll('.sw').forEach(sw=>sw.addEventListener('click',()=>{
+    sw.setAttribute('aria-checked',sw.getAttribute('aria-checked')==='true'?'false':'true');
+  }));
+  document.querySelectorAll('[data-shrow]').forEach(r=>r.addEventListener('click',()=>toast('Opens in the full product')));
+  document.querySelectorAll('[data-na]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();toast('Out of scope for this prototype');}));
+  const editBtn=document.getElementById('editBtn'),pname=document.getElementById('pnameVal'),orgWho=document.getElementById('orgWho');
+  let editing=false;
+  function startEdit(){editing=true;editBtn.textContent='Save';
+    const cur=pname.textContent.trim();
+    pname.innerHTML='<input class="pinput" id="pIn" type="text" maxlength="18" value="'+cur.replace(/"/g,'')+'" aria-label="Preferred name">';
+    const inp=document.getElementById('pIn');inp.focus();inp.select();
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')saveEdit();});}
+  function saveEdit(){const inp=document.getElementById('pIn');
+    const v=(inp&&inp.value.trim())||'Scott';
+    editing=false;editBtn.textContent='Edit';
+    pname.textContent=v;orgWho.textContent=v+' · Admin';toast('Preferred name updated everywhere');}
+  editBtn.addEventListener('click',()=>editing?saveEdit():startEdit());
+  const devBtn=document.getElementById('devBtn'),devList=document.getElementById('devList');
+  devBtn.addEventListener('click',()=>{const open=devList.classList.toggle('open');devBtn.textContent=open?'Hide devices':'Review devices';});
+  document.getElementById('macOut').addEventListener('click',e=>{e.stopPropagation();document.getElementById('devMac').classList.add('gone');toast('Signed out on Mac, Safari');});
+  document.getElementById('mailBadge').addEventListener('click',()=>toast('Verified June 14, 2026'));
+  const phoneChip=document.getElementById('phoneChip'),meterBar=document.getElementById('meterBar'),meterVal=document.getElementById('meterVal');
+  let done=false;
+  phoneChip.addEventListener('click',()=>{if(done)return;done=true;
+    meterBar.style.width='100%';meterVal.textContent='100 percent';
+    phoneChip.classList.add('done');phoneChip.textContent='Backup phone added';toast('Profile complete');});
+})();
+</script>
+</body>
+</html>
