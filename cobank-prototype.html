@@ -146,7 +146,11 @@
 
   /* ---------- side panel ---------- */
   .panel{width:100%;margin-top:52px;}
-  .panelrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:9px;}
+  .panelrow{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+  .panelrow .chipbtn.primary{grid-column:1 / -1;justify-content:center;}
+  .panelrow .chipbtn.primary .t{font-size:13.5px;}
+  @media(max-width:1000px){.panelrow{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.panelrow{grid-template-columns:1fr;}}
   .panel h2{font-family:var(--display);font-size:20px;font-weight:600;margin-bottom:8px;}
   .pdesc{color:#B9CBD9;font-size:13.5px;line-height:1.6;margin-bottom:16px;}
   .chipbtn{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);border-radius:13px;padding:10px 12px;color:#fff;cursor:pointer;font-family:var(--sans);transition:background .2s;}
