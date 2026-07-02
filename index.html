@@ -579,6 +579,26 @@
   .card:hover .ibx-btn::after{animation:ibxSheen 1s cubic-bezier(.2,.7,.2,1);}
   @keyframes ibxSheen{0%{left:-60%;}100%{left:130%;}}
   @media (prefers-reduced-motion:reduce){ .ibx-head,.ibx-card,.ibx-safe{opacity:1!important;transform:none!important;} .card.in .ibx-chip{animation:none;} .ibx-btn::after{display:none;} }
+
+  /* CoBank audit card thumb */
+  .thumb.cbx{background:linear-gradient(150deg,#E8F0F6 0%,#F4F8FB 60%,#FFF 100%);display:flex;flex-direction:column;justify-content:center;gap:8px;padding:22px 26px;position:relative;overflow:hidden;}
+  .cbx-frame{background:#fff;border-radius:9px;box-shadow:0 8px 22px rgba(10,42,66,.12);overflow:hidden;border:1px solid #D8E4EE;}
+  .cbx-bar{display:flex;gap:4px;padding:6px 9px;background:#EEF0F3;border-bottom:1px solid #E0E3E8;}
+  .cbx-bar i{width:6px;height:6px;border-radius:50%;background:#D3D7DE;}
+  .cbx-old{padding:9px 11px;}
+  .cbx-old .l{height:6px;background:#DCE4EA;border:1px solid #C9D2DA;margin-bottom:4px;}
+  .cbx-old .l.w2{width:70%;}
+  .cbx-new{padding:10px 11px;display:flex;flex-direction:column;gap:6px;background:#F4F8FB;}
+  .cbx-new .hd{display:flex;align-items:center;gap:6px;}
+  .cbx-new .mk{width:14px;height:14px;border-radius:4px;background:#005288;flex:none;}
+  .cbx-new .nm{height:6px;width:56px;background:#0A2A42;border-radius:3px;opacity:.85;}
+  .cbx-new .meter2{height:5px;background:#E8F0F6;border-radius:99px;overflow:hidden;}
+  .cbx-new .meter2 i{display:block;height:100%;width:80%;background:#C8811E;border-radius:99px;}
+  .cbx-new .rw{height:5px;background:#D8E4EE;border-radius:3px;}
+  .cbx-new .rw.w2{width:74%;}
+  .cbx-lock{position:absolute;top:14px;right:14px;display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#005288;background:rgba(255,255,255,.92);border:1px solid #D8E4EE;border-radius:999px;padding:5px 10px;box-shadow:0 4px 12px rgba(10,42,66,.12);}
+  .cbx-lock svg{width:10px;height:10px;}
+  .cbx-vs{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#5B7285;text-align:center;}
 </style>
 </head>
 <body>
@@ -655,7 +675,7 @@
   <div class="wrap">
     <div class="sec-head reveal">
       <h2>Selected work</h2>
-      <span class="idx">Six projects</span>
+      <span class="idx">Seven projects</span>
     </div>
     <div class="work-grid">
 
@@ -725,6 +745,28 @@
           <h3>Ibotta, Trust in the Money Moments</h3>
           <p>An evidence led concept built from a design teardown of Ibotta's public properties and review platforms. Three screens that make receipt rejections, account standing, and appeals explain themselves.</p>
           <span class="more">View the work <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
+
+
+      <a class="card reveal" href="cobank-prototype.html" style="--i:1">
+        <div class="thumb cbx"><span class="badge">Audit</span>
+          <span class="cbx-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Gated</span>
+          <div class="cbx-frame">
+            <div class="cbx-bar"><i></i><i></i><i></i></div>
+            <div class="cbx-old"><div class="l"></div><div class="l w2"></div><div class="l"></div></div>
+          </div>
+          <div class="cbx-vs">Before &middot; After</div>
+          <div class="cbx-frame">
+            <div class="cbx-bar"><i></i><i></i><i></i></div>
+            <div class="cbx-new"><div class="hd"><span class="mk"></span><span class="nm"></span></div><div class="meter2"><i></i></div><div class="rw"></div><div class="rw w2"></div></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="ctags">Banking &middot; Trust UX &middot; Audit</div>
+          <h3>CoBank, a Working Before and After Audit</h3>
+          <p>A real bank's member site rebuilt line for line from its own help guides, next to my redesign where every control works. Each claim sourced, each fix annotated. Passphrase on request.</p>
+          <span class="more">Unlock the audit <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </a>
 
