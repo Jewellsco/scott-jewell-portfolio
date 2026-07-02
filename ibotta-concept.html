@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ibotta Concept · Trust in the Money Moments · Scott Jewell</title>
+<meta name="description" content="A three screen design concept for Ibotta. Receipt rejection that explains itself, an account standing center, and an appeal flow answered by a person.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0C1322;--slate:#5a6070;--bg:#FBFAF8;--bg-soft:#F3F1EC;--line:#E7E4DD;
+    --display:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,sans-serif;
+    --ease-out:cubic-bezier(.16,1,.3,1);
+    /* Ibotta ramp, Measured. Ruby #ED2564 and Cash Back Black #1C1F24 read from their production logo SVGs, names from their brand guide */
+    --ruby:#ED2564;--ruby-deep:#C51D53;--ruby-soft:#FDE9F0;
+    --char:#1C1F24;--char-soft:#565B64;--char-faint:#8A8F98;
+    --paper:#FFFFFF;--paper-soft:#F7F7F9;--pline:#E8E8EE;
+    --pos:#177A4C;--pos-soft:#E5F4EC;--warn:#B45309;--warn-soft:#FBF1E2;
+    --ui:"Museo Sans","museo-sans","Figtree",-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);}
+  .reveal.in{opacity:1;transform:none;}
+  :focus-visible{outline:3px solid var(--ruby-deep);outline-offset:2px;border-radius:4px;}
+  .topbar{display:flex;justify-content:space-between;align-items:center;padding:26px 0;}
+  .topbar .back{font-size:14px;font-weight:600;color:var(--slate);}
+  .topbar .back:hover{color:var(--ink);}
+  .topbar .sig{font-family:var(--display);font-size:17px;font-weight:600;}
+  .hero{padding:56px 0 40px;max-width:860px;}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ruby-deep);margin-bottom:18px;}
+  .hero h1{font-family:var(--display);font-size:clamp(38px,5.4vw,58px);font-weight:600;line-height:1.06;letter-spacing:-.015em;margin-bottom:22px;}
+  .hero p{font-size:19px;color:var(--slate);max-width:700px;}
+  .guardrail{display:inline-flex;align-items:center;gap:10px;margin-top:26px;padding:10px 16px;border:1px solid var(--line);border-radius:999px;font-size:13px;color:var(--slate);background:#fff;}
+  .guardrail svg{width:15px;height:15px;color:var(--warn);flex:none;}
+  .sec-sub{color:var(--slate);font-size:16.5px;max-width:760px;margin:0 0 38px;}
+  .decisions{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:34px 0 10px;}
+  .dcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;}
+  .dcard b{display:block;font-size:14px;margin-bottom:6px;}
+  .dcard span{font-size:13.5px;color:var(--slate);line-height:1.55;}
+  .closing{margin:90px 0 70px;padding:44px;border-radius:22px;background:var(--ink);color:#F5F3EE;}
+  .closing h2{font-family:var(--display);font-size:clamp(24px,3vw,32px);font-weight:600;margin-bottom:14px;}
+  .closing p{color:#BFBCB4;font-size:16.5px;max-width:660px;}
+  .closing a{color:#fff;font-weight:600;border-bottom:1px solid rgba(255,255,255,.4);}
+  footer{padding:34px 0 60px;color:var(--slate);font-size:13.5px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+
+  /* phones */
+  .phones{display:grid;grid-template-columns:repeat(3,minmax(0,390px));gap:34px;justify-content:center;align-items:start;}
+  .phone{background:var(--char);border-radius:44px;padding:12px;box-shadow:0 30px 80px rgba(12,19,34,.25);}
+  .screen{font-family:var(--ui);background:var(--paper-soft);border-radius:34px;overflow:hidden;color:var(--char);height:780px;display:flex;flex-direction:column;}
+  .notch{height:34px;display:flex;align-items:center;justify-content:center;}
+  .notch i{width:110px;height:22px;background:var(--char);border-radius:999px;display:block;}
+  .apphead{padding:12px 22px 14px;background:var(--paper-soft);}
+  .apphead .t{font-size:22px;font-weight:800;letter-spacing:-.02em;}
+  .apphead .s{font-size:13px;color:var(--char-soft);margin-top:2px;}
+  .pbody{padding:6px 18px 26px;display:flex;flex-direction:column;gap:14px;flex:1;overflow-y:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+  .pbody::-webkit-scrollbar{display:none;}
+  .pcard{background:var(--paper);border:1px solid var(--pline);border-radius:18px;padding:18px;}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;letter-spacing:.03em;padding:6px 11px;border-radius:999px;white-space:nowrap;flex:none;}
+  .chip svg{width:12px;height:12px;flex:none;}
+  .chip.look{background:var(--warn-soft);color:var(--warn);}
+  .chip.good{background:var(--pos-soft);color:var(--pos);}
+  .chip.sent{background:var(--ruby-soft);color:var(--ruby-deep);}
+  .rhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .rhead .store{font-size:16px;font-weight:800;}
+  .rhead .meta{font-size:12.5px;color:var(--char-soft);margin-top:2px;}
+  .explain{margin-top:14px;padding-top:14px;border-top:1px solid var(--pline);}
+  .explain .q{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--char-soft);margin-bottom:8px;}
+  .explain p{font-size:14.5px;line-height:1.55;color:var(--char);}
+  .item{display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:center;padding:11px 0;border-top:1px solid var(--pline);}
+  .item .ic{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+  .item .ic svg{width:12px;height:12px;color:#fff;}
+  .item.ok .ic{background:var(--pos);}
+  .item.miss .ic{background:var(--warn);}
+  .item .nm{font-size:14px;font-weight:600;}
+  .item .why{display:block;font-size:12.5px;color:var(--char-soft);font-weight:400;}
+  .item .amt{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;}
+  .item.ok .amt{color:var(--pos);}
+  .btn-p{width:100%;padding:14px;border:none;border-radius:14px;background:var(--ruby-deep);color:#fff;font-family:var(--ui);font-size:15px;font-weight:700;margin-top:12px;}
+  .btn-p:hover{background:#A81543;}
+  .btn-q{width:100%;padding:12px;border:none;background:none;color:var(--char-soft);font-family:var(--ui);font-size:13.5px;font-weight:700;}
+  .btn-q:hover{color:var(--char);}
+  .safe{display:flex;gap:10px;align-items:flex-start;background:var(--pos-soft);border-radius:14px;padding:13px 15px;}
+  .safe svg{width:16px;height:16px;color:var(--pos);flex:none;margin-top:2px;}
+  .safe p{font-size:13px;line-height:1.5;color:var(--char);}
+  .safe b{color:var(--pos);}
+  .tl{list-style:none;}
+  .tl li{position:relative;padding:0 0 16px 24px;font-size:13.5px;color:var(--char-soft);}
+  .tl li::before{content:"";position:absolute;left:5px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--pline);}
+  .tl li.done::before{background:var(--pos);}
+  .tl li.now::before{background:var(--ruby);}
+  .tl li:not(:last-child)::after{content:"";position:absolute;left:8.5px;top:17px;bottom:2px;width:2px;background:var(--pline);}
+  .tl b{color:var(--char);font-weight:700;}
+  .tl .tt{float:right;font-size:12px;font-variant-numeric:tabular-nums;}
+  .tl li::marker{content:"";}
+  .tl li{overflow:hidden;}
+  .rule{display:grid;grid-template-columns:30px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--pline);align-items:start;}
+  .rule:first-of-type{border-top:none;padding-top:0;}
+  .rule .ri{width:28px;height:28px;border-radius:9px;background:var(--ruby-soft);display:flex;align-items:center;justify-content:center;}
+  .rule .ri svg{width:15px;height:15px;color:var(--ruby-deep);}
+  .rule b{font-size:14px;display:block;}
+  .rule span{font-size:12.5px;color:var(--char-soft);line-height:1.5;}
+  .bal{display:flex;justify-content:space-between;align-items:baseline;}
+  .bal .k{font-size:13px;font-weight:700;color:var(--char-soft);}
+  .bal .v{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;}
+  .case{font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--char-faint);text-transform:uppercase;}
+  .promise{font-family:var(--ui);font-size:15px;font-weight:700;line-height:1.5;padding:2px 0 0;}
+  .promise em{font-style:normal;color:var(--ruby-deep);}
+  .plabel{text-align:center;font-size:13px;font-weight:700;color:var(--slate);margin-top:16px;}
+
+  @media(max-width:1180px){.phones{grid-template-columns:minmax(0,390px);}}
+  @media(max-width:900px){.decisions{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="back" href="index.html">&larr; Scott Jewell, work</a>
+    <div class="sig">SJ</div>
+  </div>
+
+  <div class="hero reveal">
+    <div class="eyebrow">Concept &middot; Ibotta &middot; 2026</div>
+    <h1>Trust in the money moments</h1>
+    <p>Ibotta pays people real cash for everyday shopping, and people love it until something goes wrong. A receipt gets rejected, money gets held, or an account gets shut off with no explanation. I read through the public complaints, found the three moments where trust breaks, and designed the screens that fix them. Each one shows what happened, why it happened, and what to do next.</p>
+    <div class="guardrail">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 9v4"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+      Independent concept. All account data is fictional. Not affiliated with or commissioned by Ibotta.
+    </div>
+  </div>
+
+  <p class="sec-sub reveal">Why these three screens. The complaints all point to the same three places, rejected receipts, paused accounts, and held money, and Ibotta's own help center shows the strain. I used the same playbook as my CVS account work. Show people where they stand, tell them why, and give them a real next step.</p>
+
+  <div class="phones">
+    <div class="reveal">
+      <div class="phone"><div class="screen">
+        <div class="notch"><i></i></div>
+        <div class="apphead"><div class="t">My receipts</div><div class="s">Every submission, explained</div></div>
+        <div class="pbody">
+          <div class="pcard">
+            <div class="rhead">
+              <div><div class="store">Walmart</div><div class="meta">June 30 &middot; 7:42 pm &middot; $63.18 total</div></div>
+              <span class="chip look"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5.5"/><path d="M12 16.8h.01"/></svg>Needs a look</span>
+            </div>
+            <div class="explain">
+              <div class="q">What happened</div>
+              <p>We matched one item to your offer list and could not match one more. Nothing was denied, here is exactly where it stands.</p>
+            </div>
+            <div style="margin-top:8px;">
+              <div class="item ok"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span><span class="nm">Cheerios 18 oz<span class="why">Matched and credited</span></span><span class="amt">+$0.75</span></div>
+              <div class="item miss"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"><path d="M12 7v6"/><path d="M12 17h.01"/></svg></span><span class="nm">Great Value 2% Milk<span class="why">This offer was not in your list when you shopped</span></span><span class="amt">$0.50</span></div>
+            </div>
+            <button class="btn-p" type="button">Add the offer and resubmit</button>
+            <button class="btn-q" type="button">This looks wrong, start an appeal</button>
+          </div>
+          <div class="safe">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>
+            <p><b>Your $42.15 balance is safe.</b> A flagged receipt never freezes your earnings, only the item in question waits.</p>
+          </div>
+        </div>
+      </div></div>
+      <div class="plabel">01 &middot; A rejection that explains itself</div>
+    </div>
+
+    <div class="reveal">
+      <div class="phone"><div class="screen">
+        <div class="notch"><i></i></div>
+        <div class="apphead"><div class="t">Account standing</div><div class="s">Where you stand, in plain language</div></div>
+        <div class="pbody">
+          <div class="pcard">
+            <div class="rhead">
+              <div class="bal"><div><span class="k">Your balance</span><div class="v">$42.15</div></div></div>
+              <span class="chip good"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>Good standing</span>
+            </div>
+            <div class="explain">
+              <div class="q">Cash out today</div>
+              <p>A withdrawal started now arrives by Friday, July 3. First withdrawals take one extra day while we verify it is really you.</p>
+            </div>
+          </div>
+          <div class="pcard">
+            <div class="explain" style="margin:0;padding:0;border:none;"><div class="q">The rules, before you ever trip one</div></div>
+            <div class="rule"><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/></svg></span><div><b>One receipt, one account</b><span>A receipt submitted twice, or from another shopper, pauses that receipt for review.</span></div></div>
+            <div class="rule"><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg></span><div><b>One person, one account</b><span>Households can each have their own. Sharing a login is the most common accidental violation.</span></div></div>
+            <div class="rule"><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span><div><b>Real purchases only</b><span>Items must be bought and kept. Returns after cash back count against standing.</span></div></div>
+          </div>
+          <div class="safe">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>
+            <p><b>If we ever pause your account, you will see exactly why here,</b> with the evidence, the rule involved, and a real appeal path answered within 48 hours.</p>
+          </div>
+        </div>
+      </div></div>
+      <div class="plabel">02 &middot; Standing you can check before anything breaks</div>
+    </div>
+
+    <div class="reveal">
+      <div class="phone"><div class="screen">
+        <div class="notch"><i></i></div>
+        <div class="apphead"><div class="t">Your appeal</div><div class="s">Case 48117 &middot; opened July 1, 9:04 am</div></div>
+        <div class="pbody">
+          <div class="pcard">
+            <div class="rhead">
+              <div><div class="store">Walmart receipt, June 30</div><div class="meta">Great Value 2% Milk &middot; $0.50 offer</div></div>
+              <span class="chip sent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>In review</span>
+            </div>
+            <div class="explain">
+              <div class="q">What happens now</div>
+              <ul class="tl" style="margin-top:6px;">
+                <li class="done"><b>Appeal received</b><span class="tt">9:04 am</span><br>Your note and receipt photo are attached to the case.</li>
+                <li class="now"><b>A person reviews it</b><span class="tt">in progress</span><br>A care specialist, not a filter, reads every appeal.</li>
+                <li><b>You get an answer</b><span class="tt">by July 3, 9 am</span><br>Approved appeals credit instantly. Either way, you get the reason in writing.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="pcard">
+            <div class="explain" style="margin:0;padding:0;border:none;"><div class="q">Your appeal history</div></div>
+            <div class="item ok"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span><span class="nm">Kroger receipt, May 12<span class="why">Approved in 26 hours, $2.25 credited</span></span><span class="amt">+$2.25</span></div>
+            <div class="item ok"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span><span class="nm">Target receipt, March 3<span class="why">Approved in 9 hours, $1.00 credited</span></span><span class="amt">+$1.00</span></div>
+          </div>
+          <div class="pcard">
+            <p class="promise">Trust is a two way street. You show us real receipts, <em>we show you real reasons.</em></p>
+          </div>
+        </div>
+      </div></div>
+      <div class="plabel">03 &middot; An appeal with a person and a deadline in it</div>
+    </div>
+  </div>
+
+  <div class="decisions reveal">
+    <div class="dcard"><b>Status a person can see</b><span>Needs a look instead of rejected, the balance explicitly protected, and the difference between an item pausing and an account pausing made visible. Fear comes from ambiguity, not from rules.</span></div>
+    <div class="dcard"><b>Reasons a person can read</b><span>Every flagged item names the rule involved and shows the evidence. This is the CVS account pattern, completion and trust rise when the system explains itself in the moment.</span></div>
+    <div class="dcard"><b>A path a person can act on</b><span>Resubmit, appeal, or accept, each one a real button with a real deadline. Appeals show their history and their outcomes, which teaches users the system is fair before they ever need it.</span></div>
+  </div>
+
+  <div class="closing reveal">
+    <h2>Built from their own evidence</h2>
+    <p>These screens came from a design teardown of Ibotta's public properties, complaint platform themes, deactivation, rejected receipts, locked withdrawals, and a help center that promotes its own wait time articles. The gap between a modern product and a 1.8 star reputation is trust UX in the money moments, and that is the work I have done for millions of accounts. <a href="case-cvs.html">See the CVS account work this builds on</a></p>
+  </div>
+
+  <footer>
+    <span>Scott Jewell &middot; Senior Product Designer &middot; Denver, CO</span>
+    <span>Independent concept, July 2026. Not affiliated with Ibotta.</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+
+  /* screens taller than the phone scroll themselves, gently, pausing for readers */
+  var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.pbody').forEach(function(body){
+    var state={dir:1,raf:null,waitUntil:0,paused:false,active:false};
+    function overflow(){return body.scrollHeight-body.clientHeight;}
+    function step(ts){
+      if(!state.active){state.raf=null;return;}
+      if(!state.paused&&ts>state.waitUntil){
+        var max=overflow();
+        if(max>8){
+          body.scrollTop+=0.35*state.dir;
+          if(body.scrollTop>=max-0.5){state.dir=-1;state.waitUntil=ts+1600;}
+          else if(body.scrollTop<=0.5){state.dir=1;state.waitUntil=ts+1600;}
+        }
+      }
+      state.raf=requestAnimationFrame(step);
+    }
+    function start(){if(reduced||state.raf||overflow()<=8)return;state.active=true;state.waitUntil=performance.now()+1200;state.raf=requestAnimationFrame(step);}
+    function stop(){state.active=false;}
+    ['pointerenter','touchstart','wheel'].forEach(function(ev){body.addEventListener(ev,function(){state.paused=true;},{passive:true});});
+    body.addEventListener('pointerleave',function(){state.paused=false;});
+    var vio=new IntersectionObserver(function(es){es.forEach(function(e){e.isIntersecting?start():stop();});},{threshold:.25});
+    vio.observe(body);
+  });
+})();
+</script>
+</body>
+</html>

@@ -547,6 +547,23 @@
     .hero-glow{display:none;}
     .hero-visual .hp-device{transform:none!important;}
   }
+
+  /* Ibotta concept card thumb */
+  .thumb.ibx{background:linear-gradient(140deg,#FDE9F0 0%,#FFFFFF 75%);display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
+  .ibx-phone{width:64%;max-width:235px;background:#1C1F24;border-radius:22px 22px 0 0;padding:8px 8px 0;transform:translateY(8px);}
+  .ibx-screen{background:#F7F7F9;border-radius:15px 15px 0 0;padding:12px 12px 14px;color:#1C1F24;}
+  .ibx-head{font-size:13px;font-weight:800;letter-spacing:-.01em;}
+  .ibx-sub{display:block;font-size:9px;color:#565B64;font-weight:500;margin-top:1px;}
+  .ibx-card{background:#fff;border:1px solid #E8E8EE;border-radius:10px;padding:10px;margin-top:9px;}
+  .ibx-row{display:flex;justify-content:space-between;align-items:center;gap:6px;}
+  .ibx-store{font-size:11px;font-weight:800;}
+  .ibx-chip{display:inline-flex;align-items:center;gap:3px;font-size:7.5px;font-weight:800;color:#B45309;background:#FBF1E2;border-radius:99px;padding:3px 6px;white-space:nowrap;flex:none;}
+  .ibx-chip svg{width:8px;height:8px;flex:none;}
+  .ibx-item{display:flex;justify-content:space-between;gap:6px;font-size:8.5px;color:#565B64;padding-top:6px;border-top:1px solid #E8E8EE;margin-top:6px;}
+  .ibx-item b{font-weight:800;color:#1C1F24;font-variant-numeric:tabular-nums;}
+  .ibx-item.ok b{color:#177A4C;}
+  .ibx-btn{margin-top:9px;background:#C51D53;color:#fff;font-size:8.5px;font-weight:700;text-align:center;border-radius:7px;padding:6px;}
+  .ibx-safe{margin-top:8px;background:#E5F4EC;color:#14603C;font-size:8px;font-weight:700;border-radius:8px;padding:6px 8px;line-height:1.4;}
 </style>
 </head>
 <body>
@@ -623,7 +640,7 @@
   <div class="wrap">
     <div class="sec-head reveal">
       <h2>Selected work</h2>
-      <span class="idx">Five projects</span>
+      <span class="idx">Six projects</span>
     </div>
     <div class="work-grid">
 
@@ -670,6 +687,30 @@
           <h3>CVS Health Caregiver Experience</h3>
           <p>A native app that lets caregivers manage a loved one's prescriptions from one place, born from a personal caregiving experience and shaped into a modern redesign.</p>
           <span class="more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
+
+
+      <a class="card reveal" href="ibotta-concept.html" style="--i:0">
+        <div class="thumb ibx"><span class="badge">Concept</span>
+          <div class="ibx-phone">
+            <div class="ibx-screen">
+              <div class="ibx-head">My receipts<span class="ibx-sub">Every submission, explained</span></div>
+              <div class="ibx-card">
+                <div class="ibx-row"><span class="ibx-store">Walmart</span><span class="ibx-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5.5"/><path d="M12 16.8h.01"/></svg>Needs a look</span></div>
+                <div class="ibx-item ok"><span>Cheerios 18 oz, matched and credited</span><b>+$0.75</b></div>
+                <div class="ibx-item"><span>Great Value 2% Milk, offer not in list</span><b>$0.50</b></div>
+                <div class="ibx-btn">Add the offer and resubmit</div>
+              </div>
+              <div class="ibx-safe">Your $42.15 balance is safe. A flagged receipt never freezes your earnings.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="ctags">Rewards fintech &middot; Trust UX &middot; Concept</div>
+          <h3>Ibotta, Trust in the Money Moments</h3>
+          <p>An evidence led concept built from a design teardown of Ibotta's public properties and review platforms. Three screens that make receipt rejections, account standing, and appeals explain themselves.</p>
+          <span class="more">View concept <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </a>
 
