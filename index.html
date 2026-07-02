@@ -1254,11 +1254,6 @@
   .btn-line:hover svg{animation:mxArrow .55s cubic-bezier(.2,.7,.2,1);}
   .card:hover .more svg{transform:translateX(4px);}
   @keyframes mxArrow{0%{transform:translateX(0);}55%{transform:translateX(5px);}100%{transform:translateX(2px);}}
-  h1.lead .accent{position:relative;}
-  h1.lead .accent::after{content:"";position:absolute;left:0;bottom:-5px;height:3px;width:100%;border-radius:99px;
-    background:linear-gradient(90deg,#1E66FF,#13C8FF);transform:scaleX(0);transform-origin:left center;
-    transition:transform 1.05s cubic-bezier(.16,.84,.28,1) 1s;}
-  .hero-stage.go h1.lead .accent::after{transform:scaleX(1);}
   .link-soft{background:linear-gradient(currentColor,currentColor) no-repeat 0 100%/0% 1.5px;transition:color .2s,background-size .45s cubic-bezier(.16,.84,.28,1);padding-bottom:3px;}
   .link-soft:hover{background-size:100% 1.5px;}
   .brand{transition:letter-spacing .5s cubic-bezier(.16,.84,.28,1);}
@@ -1268,7 +1263,6 @@
     .mx-glare{display:none;}
     [data-mx-mag]{transition:none;}
     .btn-line:hover svg{animation:none;}
-    h1.lead .accent::after{transition:none;transform:scaleX(1);}
   }
 </style>
 <script>
