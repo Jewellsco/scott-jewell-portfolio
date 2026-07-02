@@ -1537,5 +1537,43 @@
   },true);
 })();
 </script>
+
+<style>
+  /* ---- kw, bottom of page invitation ---- */
+  .kw-rise{position:fixed;left:50%;bottom:26px;transform:translate(-50%,150%);width:min(560px,92vw);
+    background:#0C1322;color:#fff;border-radius:18px;padding:16px 18px;display:flex;gap:14px;align-items:center;
+    box-shadow:0 24px 60px rgba(12,19,34,.45);z-index:92;
+    transition:transform .75s cubic-bezier(.2,.9,.3,1.15);}
+  .kw-rise.up{transform:translate(-50%,0);}
+  .kw-q{font-family:"Fraunces",Georgia,serif;font-size:34px;line-height:1;color:#7fb2ff;flex:none;
+    transform:scale(0) rotate(-14deg);transition:transform .5s cubic-bezier(.2,.9,.3,1.5) .35s;}
+  .kw-rise.up .kw-q{transform:scale(1) rotate(0);}
+  .kw-tx{flex:1;font-size:13.5px;line-height:1.5;color:#d7deee;}
+  .kw-tx b{color:#fff;display:block;font-size:14px;margin-bottom:1px;}
+  .kw-go{flex:none;font-size:13px;font-weight:700;color:#0C1322;background:#fff;border-radius:999px;padding:10px 16px;white-space:nowrap;transition:transform .25s cubic-bezier(.2,.9,.3,1.3);}
+  .kw-go:hover{transform:scale(1.05);}
+  .kw-x{flex:none;background:none;border:none;color:#8a92a6;cursor:pointer;padding:6px;line-height:1;font-size:16px;}
+  .kw-x:hover{color:#fff;}
+  @media(max-width:700px){.kw-rise{bottom:84px;flex-wrap:wrap;}.kw-tx{flex-basis:70%;}}
+  @media (prefers-reduced-motion:reduce){.kw-rise{transition:opacity .3s;opacity:0;transform:translate(-50%,0);}.kw-rise.up{opacity:1;}.kw-q,.kw-rise.up .kw-q{transition:none;transform:none;}}
+</style>
+<script>
+(function(){
+  'use strict';
+  if(sessionStorage.getItem('kw_seen'))return;
+  var el=document.createElement('div');el.className='kw-rise';el.setAttribute('role','complementary');el.setAttribute('aria-label','Kind words invitation');
+  el.innerHTML='<span class="kw-q">&ldquo;</span><span class="kw-tx"><b>Before you go</b>Eleven people I have built with left kind words. Managers, engineers, and design partners, in their own voices.</span><a class="kw-go" href="wall-of-love.html">Read the wall of love</a><button class="kw-x" type="button" aria-label="Dismiss">&#10005;</button>';
+  document.body.appendChild(el);
+  var shown=false,pend=false;
+  function check(){pend=false;
+    if(shown)return;
+    var nearBottom=window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-160;
+    if(nearBottom){shown=true;el.classList.add('up');
+      try{sessionStorage.setItem('kw_seen','1');}catch(e){}}
+  }
+  window.addEventListener('scroll',function(){if(!pend){pend=true;requestAnimationFrame(check);}},{passive:true});
+  el.querySelector('.kw-x').addEventListener('click',function(){el.classList.remove('up');setTimeout(function(){el.remove();},800);});
+})();
+</script>
 </body>
 </html>
