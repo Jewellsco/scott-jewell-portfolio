@@ -271,11 +271,11 @@
       }
       state.raf=requestAnimationFrame(step);
     }
-    function start(){if(reduced||state.raf||overflow()<=8)return;state.active=true;state.waitUntil=performance.now()+1200;state.raf=requestAnimationFrame(step);}
+    function start(){if(reduced||state.raf||overflow()<=8)return;state.active=true;state.waitUntil=performance.now()+350;state.raf=requestAnimationFrame(step);}
     function stop(){state.active=false;}
     ['pointerenter','touchstart','wheel'].forEach(function(ev){body.addEventListener(ev,function(){state.paused=true;},{passive:true});});
     body.addEventListener('pointerleave',function(){state.paused=false;});
-    var vio=new IntersectionObserver(function(es){es.forEach(function(e){e.isIntersecting?start():stop();});},{threshold:.25});
+    var vio=new IntersectionObserver(function(es){es.forEach(function(e){e.isIntersecting?start():stop();});},{threshold:.08,rootMargin:'0px 0px 12% 0px'});
     vio.observe(body);
   });
 })();
