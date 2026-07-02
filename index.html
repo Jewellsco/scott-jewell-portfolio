@@ -387,6 +387,12 @@
   .hero-card .hc-cta{display:block;width:100%;text-align:center;background:#fff;color:#0c0c0d;padding:17px;border-radius:18px;font-size:18px;font-weight:700;
     box-shadow:0 10px 24px rgba(0,0,0,.18);transition:transform .2s;}
   .hero-card .hc-cta:hover{transform:scale(1.02);}
+  .hero-card .hc-cta{position:relative;overflow:hidden;}
+  .hero-card .hc-cta .hct{display:inline-block;transition:opacity .22s ease,transform .3s cubic-bezier(.2,.9,.3,1.2);}
+  .hero-card .hc-cta .hcf{position:absolute;inset:0;margin:auto;width:26px;height:26px;opacity:0;transform:scale(.4) rotate(-25deg);transition:opacity .2s ease .08s,transform .5s cubic-bezier(.2,.9,.3,1.5) .08s;}
+  .hero-card .hc-cta.going .hct{opacity:0;transform:scale(.82);}
+  .hero-card .hc-cta.going .hcf{opacity:1;transform:scale(1) rotate(0);}
+  @media (prefers-reduced-motion:reduce){.hero-card .hc-cta .hct,.hero-card .hc-cta .hcf{transition:none;}}
   .hero-card .hc-foot{position:relative;z-index:2;margin-top:26px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
   .hero-card .hc-foot .who{display:flex;align-items:center;gap:13px;text-decoration:none;color:inherit;cursor:pointer;}
   .hero-card .hc-foot a.who:hover .t2{text-decoration:underline;}
@@ -656,7 +662,7 @@
             <h2 class="hc-h">Design<br>that ships.</h2>
             <p class="hc-sub">Code-backed prototypes and accessible design systems, built for healthcare, fintech, and commerce.</p>
           </div>
-          <a href="case-bagequity.html" class="hc-cta">View latest work</a>
+          <a href="case-bagequity.html" class="hc-cta"><span class="hct">View latest work</span><svg class="hcf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 9.6h.01M15 9.6h.01" stroke-width="2.8"/><path d="M8.4 13.8a4.9 4.9 0 0 0 7.2 0"/></svg></a>
         </div>
         <div class="hc-foot">
           <a class="who" href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ26mu5FAo_kRzpKSWgvlFGxpZYPW3qMM5zd7FsAHzr9QAHQKepP9BJtFrDu-4BOMxlgAN_bSJGY" target="_blank" rel="noopener">
@@ -1280,6 +1286,17 @@
       bar.style.transform='scaleX('+Math.min(1,Math.max(0,p))+')';}
     window.addEventListener('scroll',function(){if(!pending){pending=true;requestAnimationFrame(prog);}},{passive:true});
     prog();
+  }
+
+  /* the latest work CTA smiles before it goes */
+  var hc=document.querySelector('.hc-cta');
+  if(hc&&!reduce){
+    hc.addEventListener('click',function(e){
+      if(hc.classList.contains('going'))return;
+      e.preventDefault();
+      hc.classList.add('going');
+      setTimeout(function(){window.location.href=hc.getAttribute('href');},640);
+    });
   }
 
   if(reduce||!fine)return;
