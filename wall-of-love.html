@@ -75,7 +75,9 @@
   'use strict';
   /* Real LinkedIn recommendations only. Add each as
      {txt:'the quote', who:'Full Name', role:'Their role', rel:'Manager at CVS', date:'Jul 2026', url:'link to the rec'} */
-  var RECS=[];
+  var RECS=[
+    {txt:"I had the pleasure of managing Jewell on the Account and Payment team, spanning both web and app. He consistently demonstrated initiative, coordinating meetings, ensuring transparent communication, and documenting processes that improved team alignment. A standout contribution was his leadership in designing a communication preferences experience for iOS and Android, partnering closely with Product, Design, and Engineering teams to balance business goals with user needs, all under an aggressive launch timeline. Jewell is resilient, collaborative, and clear in his communication, consistently shipping features that improve the user experience while meeting business objectives. I recommend Jewell without reservation, and I look forward to seeing the impact he will continue to make wherever he goes next. Any team would be lucky to have him.", who:"Jet Lim", role:"Product Designer at CVS Health", rel:"Managed Scott directly", date:"Jun 2026", url:""}
+  ];
   var grid=document.getElementById('grid');
   if(!RECS.length){document.getElementById('empty').hidden=false;}
   RECS.forEach(function(r,i){

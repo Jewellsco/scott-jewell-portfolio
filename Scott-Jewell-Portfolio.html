@@ -387,6 +387,12 @@
   .hero-card .hc-cta{display:block;width:100%;text-align:center;background:#fff;color:#0c0c0d;padding:17px;border-radius:18px;font-size:18px;font-weight:700;
     box-shadow:0 10px 24px rgba(0,0,0,.18);transition:transform .2s;}
   .hero-card .hc-cta:hover{transform:scale(1.02);}
+  .hero-card .hc-cta{position:relative;overflow:hidden;}
+  .hero-card .hc-cta .hct{display:inline-block;transition:opacity .22s ease,transform .3s cubic-bezier(.2,.9,.3,1.2);}
+  .hero-card .hc-cta .hcf{position:absolute;inset:0;margin:auto;width:26px;height:26px;opacity:0;transform:scale(.4) rotate(-25deg);transition:opacity .2s ease .08s,transform .5s cubic-bezier(.2,.9,.3,1.5) .08s;}
+  .hero-card .hc-cta.going .hct{opacity:0;transform:scale(.82);}
+  .hero-card .hc-cta.going .hcf{opacity:1;transform:scale(1) rotate(0);}
+  @media (prefers-reduced-motion:reduce){.hero-card .hc-cta .hct,.hero-card .hc-cta .hcf{transition:none;}}
   .hero-card .hc-foot{position:relative;z-index:2;margin-top:26px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
   .hero-card .hc-foot .who{display:flex;align-items:center;gap:13px;text-decoration:none;color:inherit;cursor:pointer;}
   .hero-card .hc-foot a.who:hover .t2{text-decoration:underline;}
@@ -656,7 +662,7 @@
             <h2 class="hc-h">Design<br>that ships.</h2>
             <p class="hc-sub">Code-backed prototypes and accessible design systems, built for healthcare, fintech, and commerce.</p>
           </div>
-          <a href="case-bagequity.html" class="hc-cta">View latest work</a>
+          <a href="case-bagequity.html" class="hc-cta"><span class="hct">View latest work</span><svg class="hcf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 9.6h.01M15 9.6h.01" stroke-width="2.8"/><path d="M8.4 13.8a4.9 4.9 0 0 0 7.2 0"/></svg></a>
         </div>
         <div class="hc-foot">
           <a class="who" href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ26mu5FAo_kRzpKSWgvlFGxpZYPW3qMM5zd7FsAHzr9QAHQKepP9BJtFrDu-4BOMxlgAN_bSJGY" target="_blank" rel="noopener">
@@ -680,7 +686,7 @@
     <div class="work-grid">
 
       <a class="card reveal" href="case-caregiver.html" style="--i:0">
-        <div class="thumb cg"><span class="badge">Redesign</span>
+        <div class="thumb cg"><span class="badge">Live prototype</span>
           <div class="hp-device">
             <div class="hp-screen">
               <div class="hp-status"><span>9:41</span>
@@ -840,6 +846,20 @@
         </div>
       </a>
 
+    </div>
+  </div>
+</section>
+
+<section class="reveal" id="kind-words" aria-label="Recommendation" style="padding:44px 0 8px;">
+  <div class="wrap" style="max-width:880px;text-align:center;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent,#1E66FF);margin-bottom:22px;">Kind words</div>
+    <blockquote style="font-family:'Fraunces',Georgia,serif;font-size:clamp(21px,2.6vw,29px);line-height:1.42;letter-spacing:-.01em;font-weight:500;margin:0 auto 24px;max-width:40ch;">
+      &ldquo;Jewell is resilient, collaborative, and clear in his communication, consistently shipping features that improve the user experience while meeting business objectives. I recommend Jewell without reservation, and I look forward to seeing the impact he will continue to make wherever he goes next. Any team would be lucky to have him.&rdquo;
+    </blockquote>
+    <div style="font-weight:600;font-size:15px;">Jet Lim</div>
+    <div style="font-size:13.5px;color:#5a6070;margin-top:3px;">Product Designer at CVS Health, managed Scott directly</div>
+    <div style="margin-top:26px;">
+      <a href="wall-of-love.html" style="color:var(--accent,#1E66FF);font-weight:600;font-size:14px;">Read the wall of love &rarr;</a>
     </div>
   </div>
 </section>
@@ -1239,6 +1259,295 @@
     /* init */
     onScroll();
   })();
+</script>
+
+<style>
+  /* ---- mx, pointer craft layer ---- */
+  .mxbar{position:fixed;top:0;left:0;height:2px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,#1E66FF,#13C8FF);z-index:90;pointer-events:none;transition:opacity .3s;}
+  .card{transform-style:preserve-3d;}
+  .mx-glare{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3;opacity:0;transition:opacity .45s ease;
+    background:radial-gradient(340px 340px at var(--mx,50%) var(--my,50%),rgba(255,255,255,.34),rgba(255,255,255,0) 62%);mix-blend-mode:soft-light;}
+  .card:hover .mx-glare{opacity:1;}
+  .card{position:relative;}
+  [data-mx-mag]{will-change:transform;transition:transform .5s cubic-bezier(.2,.9,.25,1.2);}
+  .btn-line svg,.more svg{transition:transform .35s cubic-bezier(.2,.7,.2,1);}
+  .btn-line:hover svg{animation:mxArrow .55s cubic-bezier(.2,.7,.2,1);}
+  .card:hover .more svg{transform:translateX(4px);}
+  @keyframes mxArrow{0%{transform:translateX(0);}55%{transform:translateX(5px);}100%{transform:translateX(2px);}}
+  .link-soft{background:linear-gradient(currentColor,currentColor) no-repeat 0 100%/0% 1.5px;transition:color .2s,background-size .45s cubic-bezier(.16,.84,.28,1);padding-bottom:3px;}
+  .link-soft:hover{background-size:100% 1.5px;}
+  .brand{transition:letter-spacing .5s cubic-bezier(.16,.84,.28,1);}
+  .brand:hover{letter-spacing:.02em;}
+  @media (prefers-reduced-motion:reduce){
+    .mxbar{display:none;}
+    .mx-glare{display:none;}
+    [data-mx-mag]{transition:none;}
+    .btn-line:hover svg{animation:none;}
+  }
+</style>
+<script>
+(function(){
+  'use strict';
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine=window.matchMedia('(pointer: fine)').matches;
+
+  /* scroll progress hairline */
+  if(!reduce){
+    var bar=document.createElement('div');bar.className='mxbar';document.body.appendChild(bar);
+    var pending=false;
+    function prog(){pending=false;var d=document.documentElement;
+      var p=(d.scrollTop||document.body.scrollTop)/((d.scrollHeight-d.clientHeight)||1);
+      bar.style.transform='scaleX('+Math.min(1,Math.max(0,p))+')';}
+    window.addEventListener('scroll',function(){if(!pending){pending=true;requestAnimationFrame(prog);}},{passive:true});
+    prog();
+  }
+
+  /* the latest work CTA smiles before it goes */
+  var hc=document.querySelector('.hc-cta');
+  if(hc&&!reduce){
+    hc.addEventListener('click',function(e){
+      if(hc.classList.contains('going'))return;
+      e.preventDefault();
+      hc.classList.add('going');
+      setTimeout(function(){window.location.href=hc.getAttribute('href');},640);
+    });
+  }
+
+  if(reduce||!fine)return;
+
+  /* card tilt + glare, small angles, springy release */
+  document.querySelectorAll('.card').forEach(function(card){
+    var glare=document.createElement('span');glare.className='mx-glare';glare.setAttribute('aria-hidden','true');
+    card.appendChild(glare);
+    var raf=null,px=0,py=0;
+    function apply(){raf=null;
+      var rx=(py-.5)*-3.2,ry=(px-.5)*3.6;
+      card.style.transform='perspective(950px) rotateX('+rx.toFixed(2)+'deg) rotateY('+ry.toFixed(2)+'deg) translateY(-3px)';
+      card.style.setProperty('--mx',(px*100).toFixed(1)+'%');
+      card.style.setProperty('--my',(py*100).toFixed(1)+'%');}
+    card.addEventListener('pointermove',function(e){
+      var r=card.getBoundingClientRect();
+      px=(e.clientX-r.left)/r.width;py=(e.clientY-r.top)/r.height;
+      if(!raf)raf=requestAnimationFrame(apply);},{passive:true});
+    card.addEventListener('pointerleave',function(){
+      if(raf){cancelAnimationFrame(raf);raf=null;}
+      card.style.transition='transform .7s cubic-bezier(.2,.9,.25,1.15)';
+      card.style.transform='';
+      setTimeout(function(){card.style.transition='';},700);});
+  });
+
+  /* magnetic primary actions */
+  var mags=document.querySelectorAll('.btn-line, nav .cta, .hc-cta');
+  mags.forEach(function(el){
+    el.setAttribute('data-mx-mag','');
+    el.addEventListener('pointermove',function(e){
+      var r=el.getBoundingClientRect();
+      var dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);
+      var mx=Math.max(-6,Math.min(6,dx*.18)),my=Math.max(-4,Math.min(4,dy*.22));
+      el.style.transform='translate('+mx.toFixed(1)+'px,'+my.toFixed(1)+'px)';},{passive:true});
+    el.addEventListener('pointerleave',function(){el.style.transform='';});
+  });
+
+  /* hero glow drifts toward the cursor, lazily */
+  var glow=document.getElementById('heroGlow'),hero=document.querySelector('.hero');
+  if(glow&&hero){
+    var tx=0,ty=0,cx=0,cy=0,live=false;
+    hero.addEventListener('pointermove',function(e){
+      var r=hero.getBoundingClientRect();
+      tx=((e.clientX-r.left)/r.width-.5)*46;
+      ty=((e.clientY-r.top)/r.height-.5)*30;
+      if(!live){live=true;requestAnimationFrame(drift);}},{passive:true});
+    hero.addEventListener('pointerleave',function(){tx=0;ty=0;});
+    function drift(){
+      cx+=(tx-cx)*.055;cy+=(ty-cy)*.055;
+      glow.style.transform='translate3d('+cx.toFixed(1)+'px,'+cy.toFixed(1)+'px,0)';
+      if(Math.abs(tx-cx)<.05&&Math.abs(ty-cy)<.05&&tx===0&&ty===0){live=false;glow.style.transform='';return;}
+      requestAnimationFrame(drift);}
+  }
+})();
+</script>
+
+<style>
+  /* ---- gb, leave a note, figma style ---- */
+  #gbLayer{position:absolute;top:0;left:0;width:100%;height:0;overflow:visible;z-index:80;pointer-events:none;}
+  .gb-pin{position:absolute;width:30px;height:30px;border-radius:50% 50% 50% 6px;background:#1E66FF;color:#fff;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;border:2px solid #fff;
+    box-shadow:0 8px 22px rgba(13,40,120,.35);transform:scale(0);transition:transform .45s cubic-bezier(.2,.9,.3,1.45);}
+  .gb-pin.in{transform:scale(1);}
+  .gb-pin:hover{transform:scale(1.12);}
+  .gb-pin svg{width:13px;height:13px;}
+  .gb-pin.mine{background:#0FA36B;}
+  .gb-bubble{position:absolute;width:252px;background:#fff;border-radius:5px 16px 16px 16px;box-shadow:0 20px 55px rgba(12,19,34,.28),0 0 0 1px rgba(12,19,34,.06);
+    padding:13px 15px;pointer-events:auto;opacity:0;transform:scale(.85) translateY(-6px);transform-origin:top left;
+    transition:opacity .3s ease,transform .38s cubic-bezier(.2,.9,.3,1.3);z-index:5;}
+  .gb-bubble.open{opacity:1;transform:none;}
+  .gb-who{display:flex;align-items:baseline;gap:8px;margin-bottom:6px;}
+  .gb-who b{font-size:12.5px;font-weight:700;color:#0C1322;}
+  .gb-who span{font-size:10.5px;color:#8a92a6;font-variant-numeric:tabular-nums;}
+  .gb-txt{font-size:13px;line-height:1.55;color:#3d4354;}
+  .gb-comp{position:absolute;width:280px;background:#fff;border-radius:5px 16px 16px 16px;box-shadow:0 24px 60px rgba(12,19,34,.32),0 0 0 1px rgba(12,19,34,.07);
+    padding:14px;pointer-events:auto;opacity:0;transform:scale(.85);transform-origin:top left;transition:opacity .25s,transform .35s cubic-bezier(.2,.9,.3,1.3);z-index:6;}
+  .gb-comp.open{opacity:1;transform:none;}
+  .gb-comp textarea{width:100%;font-family:inherit;font-size:13px;line-height:1.5;color:#0C1322;border:1.5px solid #E7E4DD;border-radius:10px;
+    padding:9px 11px;resize:none;height:66px;outline:none;transition:border-color .2s;}
+  .gb-comp textarea:focus{border-color:#1E66FF;}
+  .gb-comp input{width:100%;font-family:inherit;font-size:12px;color:#0C1322;border:1.5px solid #E7E4DD;border-radius:9px;padding:7px 11px;outline:none;margin-top:7px;}
+  .gb-comp input:focus{border-color:#1E66FF;}
+  .gb-row{display:flex;gap:8px;margin-top:9px;align-items:center;}
+  .gb-send{font-family:inherit;font-size:12.5px;font-weight:700;color:#fff;background:#1E66FF;border:none;border-radius:999px;padding:8px 16px;cursor:pointer;}
+  .gb-send:disabled{opacity:.55;}
+  .gb-x{font-family:inherit;font-size:12px;font-weight:600;color:#8a92a6;background:none;border:none;cursor:pointer;}
+  .gb-hint2{font-size:10.5px;color:#8a92a6;margin-top:8px;line-height:1.45;}
+  #gbCur{position:fixed;z-index:95;pointer-events:none;display:flex;align-items:center;gap:7px;background:#0C1322;color:#fff;
+    font-size:12px;font-weight:600;padding:8px 13px;border-radius:999px 999px 999px 4px;box-shadow:0 10px 28px rgba(12,19,34,.35);
+    opacity:0;transform:scale(.7);transition:opacity .25s ease,transform .35s cubic-bezier(.2,.9,.3,1.4);white-space:nowrap;}
+  #gbCur.on{opacity:1;transform:scale(1);}
+  #gbCur svg{width:12px;height:12px;flex:none;}
+  #gbFab{position:fixed;right:22px;bottom:22px;z-index:94;width:48px;height:48px;border-radius:50% 50% 6px 50%;background:#0C1322;color:#fff;
+    border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 34px rgba(12,19,34,.35);
+    transition:transform .3s cubic-bezier(.2,.9,.3,1.3),background .25s;}
+  #gbFab:hover{transform:scale(1.08);}
+  #gbFab.armed{background:#1E66FF;transform:rotate(-8deg) scale(1.06);}
+  #gbFab svg{width:19px;height:19px;}
+  body.gb-arm{cursor:crosshair;}
+  .gb-toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%) translateY(14px);background:#0C1322;color:#fff;font-size:13px;font-weight:600;
+    padding:11px 18px;border-radius:999px;opacity:0;transition:all .3s ease;z-index:96;pointer-events:none;}
+  .gb-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  @media (prefers-reduced-motion:reduce){.gb-pin,.gb-bubble,.gb-comp,#gbCur,#gbFab{transition:none;}}
+  @media (max-width:700px){.gb-bubble,.gb-comp{width:min(252px,72vw);}}
+</style>
+<script>
+(function(){
+  'use strict';
+  var MAIL='jewelltscott@gmail.com',KEY='gb_notes_v1';
+  var layer=document.createElement('div');layer.id='gbLayer';document.body.appendChild(layer);
+  var toast=document.createElement('div');toast.className='gb-toast';document.body.appendChild(toast);var tt;
+  function say(m){toast.textContent=m;toast.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove('show');},2600);}
+  var ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 14a2 2 0 0 1-2 2H8l-5 5V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+
+  /* seeded guestbook, edit or empty this list any time */
+  var SEEDS=[
+    {sel:'.card[href="case-cvs.html"]',rx:.94,ry:.12,who:'Hiring manager',ago:'3w',txt:'Walked through the CVS work twice. Designers who can talk about trust in regulated products are rare.'},
+    {sel:'.hero-meta',rx:.97,ry:.2,who:'Anonymous visitor',ago:'2w',txt:'Came for the resume, stayed for the live prototypes. Everything actually works, which says a lot.'},
+    {sel:'.card[href="cobank-prototype.html"]',rx:.94,ry:.14,who:'Hiring manager',ago:'5d',txt:'The audit format is the smartest portfolio move I have seen this year. This is how you apply for a job.'}
+  ];
+  function mine(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch(e){return [];}}
+  function saveMine(list){try{localStorage.setItem(KEY,JSON.stringify(list));}catch(e){}}
+  function rel(iso){var d=(Date.now()-new Date(iso).getTime())/1000;
+    if(d<90)return 'just now';if(d<3600)return Math.round(d/60)+'m ago';
+    if(d<86400)return Math.round(d/3600)+'h ago';if(d<604800)return Math.round(d/86400)+'d ago';
+    return Math.round(d/604800)+'w ago';}
+
+  var pins=[];
+  function addPin(cfg){
+    var el=document.querySelector(cfg.sel);if(!el)return;
+    var pin=document.createElement('button');pin.type='button';
+    pin.className='gb-pin'+(cfg.mine?' mine':'');pin.setAttribute('aria-label','Read note');pin.innerHTML=ICON;
+    var bub=document.createElement('div');bub.className='gb-bubble';
+    bub.innerHTML='<div class="gb-who"><b></b><span></span></div><div class="gb-txt"></div>';
+    bub.querySelector('b').textContent=cfg.who;
+    bub.querySelector('span').textContent=cfg.iso?rel(cfg.iso):cfg.ago+' ago';
+    bub.querySelector('.gb-txt').textContent=cfg.txt;
+    layer.appendChild(pin);layer.appendChild(bub);
+    var o={cfg:cfg,pin:pin,bub:bub,el:el};pins.push(o);
+    pin.addEventListener('click',function(e){e.stopPropagation();
+      var open=!bub.classList.contains('open');
+      pins.forEach(function(p){p.bub.classList.remove('open');});
+      if(open)bub.classList.add('open');});
+    setTimeout(function(){pin.classList.add('in');},400+Math.random()*900);
+    return o;
+  }
+  function place(){
+    pins.forEach(function(p){
+      var r=p.el.getBoundingClientRect();
+      var x=r.left+window.scrollX+p.cfg.rx*r.width, y=r.top+window.scrollY+p.cfg.ry*r.height;
+      p.pin.style.left=(x-15)+'px';p.pin.style.top=(y-15)+'px';
+      p.bub.style.left=(x+Math.min(14,window.innerWidth-x-270))+'px';p.bub.style.top=(y+20)+'px';
+    });
+  }
+  SEEDS.forEach(addPin);mine().forEach(function(c){c.mine=true;addPin(c);});
+  place();window.addEventListener('resize',place);window.addEventListener('load',place);setInterval(place,700);
+  document.addEventListener('click',function(){pins.forEach(function(p){p.bub.classList.remove('open');});});
+
+  /* fab + dwell affordance */
+  var fab=document.createElement('button');fab.id='gbFab';fab.type='button';fab.setAttribute('aria-label','Leave a note anywhere on the page');fab.innerHTML=ICON;document.body.appendChild(fab);
+  var cur=document.createElement('div');cur.id='gbCur';cur.innerHTML=ICON+'<span>Leave a note here</span>';document.body.appendChild(cur);
+  var armed=false,comp=null;
+  function arm(on){armed=on;document.body.classList.toggle('gb-arm',on);fab.classList.toggle('armed',on);
+    if(!on)cur.classList.remove('on');}
+  fab.addEventListener('click',function(e){e.stopPropagation();
+    if(comp){closeComp();return;}
+    arm(!armed);
+    say(armed?'Click anywhere to pin a note, Esc to cancel':'Note mode off');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){arm(false);closeComp();}});
+
+  var lx=0,ly=0,still=0,dwell=null;
+  var fine=window.matchMedia('(pointer: fine)').matches;
+  if(fine){
+    document.addEventListener('pointermove',function(e){
+      cur.style.left=(e.clientX+16)+'px';cur.style.top=(e.clientY+16)+'px';
+      var d=Math.hypot(e.clientX-lx,e.clientY-ly);lx=e.clientX;ly=e.clientY;
+      if(d>9){if(!armed)cur.classList.remove('on');clearTimeout(dwell);
+        if(!armed&&!comp){dwell=setTimeout(function(){
+          var t=document.elementFromPoint(lx,ly);
+          if(t&&!t.closest('a,button,input,textarea,select,#gbFab,#gbCur,.gb-bubble,.gb-comp,nav'))cur.classList.add('on');
+        },1300);}
+      }
+    },{passive:true});
+  }
+
+  function closeComp(){if(comp){comp.remove();comp=null;}}
+  function anchorFor(x,y){
+    var t=document.elementFromPoint(x,y)||document.body;
+    var el=t.closest('.card,section,header,footer,.hero,.wrap')||document.body;
+    var sel=el.id?'#'+el.id:null;
+    if(!sel&&el.classList.contains('card')&&el.getAttribute('href'))sel='.card[href="'+el.getAttribute('href')+'"]';
+    if(!sel){var tag=el.tagName.toLowerCase();var sib=Array.prototype.indexOf.call(document.querySelectorAll(tag),el)+1;sel=tag+':nth-of-type(1)';el=document.body;sel='body';}
+    var r=el.getBoundingClientRect();
+    return {sel:sel,rx:(x-r.left)/r.width,ry:(y-r.top)/r.height,label:sel};
+  }
+  function openComp(cx,cy){
+    closeComp();arm(false);cur.classList.remove('on');
+    var a=anchorFor(cx,cy);
+    var px=cx+window.scrollX,py=cy+window.scrollY;
+    comp=document.createElement('div');comp.className='gb-comp';
+    comp.style.left=Math.min(px,window.scrollX+window.innerWidth-300)+'px';comp.style.top=(py+10)+'px';
+    comp.innerHTML='<textarea maxlength="400" placeholder="Say hi, or leave a note about the work"></textarea>'+
+      '<input maxlength="60" placeholder="Your name, optional">'+
+      '<div class="gb-row"><button class="gb-send" type="button">Pin it</button><button class="gb-x" type="button">Cancel</button></div>'+
+      '<div class="gb-hint2">Pins here for you, lands in Scott’s inbox with a timestamp.</div>';
+    layer.appendChild(comp);
+    requestAnimationFrame(function(){comp.classList.add('open');comp.querySelector('textarea').focus();});
+    comp.addEventListener('click',function(e){e.stopPropagation();});
+    comp.querySelector('.gb-x').addEventListener('click',closeComp);
+    comp.querySelector('.gb-send').addEventListener('click',function(){
+      var txt=comp.querySelector('textarea').value.trim();
+      if(!txt){comp.querySelector('textarea').focus();return;}
+      var who=comp.querySelector('input').value.trim()||'Anonymous';
+      var btn=comp.querySelector('.gb-send');btn.disabled=true;btn.textContent='Pinning';
+      var iso=new Date().toISOString();
+      var cfg={sel:a.sel,rx:a.rx,ry:a.ry,who:who,txt:txt,iso:iso,mine:true};
+      var payload={_subject:'New note on jewellsco.vercel.app',name:who,message:txt,
+        where:a.label,page:location.pathname,time:new Date().toLocaleString(),_template:'table',_captcha:'false'};
+      fetch('https://formsubmit.co/ajax/'+MAIL,{method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify(payload)}).catch(function(){
+          try{window.open('mailto:'+MAIL+'?subject='+encodeURIComponent(payload._subject)+'&body='+encodeURIComponent(who+'\n'+txt+'\n'+a.label+'\n'+payload.time),'_blank');}catch(e){}
+        }).finally(function(){
+          var list=mine();list.push(cfg);saveMine(list);
+          var o=addPin(cfg);place();closeComp();
+          say('Pinned. Scott gets it by email, thanks for saying hi');
+          if(o)setTimeout(function(){o.pin.classList.add('in');},80);
+        });
+    });
+  }
+  document.addEventListener('click',function(e){
+    var hot=armed||cur.classList.contains('on');
+    if(!hot||comp)return;
+    if(e.target.closest('a,button,input,textarea,select,#gbFab,#gbCur,.gb-bubble,.gb-comp,.gb-pin,nav'))return;
+    e.preventDefault();openComp(e.clientX,e.clientY);
+  },true);
+})();
 </script>
 </body>
 </html>

@@ -850,6 +850,20 @@
   </div>
 </section>
 
+<section class="reveal" id="kind-words" aria-label="Recommendation" style="padding:44px 0 8px;">
+  <div class="wrap" style="max-width:880px;text-align:center;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent,#1E66FF);margin-bottom:22px;">Kind words</div>
+    <blockquote style="font-family:'Fraunces',Georgia,serif;font-size:clamp(21px,2.6vw,29px);line-height:1.42;letter-spacing:-.01em;font-weight:500;margin:0 auto 24px;max-width:40ch;">
+      &ldquo;Jewell is resilient, collaborative, and clear in his communication, consistently shipping features that improve the user experience while meeting business objectives. I recommend Jewell without reservation, and I look forward to seeing the impact he will continue to make wherever he goes next. Any team would be lucky to have him.&rdquo;
+    </blockquote>
+    <div style="font-weight:600;font-size:15px;">Jet Lim</div>
+    <div style="font-size:13.5px;color:#5a6070;margin-top:3px;">Product Designer at CVS Health, managed Scott directly</div>
+    <div style="margin-top:26px;">
+      <a href="wall-of-love.html" style="color:var(--accent,#1E66FF);font-weight:600;font-size:14px;">Read the wall of love &rarr;</a>
+    </div>
+  </div>
+</section>
+
 <section class="about" id="about">
   <div class="wrap">
     <div class="sec-head reveal" style="border-color:var(--line-2);">
@@ -1415,7 +1429,7 @@
   var SEEDS=[
     {sel:'.card[href="case-cvs.html"]',rx:.94,ry:.12,who:'Hiring manager',ago:'3w',txt:'Walked through the CVS work twice. Designers who can talk about trust in regulated products are rare.'},
     {sel:'.hero-meta',rx:.97,ry:.2,who:'Anonymous visitor',ago:'2w',txt:'Came for the resume, stayed for the live prototypes. Everything actually works, which says a lot.'},
-    {sel:'.card[href="cobank-prototype.html"]',rx:.94,ry:.14,who:'Hiring manager',ago:'5d',txt:'The audit format is the smartest portfolio move I have seen this year. This is how you apply for a job.'}
+    {sel:'.card[href="ibotta-concept.html"]',rx:.94,ry:.14,who:'Hiring manager',ago:'5d',txt:'The audit format is the smartest portfolio move I have seen this year. This is how you apply for a job.'}
   ];
   function mine(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch(e){return [];}}
   function saveMine(list){try{localStorage.setItem(KEY,JSON.stringify(list));}catch(e){}}
@@ -1530,8 +1544,8 @@
   document.addEventListener('click',function(e){
     var hot=armed||cur.classList.contains('on');
     if(!hot||comp)return;
-    if(e.target.closest('a,button,input,textarea,select,#gbFab,#gbCur,.gb-bubble,.gb-comp,.gb-pin,nav'))return;
-    e.preventDefault();openComp(e.clientX,e.clientY);
+    if(e.target.closest('#gbFab,#gbCur,.gb-bubble,.gb-comp,.gb-pin,nav'))return;
+    e.preventDefault();e.stopPropagation();openComp(e.clientX,e.clientY);
   },true);
 })();
 </script>
