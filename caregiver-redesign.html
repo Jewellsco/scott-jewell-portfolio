@@ -158,6 +158,23 @@
     .ripple{display:none;}
     .device{transition:none;}
   }
+
+  .attn.ok{color:var(--green);background:var(--green-bg);}
+  .attn.ok .ad{background:var(--green);}
+  .srow{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 14px;margin-bottom:10px;transition:opacity .3s;}
+  .srow .stime{font-weight:700;font-size:12px;color:var(--sec);width:52px;flex:none;}
+  .srow .sinfo{flex:1;}
+  .srow .sname{font-weight:600;font-size:14px;color:var(--ink);}
+  .srow .swho{font-size:12px;color:var(--sec);margin-top:1px;}
+  .take{width:30px;height:30px;border-radius:50%;border:2px solid #D8DBE1;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;transition:background .25s,border-color .25s;}
+  .take svg{width:13px;height:13px;color:#fff;opacity:0;transition:opacity .2s;}
+  .srow.done{opacity:.62;}
+  .srow.done .take{background:var(--green);border-color:var(--green);}
+  .srow.done .take svg{opacity:1;}
+  .mrow{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 15px;margin-bottom:10px;display:flex;align-items:center;gap:12px;}
+  .mrow .dot2{width:36px;height:36px;border-radius:12px;background:var(--field);display:flex;align-items:center;justify-content:center;color:var(--sec);flex:none;}
+  .mrow .dot2 svg{width:16px;height:16px;}
+  .mrow .mi{flex:1;}
 </style>
 </head>
 <body>
@@ -189,13 +206,13 @@
                 <div class="small">Good morning</div>
                 <div class="big">Hi, Ajee</div>
                 <div class="meta">Caring for <b style="color:var(--ink);">2 people</b></div>
-                <span class="attn"><span class="ad"></span>1 needs attention</span>
+                <span class="attn" id="attnPill"><span class="ad"></span>1 needs attention</span>
               </div>
               <div class="label">Your circle</div>
               <div class="person" data-go="member" data-tap="Robert (Dad)">
                 <div class="avatar av-red">RW</div>
                 <div class="pinfo"><div class="pname">Robert Williams</div><div class="prel">Dad · 4 medications</div>
-                  <span class="pill amber"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 8v5M12 16.5v.01"/><circle cx="12" cy="12" r="9"/></svg> 1 refill due</span></div>
+                  <span class="pill amber" id="robPill"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 8v5M12 16.5v.01"/><circle cx="12" cy="12" r="9"/></svg> 1 refill due</span></div>
                 <svg class="chev" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2"><path d="m1 1 6 6-6 6"/></svg>
               </div>
               <div class="person">
@@ -209,10 +226,10 @@
               </div>
             </div>
             <div class="tabbar">
-              <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg><span>Home</span></div>
-              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6"/></svg><span>Meds</span></div>
-              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10.5 21a2 2 0 0 0 3 0"/></svg><span>Reminders</span></div>
-              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>You</span></div>
+              <div class="tab on" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg><span>Home</span></div>
+              <div class="tab" data-tab="meds"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6"/></svg><span>Meds</span></div>
+              <div class="tab" data-tab="reminders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10.5 21a2 2 0 0 0 3 0"/></svg><span>Reminders</span></div>
+              <div class="tab" data-tab="you"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>You</span></div>
             </div>
           </section>
 
@@ -294,6 +311,67 @@
             </div>
           </section>
 
+
+          <!-- MEDS TAB -->
+          <section class="screen" data-screen="meds">
+            <div class="dim"></div>
+            <div class="body" style="padding-top:54px;">
+              <div class="greet">
+                <div class="small">Everyone you care for</div>
+                <div class="big">Meds</div>
+                <div class="meta">5 medications across <b style="color:var(--ink);">2 people</b></div>
+              </div>
+              <div class="label">Robert &middot; Dad</div>
+              <div class="med">
+                <div class="med-top">
+                  <div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="9" width="13" height="7" rx="3.5" transform="rotate(-45 9.5 12.5)"/></svg></div>
+                  <div style="flex:1;"><div class="mname">Lisinopril</div><div class="mdose">10 mg &middot; 1 tablet daily</div>
+                    <span class="pill amber" style="margin-top:8px;">Refill due in 3 days</span></div>
+                </div>
+                <div class="med-foot">
+                  <div class="remind"><div class="tog on" data-toggle><div class="knob"></div></div> Reminders</div>
+                  <div class="refill" data-refill><span class="lt">Refill</span><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path class="ckp" d="M5 13l4 4 10-11" stroke-dasharray="30" stroke-dashoffset="30"/></svg></span></div>
+                </div>
+              </div>
+              <div class="mrow"><div class="dot2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="9" width="13" height="7" rx="3.5" transform="rotate(-45 9.5 12.5)"/></svg></div><div class="mi"><div class="mname">Metformin</div><div class="swho">500 mg &middot; twice daily</div></div><span class="pill green">28 days left</span></div>
+              <div class="mrow"><div class="dot2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="9" width="13" height="7" rx="3.5" transform="rotate(-45 9.5 12.5)"/></svg></div><div class="mi"><div class="mname">Atorvastatin</div><div class="swho">20 mg &middot; at night</div></div><span class="pill green">45 days left</span></div>
+              <div class="label">Abena &middot; Mom</div>
+              <div class="mrow"><div class="dot2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="9" width="13" height="7" rx="3.5" transform="rotate(-45 9.5 12.5)"/></svg></div><div class="mi"><div class="mname">Levothyroxine</div><div class="swho">75 mcg &middot; every morning</div></div><span class="pill green">32 days left</span></div>
+              <div class="mrow"><div class="dot2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="9" width="13" height="7" rx="3.5" transform="rotate(-45 9.5 12.5)"/></svg></div><div class="mi"><div class="mname">Amlodipine</div><div class="swho">5 mg &middot; daily</div></div><span class="pill green">40 days left</span></div>
+            </div>
+            <div class="tabbar">
+              <div class="tab" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg><span>Home</span></div>
+              <div class="tab on" data-tab="meds"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6"/></svg><span>Meds</span></div>
+              <div class="tab" data-tab="reminders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10.5 21a2 2 0 0 0 3 0"/></svg><span>Reminders</span></div>
+              <div class="tab" data-tab="you"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>You</span></div>
+            </div>
+          </section>
+
+          <!-- REMINDERS TAB -->
+          <section class="screen" data-screen="reminders">
+            <div class="dim"></div>
+            <div class="body" style="padding-top:54px;">
+              <div class="greet">
+                <div class="small">Today</div>
+                <div class="big">Reminders</div>
+                <div class="meta" id="schedMeta"><b style="color:var(--ink);">2 of 5</b> doses taken today</div>
+              </div>
+              <div class="label">Morning</div>
+              <div class="srow done" data-init><span class="stime">8:00 am</span><div class="sinfo"><div class="sname">Lisinopril 10 mg</div><div class="swho">Robert &middot; Dad</div></div><span class="take" data-take role="button" aria-label="Mark Lisinopril taken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 13 4 4 10-11"/></svg></span></div>
+              <div class="srow done" data-init><span class="stime">8:00 am</span><div class="sinfo"><div class="sname">Levothyroxine 75 mcg</div><div class="swho">Abena &middot; Mom</div></div><span class="take" data-take role="button" aria-label="Mark Levothyroxine taken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 13 4 4 10-11"/></svg></span></div>
+              <div class="srow"><span class="stime">9:00 am</span><div class="sinfo"><div class="sname">Metformin 500 mg</div><div class="swho">Robert &middot; Dad</div></div><span class="take" data-take role="button" aria-label="Mark morning Metformin taken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 13 4 4 10-11"/></svg></span></div>
+              <div class="label">Evening</div>
+              <div class="srow"><span class="stime">6:00 pm</span><div class="sinfo"><div class="sname">Metformin 500 mg</div><div class="swho">Robert &middot; Dad</div></div><span class="take" data-take role="button" aria-label="Mark evening Metformin taken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 13 4 4 10-11"/></svg></span></div>
+              <div class="srow"><span class="stime">9:00 pm</span><div class="sinfo"><div class="sname">Atorvastatin 20 mg</div><div class="swho">Robert &middot; Dad</div></div><span class="take" data-take role="button" aria-label="Mark Atorvastatin taken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="m5 13 4 4 10-11"/></svg></span></div>
+            </div>
+            <div class="tabbar">
+              <div class="tab" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg><span>Home</span></div>
+              <div class="tab" data-tab="meds"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6"/></svg><span>Meds</span></div>
+              <div class="tab on" data-tab="reminders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10.5 21a2 2 0 0 0 3 0"/></svg><span>Reminders</span></div>
+              <div class="tab" data-tab="you"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>You</span></div>
+            </div>
+          </section>
+
         </div>
         <div class="ripple" id="ripple"></div>
         <div class="toast" id="toast"></div>
@@ -306,6 +384,8 @@
       <button class="chipbtn primary" data-demo="tour"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v14l11-7z"/></svg></span><span class="ct"><div class="t">Play guided walkthrough</div><div class="d">Auto-tour the whole flow</div></span></button>
       <button class="chipbtn" data-demo="open"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="ct"><div class="t">Open a loved one</div><div class="d">Card → member detail</div></span></button>
       <button class="chipbtn" data-demo="refill"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span><span class="ct"><div class="t">Request a refill</div><div class="d">Button → success morph</div></span></button>
+      <button class="chipbtn" data-demo="meds"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6"/></svg></span><span class="ct"><div class="t">See every medication</div><div class="d">Meds tab, both parents</div></span></button>
+      <button class="chipbtn" data-demo="reminders"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg></span><span class="ct"><div class="t">Check off a dose</div><div class="d">Today&rsquo;s reminder schedule</div></span></button>
       <button class="chipbtn" data-demo="add"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span><span class="ct"><div class="t">Add someone</div><div class="d">Modern add-person form</div></span></button>
       <button class="chipbtn" data-demo="reset"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/></svg></span><span class="ct"><div class="t">Reset</div><div class="d">Back to Home</div></span></button>
       <div class="caption" id="caption"><b>Tip:</b> tap the phone directly, or play the guided walkthrough to see every micro-interaction.</div>
@@ -317,9 +397,9 @@
 <script>
 (()=>{
   const stack=document.getElementById('stack'),screens={};
-  stack.querySelectorAll('.screen').forEach(s=>screens[s.dataset.screen]=s);
+  stack.querySelectorAll('.screen').forEach(el=>screens[el.dataset.screen]=el);
   const ripple=document.getElementById('ripple'),toast=document.getElementById('toast'),caption=document.getElementById('caption'),frame=document.getElementById('frame');
-  let nav=['home'],busy=false;
+  let nav=['home'],busy=false,refilled=false;
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function press(el){if(!el||reduce)return;el.style.transition='transform .1s ease';el.style.transform='scale(.97)';
     setTimeout(()=>{el.style.transform='';setTimeout(()=>{el.style.transition='';},120);},110);}
@@ -342,18 +422,61 @@
   function push(n){if(n===cur())return;const c=screens[cur()],x=screens[n];c.classList.remove('active');c.classList.add('prev');x.classList.remove('prev');x.classList.add('active');nav.push(n);
     if(n==='member'){x.querySelectorAll('.chip .n').forEach(countUp);}}
   function pop(){if(nav.length<2)return;const c=screens[nav.pop()],p=screens[cur()];c.classList.remove('active');p.classList.remove('prev');p.classList.add('active');}
-  function reset(){while(nav.length>1){screens[nav.pop()].classList.remove('active','prev');}screens.home.classList.add('active');screens.home.classList.remove('prev');resetAll();}
+
+  /* tabs */
+  function setTabs(n){document.querySelectorAll('.tab[data-tab]').forEach(t=>t.classList.toggle('on',t.dataset.tab===n));}
+  function switchTab(n,force){if(busy&&!force)return;if(n===cur())return;
+    Object.values(screens).forEach(el=>el.classList.remove('active','prev'));
+    nav=[n];screens[n].classList.add('active');setTabs(n);}
+
+  /* state, the needs attention flag */
+  const attnPill=document.getElementById('attnPill'),robPill=document.getElementById('robPill');
+  const A0=attnPill.innerHTML,R0=robPill.innerHTML;
+  function clearAttention(){if(refilled)return;refilled=true;
+    attnPill.classList.add('ok');attnPill.innerHTML='<span class="ad"></span>All caught up';
+    robPill.className='pill green';robPill.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m5 12 4 4 10-11"/></svg> Refill requested';}
+  function restoreAttention(){refilled=false;attnPill.classList.remove('ok');attnPill.innerHTML=A0;robPill.className='pill amber';robPill.innerHTML=R0;}
+
+  /* reminders count */
+  function updateSched(){const rows=[...document.querySelectorAll('.srow')];
+    const d=rows.filter(r=>r.classList.contains('done')).length;
+    const m=document.getElementById('schedMeta');
+    if(m)m.innerHTML='<b style="color:var(--ink);">'+d+' of '+rows.length+'</b> doses taken today';}
+
+  function reset(){Object.values(screens).forEach(el=>el.classList.remove('active','prev'));
+    nav=['home'];screens.home.classList.add('active');setTabs('home');
+    resetAll();restoreAttention();
+    document.querySelectorAll('.srow').forEach(r=>r.classList.toggle('done',r.hasAttribute('data-init')));
+    updateSched();}
   function resetAll(){document.querySelectorAll('.refill,.cta').forEach(b=>{b.classList.remove('done');const lt=b.querySelector('.lt'),ck=b.querySelector('.ck'),p=b.querySelector('.ckp');if(lt)lt.style.opacity='1';if(ck)ck.style.opacity='0';if(p)p.style.strokeDashoffset='30';});}
   function morph(btn,msg){const lt=btn.querySelector('.lt'),ck=btn.querySelector('.ck'),p=btn.querySelector('.ckp');lt.style.opacity='0';
     setTimeout(()=>{btn.classList.add('done');ck.style.opacity='1';p.style.transition='stroke-dashoffset .5s ease';p.style.strokeDashoffset='0';if(msg)showToast(msg);},200);}
 
   stack.addEventListener('click',e=>{
     if(busy)return;
+    const tb=e.target.closest('[data-tab]');
+    if(tb){const n=tb.dataset.tab;press(tb);rippleAt(tb);
+      if(n==='you'){showToast('Profile lives in the full app');cap('<b>You tab.</b> Profile and settings belong to the full product, kept out of scope here on purpose.');return;}
+      switchTab(n);
+      if(n==='meds')cap('<b>Meds tab.</b> Every medication for everyone you care for, one scannable list with refill states.');
+      if(n==='reminders')cap('<b>Reminders tab.</b> Today&rsquo;s doses across the whole circle. Tap a circle to check one off.');
+      if(n==='home')cap('<b>Home.</b> The circle, and one clear flag when someone needs attention.');
+      return;}
     const back=e.target.closest('[data-back]');if(back){press(back);rippleAt(back);pop();cap('<b>Pop transition.</b> The detail slides back to the right with a parallax dim on Home.');return;}
     const go=e.target.closest('[data-go]');if(go){press(go);rippleAt(go);push(go.dataset.go);cap('<b>Push transition.</b> Tapping a card opens it with an iOS-style slide — calm, predictable navigation.');return;}
     const rel=e.target.closest('[data-rel]');if(rel){rel.parentElement.querySelectorAll('[data-rel]').forEach(c=>c.classList.remove('sel'));rel.classList.add('sel');rippleAt(rel);cap('<b>Segmented choice.</b> Relationship is a single tap, not a dropdown — faster and friendlier.');return;}
     const tog=e.target.closest('[data-toggle]');if(tog){tog.classList.toggle('on');rippleAt(tog);cap('<b>Reminders toggle.</b> Weighted spring + green track = instant, tactile feedback.');return;}
-    const rf=e.target.closest('[data-refill]');if(rf){rippleAt(rf);morph(rf,'Refill requested');cap('<b>Refill → success.</b> The button morphs to a green check in place — confirmation without a disruptive dialog.');return;}
+    const tk=e.target.closest('[data-take]');
+    if(tk){const row=tk.closest('.srow');row.classList.toggle('done');rippleAt(tk);updateSched();
+      showToast(row.classList.contains('done')?'Dose checked off':'Dose unchecked');
+      cap('<b>One tap dosing.</b> Checking a dose updates today&rsquo;s count instantly, no modal, no page.');return;}
+    const rf=e.target.closest('[data-refill]');
+    if(rf){rippleAt(rf);morph(rf,'Refill requested');
+      const med=rf.closest('.med'),nm=med?med.querySelector('.mname'):null;
+      if(nm&&/Lisinopril/.test(nm.textContent)){clearAttention();
+        cap('<b>Refill → success, and state travels.</b> The button morphs in place, and the needs attention flag on Home is already cleared.');}
+      else{cap('<b>Refill → success.</b> The button morphs to a green check in place — confirmation without a disruptive dialog.');}
+      return;}
     const add=e.target.closest('[data-add]');if(add){rippleAt(add);morph(add,'Added to your circle');cap('<b>Add → success.</b> The primary button itself becomes the confirmation.');return;}
   });
 
@@ -361,27 +484,36 @@
   async function tapEl(el){if(!el)return;rippleAt(el);await sleep(260);}
   async function tour(){
     if(busy)return;busy=true;reset();await sleep(400);
-    cap('<b>1 · Open a loved one.</b> Tapping Robert’s card pushes his medication list.');
+    cap('<b>1 · Open a loved one.</b> Tapping Robert&rsquo;s card pushes his medication list.');
     await tapEl(screens.home.querySelector('[data-go="member"]'));push('member');await sleep(950);
     cap('<b>2 · Request a refill.</b> The amber medication, refilled in one tap.');
-    await tapEl(screens.member.querySelector('[data-refill]'));morph(screens.member.querySelector('[data-refill]'),'Refill requested');await sleep(1700);
-    cap('<b>3 · Back to your circle.</b> Pop transition returns Home.');
-    await tapEl(screens.member.querySelector('[data-back]'));pop();await sleep(900);
-    cap('<b>4 · Add someone.</b> A modern, low-friction add-person form.');
+    const mrf=screens.member.querySelector('[data-refill]');
+    await tapEl(mrf);morph(mrf,'Refill requested');clearAttention();await sleep(1600);
+    cap('<b>3 · State travels.</b> Back on Home, the needs attention flag is already cleared.');
+    await tapEl(screens.member.querySelector('[data-back]'));pop();await sleep(1300);
+    cap('<b>4 · Today&rsquo;s doses.</b> The Reminders tab, one tap checks off a dose for anyone in the circle.');
+    switchTab('reminders',true);await sleep(800);
+    const untaken=[...screens.reminders.querySelectorAll('.srow')].find(r=>!r.classList.contains('done'));
+    if(untaken){await tapEl(untaken.querySelector('[data-take]'));untaken.classList.add('done');updateSched();}
+    await sleep(1300);
+    cap('<b>5 · Add someone.</b> A modern, low-friction add-person form.');
+    switchTab('home',true);await sleep(500);
     await tapEl(screens.home.querySelector('[data-go="addperson"]'));push('addperson');await sleep(950);
     const rc=screens.addperson.querySelectorAll('[data-rel]');await tapEl(rc[1]);rc[0].classList.remove('sel');rc[1].classList.add('sel');await sleep(700);
-    cap('<b>5 · Add to circle.</b> Save morphs into a success check.');
-    await tapEl(screens.addperson.querySelector('[data-add]'));morph(screens.addperson.querySelector('[data-add]'),'Added to your circle');await sleep(1800);
-    cap('<b>Done.</b> Calmer hierarchy, clearer status, fewer taps. Replay any step from the panel, or tap through yourself.');
+    await tapEl(screens.addperson.querySelector('[data-add]'));morph(screens.addperson.querySelector('[data-add]'),'Added to your circle');await sleep(1700);
+    cap('<b>Done.</b> Calmer hierarchy, state that travels, and fewer taps. Replay any step from the panel, or tap through yourself.');
     busy=false;
   }
   document.querySelectorAll('[data-demo]').forEach(b=>b.addEventListener('click',async()=>{
     const d=b.dataset.demo;if(d==='tour')return tour();if(busy)return;
     if(d==='reset'){reset();cap('<b>Reset.</b> Back to your circle.');}
     if(d==='open'){reset();await sleep(250);await tapEl(screens.home.querySelector('[data-go="member"]'));push('member');cap('<b>Card → detail.</b> Each loved one opens to a clear, scannable medication list.');}
-    if(d==='refill'){reset();await sleep(250);push('member');await sleep(500);const r=screens.member.querySelector('[data-refill]');resetAll();await sleep(80);rippleAt(r);morph(r,'Refill requested');cap('<b>Refill → success.</b> No modal, no reload — the button becomes the confirmation.');}
+    if(d==='refill'){reset();await sleep(250);push('member');await sleep(500);const r=screens.member.querySelector('[data-refill]');resetAll();await sleep(80);rippleAt(r);morph(r,'Refill requested');clearAttention();cap('<b>Refill → success.</b> No modal, no reload — and the Home flag clears itself.');}
+    if(d==='meds'){switchTab('meds');cap('<b>Meds tab.</b> Every medication for everyone you care for, one scannable list.');}
+    if(d==='reminders'){switchTab('reminders');cap('<b>Reminders tab.</b> Today&rsquo;s doses across the circle. Tap a circle to check one off.');}
     if(d==='add'){reset();await sleep(250);push('addperson');await sleep(500);cap('<b>Add someone.</b> Relationship is a single tap; everything optional stays optional.');}
   }));
+  updateSched();
 })();
 </script>
 </body>
