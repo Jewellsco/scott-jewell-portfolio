@@ -29,10 +29,12 @@
   h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,4.6vw,42px);letter-spacing:-.5px;line-height:1.1;}
   h1 .g{background:linear-gradient(120deg,#9CCBEA,#E4B96B);-webkit-background-clip:text;background-clip:text;color:transparent;}
   .sub{margin-top:16px;color:#B9CBD9;font-size:16px;line-height:1.65;}
-  .stage{display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap;justify-content:center;max-width:1360px;}
+  .stage{display:flex;flex-direction:column;align-items:center;gap:26px;max-width:1300px;width:100%;}
+  .duo{display:grid;grid-template-columns:1fr;gap:34px;width:100%;max-width:1100px;}
+  .fhead{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#7FB3D3;margin:0 0 10px 6px;}
 
   /* browser frame */
-  .bframe{width:min(880px,94vw);background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 44px 100px rgba(2,16,28,.55),0 0 0 1px rgba(255,255,255,.06);}
+  .bframe{width:100%;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 44px 100px rgba(2,16,28,.55),0 0 0 1px rgba(255,255,255,.06);}
   .chrome{display:flex;align-items:center;gap:12px;padding:11px 16px;background:#EEF0F3;border-bottom:1px solid #E0E3E8;}
   .dots{display:flex;gap:6px;}
   .dots i{width:10px;height:10px;border-radius:50%;background:#D3D7DE;}
@@ -65,12 +67,12 @@
   .t-list{font-size:11px;margin:6px 0 0 18px;}
   .t-list li{margin-bottom:4px;}
   .t-btn{display:inline-block;font-size:11px;background:#E8ECF0;border:1px solid #AEB9C4;padding:4px 12px;border-radius:3px;color:#33475C;cursor:pointer;}
-  .t-doc{display:inline-block;font-size:9.5px;background:#FFF6E4;border:1px solid #E3C98F;color:#8a6A1F;border-radius:3px;padding:2px 7px;margin-left:8px;vertical-align:1px;}
 
   /* ---------- CONCEPT ---------- */
   .cbk{font-family:var(--ui);color:var(--cb-navy);background:var(--cb-tint-2);display:grid;grid-template-columns:250px 1fr;min-height:100%;}
   .cbk *{line-height:1.5;}
-  .cbk-rail{background:#fff;border-right:1px solid var(--cb-line);padding:22px 16px;display:flex;flex-direction:column;gap:0;}
+  .cbk-rail{background:#fff;border-right:1px solid var(--cb-line);padding:22px 16px;display:flex;flex-direction:column;gap:0;position:sticky;top:0;align-self:start;height:640px;overflow-y:auto;scrollbar-width:none;z-index:20;}
+  .cbk-rail::-webkit-scrollbar{display:none;}
   .cbk-mark{width:32px;height:32px;border-radius:9px;background:var(--cb);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;}
   .cbk-brand{display:flex;align-items:center;gap:10px;padding-bottom:18px;border-bottom:1px solid var(--cb-line);margin-bottom:16px;}
   .cbk-brand b{font-size:14px;font-weight:800;}
@@ -82,7 +84,7 @@
   .cbk-nav a{display:block;padding:9px 11px;border-radius:8px;font-size:13px;font-weight:600;color:#3D5A70;cursor:pointer;}
   .cbk-nav a.on{background:var(--cb);color:#fff;}
   .cbk-railfoot{margin-top:auto;padding-top:14px;border-top:1px solid var(--cb-line);font-size:10px;color:#5B7285;line-height:1.5;}
-  .cbk-main{padding:26px 28px 40px;}
+  .cbk-main{padding:26px 28px 44px;}
   .cbk-main h1{font-family:var(--ui);font-size:23px;font-weight:800;letter-spacing:-.02em;color:var(--cb-navy);}
   .cbk-main .sub2{font-size:13.5px;color:#4A6478;margin-top:3px;}
   .meter{margin-top:16px;background:#fff;border:1px solid var(--cb-line);border-radius:13px;padding:15px 18px;display:grid;grid-template-columns:1fr auto;gap:7px 16px;align-items:center;}
@@ -92,7 +94,7 @@
   .chipbtn2.done{background:#E7F4EE;color:var(--cb-pos);border-color:#BFE3D2;}
   .track{grid-column:1 / -1;height:8px;background:var(--cb-tint);border-radius:99px;overflow:hidden;}
   .track i{display:block;height:100%;width:80%;background:var(--cb-accent);border-radius:99px;transition:width .9s cubic-bezier(.16,1,.3,1);}
-  .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:14px;}
+  .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
   .ccard{background:#fff;border:1px solid var(--cb-line);border-radius:13px;padding:17px;transition:border-color .3s;}
   .ccard h3{font-size:13.5px;font-weight:800;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
   .ccard h3 a{font-size:11px;font-weight:700;color:var(--cb);cursor:pointer;}
@@ -127,13 +129,11 @@
   .pref-note{font-size:11px;color:#4A6478;margin-top:11px;padding-top:11px;border-top:1px solid var(--cb-tint);}
 
   /* ---------- side panel ---------- */
-  .panel{width:330px;max-width:94vw;}
+  .panel{width:100%;}
+  .panelrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:9px;}
   .panel h2{font-family:var(--display);font-size:20px;font-weight:600;margin-bottom:8px;}
   .pdesc{color:#B9CBD9;font-size:13.5px;line-height:1.6;margin-bottom:16px;}
-  .modeswitch{display:flex;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:13px;padding:4px;margin-bottom:16px;backdrop-filter:blur(10px);}
-  .modeswitch button{flex:1;font-family:var(--sans);font-size:12.5px;font-weight:600;padding:9px 6px;border:none;border-radius:10px;background:none;color:#B9CBD9;cursor:pointer;}
-  .modeswitch button.on{background:linear-gradient(130deg,#005288,#1179B5);color:#fff;box-shadow:0 6px 18px rgba(0,82,136,.45);}
-  .chipbtn{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);border-radius:13px;padding:11px 13px;color:#fff;cursor:pointer;margin-bottom:9px;font-family:var(--sans);transition:background .2s;}
+  .chipbtn{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);border-radius:13px;padding:10px 12px;color:#fff;cursor:pointer;font-family:var(--sans);transition:background .2s;}
   .chipbtn:hover{background:rgba(255,255,255,.11);}
   .chipbtn.primary{background:linear-gradient(130deg,rgba(0,82,136,.55),rgba(63,151,196,.30));border-color:rgba(127,179,211,.45);}
   .chipbtn .dot{width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex:none;}
@@ -145,7 +145,7 @@
   .caption .q{display:block;margin-top:7px;padding-left:10px;border-left:2px solid var(--gold);color:#A9BFCE;font-style:italic;}
   .backlink{margin-top:34px;font-size:13.5px;color:#8AA6B8;}
   .backlink a{color:#CBE2F1;}
-  @media(max-width:1240px){.stage{flex-direction:column;align-items:center;}.panel{width:min(880px,94vw);}}
+  @media(max-width:1080px){.cgrid{grid-template-columns:1fr;}.cbk{grid-template-columns:1fr;}.cbk-rail{flex-direction:row;align-items:center;gap:14px;overflow-x:auto;padding:14px 16px;height:auto;border-right:none;border-bottom:1px solid var(--cb-line);}.cbk-brand{border:none;padding:0;margin:0;}.cbk-org{margin:0;}.cbk-nav{display:flex;}.cbk-railfoot{display:none;}}
 
   /* live concept components */
   .role[data-acc],.own-line[data-acc]{cursor:pointer;}
@@ -186,15 +186,18 @@
 </head>
 <body>
   <div class="top">
-    <div class="eyebrow">CoBank &middot; Working Flow &middot; Evidence Based</div>
-    <h1>The portal they document, <span class="g">next to the one members deserve.</span></h1>
-    <p class="sub">The left screen is CoBank's member portal rebuilt faithfully from their own help pages, nothing added. Flip the switch to the concept, then use the gap buttons, each one quotes their documentation and lights up the thing it lacks.</p>
+    <div class="eyebrow">A real bank &middot; Before and after</div>
+    <h1>One bank's website, <span class="g">before and after.</span></h1>
+    <p class="sub">CoBank is a large American bank owned by its own customers, mostly farmers and rural businesses. The top screen recreates the online banking site those customers use today, built from the bank's own help guides. The bottom screen is my redesign, and everything in it works, click anything. The buttons under the screens walk through the biggest differences one at a time. I do not work for CoBank, this is an independent design exercise built from public information.</p>
   </div>
 
   <div class="stage">
-    <div class="bframe">
-      <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="urlbar" id="urlbar">portal.cobank.com &middot; documented feature set</div></div>
-      <div class="modewrap">
+    <div class="duo">
+      <div class="side">
+        <div class="fhead">Before, what customers use today, recreated from the bank's help guides</div>
+        <div class="bframe">
+          <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="urlbar">portal.cobank.com &middot; documented</div></div>
+          <div class="modewrap">
 
         <!-- ============ MODE, TODAY ============ -->
         <div class="mode on today" id="mToday">
@@ -203,7 +206,7 @@
             <span class="t-tab on">Home</span><span class="t-tab" data-na>Account Management</span><span class="t-tab" data-na>Payment Transfers</span><span class="t-tab" data-na>Rates &amp; Fixes</span><span class="t-tab" data-na>Reporting</span>
           </div>
           <div class="t-wrap">
-            <div class="t-h">Consolidated Balance Summary <span class="t-doc">documented</span></div>
+            <div class="t-h">Consolidated Balance Summary</div>
             <p class="t-note">A balance overview of the loan and/or investment relationships you have with CoBank.</p>
             <table class="t-tbl">
               <tr><th>Description</th><th>Account</th><th>Balance</th></tr>
@@ -213,13 +216,13 @@
             </table>
             <p class="t-note">The stock you own appears only as a balance row. Nothing explains ownership, patronage, or your vote.</p>
 
-            <div class="t-h">Settlement Report <span class="t-doc">documented</span></div>
+            <div class="t-h">Settlement Report</div>
             <div class="t-box">Settlement amount for 07/02/2026, <b>$3,118.42</b>. <span class="t-btn" data-na>View report</span></div>
 
-            <div class="t-h">Scheduled Reports <span class="t-doc">documented</span></div>
+            <div class="t-h">Scheduled Reports</div>
             <div class="t-box">Set up email reports providing updates regarding transaction activity, account balances and interest rates. <span class="t-btn" data-na>Add or edit alerts</span></div>
 
-            <div class="t-h">User Profile <span class="t-doc">documented</span></div>
+            <div class="t-h">User Profile</div>
             <div class="t-box" id="tProfile">
               <b>Personal Information.</b> Update the Online Banking system if your e-mail address has changed.
               <table class="t-tbl" style="margin-top:8px;">
@@ -230,7 +233,7 @@
               <p class="t-note" style="margin-top:6px;">This is the entire documented profile.</p>
             </div>
 
-            <div class="t-h">Preferences <span class="t-doc">documented</span></div>
+            <div class="t-h">Preferences</div>
             <div class="t-box" id="tPrefs">
               Customize system default settings within the following categories.
               <ul class="t-list">
@@ -243,20 +246,28 @@
             </div>
           </div>
         </div>
+          </div>
+        </div>
+      </div>
 
-        <!-- ============ MODE, CONCEPT ============ -->
-        <div class="mode cbk" id="mConcept">
+      <div class="side">
+        <div class="fhead">After, my redesign, everything works, click around</div>
+        <div class="bframe">
+          <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="urlbar">cobank.com/portal/profile &middot; concept</div></div>
+          <div class="modewrap">
+        <!-- ============ CONCEPT ============ -->
+        <div class="mode cbk on" id="mConcept">
           <aside class="cbk-rail">
             <div class="cbk-brand"><div class="cbk-mark">CB</div><div><b>CoBank</b><span>Digital Banking</span></div></div>
             <div class="cbk-org"><div class="av">JF</div><div><b>Jewell Farms Cooperative</b><span id="orgWho">Scott &middot; Admin</span></div></div>
             <nav class="cbk-nav">
-              <a class="on" data-navgo="top">Profile</a><a data-navgo="gSec">Security</a><a data-navgo="gOwn">Ownership</a><a data-navgo="docs">Documents</a><a data-navgo="gPrefs">Preferences</a><a data-navgo="support">Support</a>
+              <a class="on" data-navgo="top">Home</a><a data-navgo="gSec">Security</a><a data-navgo="gOwn">Ownership</a><a data-navgo="docs">Documents</a><a data-navgo="gPrefs">Preferences</a><a data-navgo="support">Support</a>
             </nav>
             <div class="cbk-railfoot">Proud member of the Farm Credit System. Equal Housing Lender. Equal Credit Opportunity Lender.</div>
           </aside>
           <main class="cbk-main">
-            <h1>Your profile</h1>
-            <p class="sub2">One place for who you are, how we reach you, and what you own as a member.</p>
+            <h1>Home</h1>
+            <p class="sub2">You, your money, and how we stay in touch, all in one place.</p>
 
             <div class="meter" id="gMeter">
               <div class="lbl">Profile strength, <em id="meterVal">80 percent</em></div>
@@ -302,6 +313,31 @@
                 </svg>
               </div>
 
+              <div class="ccard" id="gAccts">
+                <h3>Accounts at a glance <a data-na>All accounts</a></h3>
+                <div class="own-line" data-acc><span class="k">Operating line of credit &middot; ...4412</span><span class="v">$186,300</span><div class="rx"><div class="rx-in">Drawn $186,300 of your $300,000 line, $113,700 available today. Interest accrues daily at 7.1 percent, shown per draw on tap.</div></div></div>
+                <div class="own-line" data-acc><span class="k">Term loan, equipment &middot; ...7208</span><span class="v">$412,750</span><div class="rx"><div class="rx-in">Next payment $8,914 on August 1, autopay is on. Two taps to see the full schedule or pay ahead.</div></div></div>
+                <div class="own-line" data-acc><span class="k">Today's settlement</span><span class="v">$3,118.42</span><div class="rx"><div class="rx-in">Settles by 5 pm Mountain. The full settlement report opens on screen, line by line, and downloads if you want the file.</div></div></div>
+                <p class="own-note">The balance summary and settlement report their portal documents, readable at a glance, detailed on tap.</p>
+              </div>
+
+              <div class="ccard" id="gReports">
+                <h3>Reports and alerts</h3>
+                <div class="prefrow"><span class="t">Transaction activity</span>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                  <button class="sw" type="button" role="switch" aria-checked="false"><span class="pill"></span>Text</button>
+                  <span class="d">A daily digest of anything that moved.</span></div>
+                <div class="prefrow"><span class="t">Balance changes</span>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Text</button>
+                  <span class="d">The moment a balance crosses a line you set.</span></div>
+                <div class="prefrow"><span class="t">Rate changes</span>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                  <button class="sw" type="button" role="switch" aria-checked="false"><span class="pill"></span>Text</button>
+                  <span class="d">When a rate on your credit moves, old and new side by side.</span></div>
+                <p class="pref-note">Their Scheduled Reports, rebuilt as alerts a person can reason about. Everything shows in app first, email and text are your choice.</p>
+              </div>
+
               <div class="ccard wide" id="gPrefs">
                 <h3>Communication preferences</h3>
                 <div class="prefrow"><span class="t">Statements</span>
@@ -337,25 +373,26 @@
         </div>
         <div class="ctoast" id="cToast"></div>
 
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="panel">
-      <h2>Flip it, then press the gaps</h2>
-      <p class="pdesc">Everything on the Today screen comes from CoBank's own help pages. Every gap button quotes them, switches to the concept, and lights up the answer.</p>
-      <div class="modeswitch">
-        <button id="btnToday" class="on" type="button">CoLink today, documented</button>
-        <button id="btnConcept" type="button">The concept</button>
-      </div>
+      <h2>See the differences</h2>
+      <p class="pdesc">Each button shows one difference. It quotes the bank's own help guides, then points at the fix in the redesign below.</p>
+      <div class="panelrow">
       <button class="chipbtn primary" data-gap="tour"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v14l11-7z"/></svg></span><span><div class="t">Play the guided walkthrough</div><div class="d">Every gap, in order</div></span></button>
       <button class="chipbtn" data-gap="own"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><span><div class="t">Ownership made visible</div><div class="d">Stock, patronage, and the why</div></span></button>
+      <button class="chipbtn" data-gap="parity"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span><span><div class="t">Their features, kept</div><div class="d">Balances, settlement, reports</div></span></button>
       <button class="chipbtn" data-gap="roles"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span><div class="t">Roles in plain language</div><div class="d">Borrower, owner, voter, admin</div></span></button>
       <button class="chipbtn" data-gap="vote"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-11"/></svg></span><span><div class="t">The vote they never mention</div><div class="d">Board election awareness</div></span></button>
       <button class="chipbtn" data-gap="meter"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 12l6-6"/></svg></span><span><div class="t">A profile that guides</div><div class="d">Strength meter, tap it to finish</div></span></button>
       <button class="chipbtn" data-gap="name"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h10M4 17h7"/></svg></span><span><div class="t">Preferred name, phone as sign in</div><div class="d">Identity, not just an email field</div></span></button>
       <button class="chipbtn" data-gap="sec"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></span><span><div class="t">Security in sentences</div><div class="d">A log becomes a plain answer</div></span></button>
       <button class="chipbtn" data-gap="prefs"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><span><div class="t">Preferences about people</div><div class="d">Purpose and channel, not timeouts</div></span></button>
-      <div class="caption" id="caption"><b>Start on the left.</b> That screen is not a parody, it is their documented feature set rebuilt line for line, balance summary, settlement report, scheduled email reports, a profile that edits an email address, and preferences that manage timeouts.</div>
+      </div>
+      <div class="caption" id="caption"><b>Two versions of one bank's website.</b> The top recreates what customers get today. The bottom is my redesign, and every button and toggle in it works. Play the walkthrough, or just start clicking.</div>
     </div>
   </div>
 
@@ -364,20 +401,10 @@
 <script>
 (()=>{
   const mToday=document.getElementById('mToday'),mConcept=document.getElementById('mConcept');
-  const bToday=document.getElementById('btnToday'),bConcept=document.getElementById('btnConcept');
-  const caption=document.getElementById('caption'),urlbar=document.getElementById('urlbar');
-  const cToast=document.getElementById('cToast');
+  const caption=document.getElementById('caption'),cToast=document.getElementById('cToast');
   let busy=false,toastT=null;
   const cap=h=>caption.innerHTML=h;
   const toast=m=>{cToast.textContent=m;cToast.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>cToast.classList.remove('show'),1700);};
-  function setMode(m){
-    const con=m==='concept';
-    mToday.classList.toggle('on',!con);mConcept.classList.toggle('on',con);
-    bToday.classList.toggle('on',!con);bConcept.classList.toggle('on',con);
-    urlbar.textContent=con?'cobank.com/portal/profile · the concept':'portal.cobank.com · documented feature set';
-  }
-  bToday.addEventListener('click',()=>{if(!busy){setMode('today');cap('<b>CoLink today.</b> Rebuilt from their help pages. Notice what gets a whole system, balances and reports, and what gets one paragraph, the person.');}});
-  bConcept.addEventListener('click',()=>{if(!busy){setMode('concept');cap('<b>The concept.</b> Every component on this side is live. Edit the name, open the roles, review devices, tap the patronage history, use the rail.');}});
 
   function highlight(id){
     const el=document.getElementById(id);if(!el)return;
@@ -386,11 +413,11 @@
     setTimeout(()=>el.classList.remove('hl'),1700);
   }
   const GAPS={
-    own:{t:'<b>Ownership made visible.</b> Stock value, the yearly patronage payment, five years of history, and one sentence saying why it exists. Tap either line for the detail.<span class="q">Their docs, a balance overview of the loan and/or investment relationships you have with CoBank. The stock you own is a table row.</span>',el:'gOwn'},
-    roles:{t:'<b>Roles in plain language.</b> Borrower, member owner, voting member, admin. Tap any role, each one opens.<span class="q">Their docs describe accounts and reports. Who you are to the bank appears nowhere.</span>',el:'gRoles'},
+    own:{t:'<b>Ownership made visible.</b> Stock value, the yearly patronage payment, five years of history, and one sentence saying why it exists. Tap either line for the detail.<span class="q">Their docs, a balance overview of the loan and/or investment relationships you have with CoBank. The stock you own is a table row above.</span>',el:'gOwn'},
+    roles:{t:'<b>Roles in plain language.</b> Borrower, member owner, voting member, admin. Tap any role, each one opens.<span class="q">Their docs describe accounts and reports. Who you are to the bank appears nowhere above.</span>',el:'gRoles'},
     vote:{t:'<b>The vote they never mention.</b> CoBank customers elect the board. Tap the role for how the election works.<span class="q">Elections are absent from every documented page.</span>',el:'gVote'},
     meter:{t:'<b>A profile that guides.</b> Strength at 80 percent with one next action. Try the button, it finishes the job.<span class="q">Their docs, update the Online Banking system if your e-mail address has changed. A form, not a guide.</span>',el:'gMeter'},
-    name:{t:'<b>Preferred name, phone as your sign in, verified email.</b> Press Edit and change the name, it updates everywhere.<span class="q">The documented profile holds an email address and specific components of your security profile. That is all of it.</span>',el:'gName'},
+    name:{t:'<b>Preferred name, phone as your sign in, verified email.</b> Press Edit and change the name, it updates everywhere.<span class="q">The documented profile above holds an email address and specific components of your security profile. That is all of it.</span>',el:'gName'},
     sec:{t:'<b>Security in sentences.</b> Last sign in as a plain answer, and Review devices actually reviews them.<span class="q">Their nearest feature is a Session Activity Report, buried under Preferences next to Time Out.</span>',el:'gSec'},
     prefs:{t:'<b>Preferences about people.</b> Statements, rates, patronage, elections, each with a purpose line and email or text. Legal notices never silently off.<span class="q">Their documented preferences, Session Activity Report, Time Out, Bank Lookup, Transaction Search. Settings for a system, not a person.</span>',el:'gPrefs'}
   };
@@ -398,13 +425,13 @@
     const g=b.dataset.gap;
     if(g==='tour')return tour();
     if(busy)return;
+    if(g==='parity'){highlight('gAccts');setTimeout(()=>highlight('gReports'),900);
+      cap('<b>Nothing they have is lost.</b> The balance summary, the settlement report, and Scheduled Reports all survive, readable at a glance, detailed on tap, alerts by purpose and channel.<span class="q">Their docs, email reports regarding transaction activity, account balances and interest rates. Kept, and made legible.</span>');return;}
     const it=GAPS[g];if(!it)return;
-    setMode('concept');setTimeout(()=>highlight(it.el),350);cap(it.t);
+    highlight(it.el);cap(it.t);
   }));
 
   /* ---------- concept, every component live ---------- */
-
-  /* rail navigation + sheets */
   const sheetWrap=document.getElementById('sheetWrap'),sheetTitle=document.getElementById('sheetTitle'),sheetSub=document.getElementById('sheetSub'),sheetBody=document.getElementById('sheetBody');
   const SHEETS={
     docs:{t:'Documents',s:'Statements and tax forms, readable on screen first, downloadable always.',rows:[
@@ -422,19 +449,17 @@
     sheetWrap.hidden=false;}
   sheetWrap.addEventListener('click',e=>{
     if(e.target.closest('[data-close]')){sheetWrap.hidden=true;return;}
-    const r=e.target.closest('[data-shrow]');
-    if(r){toast('Opens in the full product');}
+    if(e.target.closest('[data-shrow]'))toast('Opens in the full product');
   });
   document.querySelectorAll('[data-navgo]').forEach(a=>a.addEventListener('click',()=>{
     const go=a.dataset.navgo;
     document.querySelectorAll('[data-navgo]').forEach(x=>x.classList.toggle('on',x===a));
-    if(go==='top'){mConcept.scrollTop=0;cap('<b>Profile.</b> The page you are on, one place for who you are, how we reach you, and what you own.');}
+    if(go==='top'){mConcept.scrollTop=0;cap('<b>Home.</b> The page you are on. You, your money, and how the bank stays in touch, one honest screen.');}
     else if(go==='docs'){openSheet('docs');cap('<b>Documents.</b> Statements and the patronage tax form, named in plain language, viewable before downloadable.');}
     else if(go==='support'){openSheet('support');cap('<b>Support.</b> A named person first, then the phone line, then the security path. Context travels with you.');}
     else{highlight(go);cap('<b>Rail navigation.</b> Every section is reachable, and every section answers a member question, not a system setting.');}
   }));
 
-  /* edit preferred name */
   const editBtn=document.getElementById('editBtn'),pname=document.getElementById('pnameVal'),orgWho=document.getElementById('orgWho');
   let editing=false;
   function startEdit(){
@@ -455,30 +480,26 @@
   editBtn.addEventListener('click',()=>editing?saveEdit():startEdit());
   editBtn.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();editing?saveEdit():startEdit();}});
 
-  /* roles + ownership accordions */
   document.querySelectorAll('[data-acc]').forEach(el=>el.addEventListener('click',e=>{
     if(e.target.closest('.rx'))return;
     const x=el.querySelector('.rx');if(!x)return;
     const open=x.classList.toggle('open');
-    if(open&&el.id==='gVote')cap('<b>The vote, opened.</b> One member, one vote, regardless of stock held. Their documented portal never says the word election.');
+    if(open&&el.id==='gVote')cap('<b>The vote, opened.</b> One member, one vote, regardless of stock held. The documented portal above never says the word election.');
     else if(open)cap('<b>Progressive detail.</b> The card answers at a glance, the tap answers the follow up question, nothing hides in a PDF.');
   }));
 
-  /* devices */
   const devBtn=document.getElementById('devBtn'),devList=document.getElementById('devList');
   devBtn.addEventListener('click',()=>{
     const open=devList.classList.toggle('open');
     devBtn.textContent=open?'Hide devices':'Review devices';
-    if(open)cap('<b>Review devices, for real.</b> Every signed in device, where and when, and a sign out that works. Their docs offer a Session Activity Report under Preferences.');
+    if(open)cap('<b>Review devices, for real.</b> Every signed in device, where and when, and a sign out that works. Their portal above offers a Session Activity Report under Preferences.');
   });
   devBtn.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();devBtn.click();}});
-  const macOut=document.getElementById('macOut');
-  macOut.addEventListener('click',e=>{e.stopPropagation();
+  document.getElementById('macOut').addEventListener('click',e=>{e.stopPropagation();
     document.getElementById('devMac').classList.add('gone');
     toast('Signed out on Mac, Safari');
     cap('<b>Instant revocation.</b> One tap ends the session on the other device, and the member watched it happen.');});
 
-  /* profile strength */
   const phoneChip=document.getElementById('phoneChip'),meterBar=document.getElementById('meterBar'),meterVal=document.getElementById('meterVal');
   let done=false;
   phoneChip.addEventListener('click',()=>{
@@ -489,7 +510,6 @@
     cap('<b>Completion by design.</b> One tap, the meter fills, and the profile is done. This exact pattern lifted profile completion in my CVS account work.');
   });
 
-  /* badges + toggles */
   document.getElementById('mailBadge').addEventListener('click',()=>{
     toast('Verified June 14, 2026');
     cap('<b>Verified means something.</b> Tap the badge and it tells you when and how. Status you can interrogate is status you can trust.');});
@@ -498,32 +518,30 @@
     cap('<b>A real choice.</b> Channel by purpose, one tap, and the note below promises legal notices never silently disappear.');
   }));
 
-  /* today mode links stay documentation scoped */
   document.querySelectorAll('[data-na]').forEach(el=>el.addEventListener('click',e=>{
     e.preventDefault();
-    cap('<b>Documented, not the argument.</b> This control exists in their portal and works fine. The prototype keeps the interactivity on the concept side, where the gaps are.');
+    cap('<b>Documented, not the argument.</b> This control exists in their portal and works fine. The interactivity lives below, where the gaps are.');
   }));
 
-  /* tour */
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   async function tour(){
     if(busy)return;busy=true;
-    setMode('today');
-    cap('<b>1 · Start with their truth.</b> This is the documented portal, balances, settlement, email reports, a profile that edits an email, preferences that manage timeouts.');
-    mToday.scrollTop=0;await sleep(3400);
-    document.getElementById('tProfile').scrollIntoView({behavior:'smooth',block:'center'});
-    cap('<b>2 · The entire documented profile.</b> An email address and security components. Balances get a system, the person gets a paragraph.');
-    await sleep(3400);
-    setMode('concept');mConcept.scrollTop=0;
-    cap('<b>3 · Same bank, organized around the member.</b> Who you are, what you own, how you vote, how we reach you. Everything here is live.');
-    await sleep(2800);
-    highlight('gOwn');cap(GAPS.own.t);await sleep(2600);
-    const pat=document.querySelector('#gOwn .own-line[data-acc]:nth-of-type(2) .rx')||document.querySelectorAll('#gOwn .rx')[1];
-    if(pat){pat.classList.add('open');}
-    cap('<b>4 · Five years of patronage, opened.</b> Cash paid and retained, per year. In their portal this is a balance row.');
+    mToday.scrollTop=0;mConcept.scrollTop=0;
+    cap('<b>1 · Their truth, on top.</b> The documented portal, balances, settlement, email reports. Watch what gets a system and what gets a paragraph.');
     await sleep(3000);
-    highlight('gRoles');cap(GAPS.roles.t);
+    highlight('tProfile');
+    cap('<b>2 · The entire documented profile.</b> An email address and security components. That is the person, per their own manual.');
+    await sleep(3200);
+    highlight('tPrefs');
+    cap('<b>3 · Preferences, documented.</b> Session Activity Report, Time Out, Bank Lookup, Transaction Search. Settings for a system.');
+    await sleep(3200);
+    highlight('gOwn');
+    const pats=document.querySelectorAll('#gOwn .rx');if(pats[1])pats[1].classList.add('open');
+    cap('<b>4 · Now the concept below. Ownership, opened.</b> Five years of patronage, cash and retained. Above, this is a balance row.');
+    await sleep(3200);
+    highlight('gRoles');
     const vx=document.querySelector('#gVote .rx');if(vx)vx.classList.add('open');
+    cap(GAPS.roles.t);
     await sleep(3000);
     highlight('gMeter');cap(GAPS.meter.t);await sleep(2200);
     if(!done)phoneChip.click();
@@ -532,7 +550,10 @@
     cap('<b>5 · Devices, reviewed.</b> Where you are signed in and a sign out that works, instead of a session report under Preferences.');
     await sleep(3000);
     highlight('gPrefs');cap(GAPS.prefs.t);await sleep(3000);
-    cap('<b>Done.</b> Every claim traces to their help pages, and every answer on this side is a working control. Tap anything.');
+    highlight('gAccts');
+    cap('<b>6 · Nothing lost.</b> Their balance summary, settlement report, and scheduled reports all survive below, at a glance first, detail on tap, alerts a person can reason about.');
+    await sleep(3200);
+    cap('<b>Done.</b> Same bank, top and bottom. Every claim traces to their help pages, and everything in the concept is a working control. Tap anything.');
     busy=false;
   }
 })();
