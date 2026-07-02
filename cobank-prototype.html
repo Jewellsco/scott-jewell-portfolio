@@ -643,6 +643,7 @@
   .dn2-head img{width:24px;height:24px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px #fff,0 2px 6px rgba(6,28,44,.25);}
   .dn2-head b{font-size:11.5px;font-weight:800;color:var(--cb-navy);display:block;line-height:1.15;}
   .dn2-head span{font-size:8.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#8AA0B2;}
+  .dn2-head .cdot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;vertical-align:1px;}
   .dn2-txt{font-size:11.5px;line-height:1.55;color:#3D5A70;}
   .dn2-txt a{color:var(--cb);font-weight:700;border-bottom:1px dotted var(--cb);}
   .dn2-txt a:hover{border-bottom-style:solid;}
@@ -659,11 +660,11 @@
   'use strict';
   const AV='assets/scott-avatar.jpg';
   const NOTES=[
-    {sel:'#gMeter',txt:'Completion needs a next action, not a score. One tap finishes the job. This pattern lifted profile completion in my CVS account work.'},
+    {sel:'#gMeter',cat:'Next best action',dot:'#1C7C54',txt:'Completion needs a next action, not a score. One tap finishes the job. This pattern lifted profile completion in my CVS account work.'},
     {sel:'#gNav',side:'left',key:true,txt:'One screen or many. I kept the whole concept on one screen so a member’s daily answers never hide behind navigation, and the full argument stays visible. The case for separate screens is real though, deeper tasks, calmer pages, cleaner routes. I built that version too. <a href="cobank-prototype-screens.html">Open the multi screen variant</a>.'},
-    {sel:'#tProfile',txt:'This box is the whole argument. Their manual gives the person one paragraph while balances get a system. Everything in the redesign below fixes exactly that.'},
-    {sel:'#gOwn',txt:'Members own this bank and the old portal never says so. Stock, patronage, and five years of history, one glance, and one tap for the proof.'},
-    {sel:'#gPrefs',txt:'Consent should read like a choice. Every channel names its purpose, and legal notices can never silently switch off.'}
+    {sel:'#tProfile',cat:'The evidence',dot:'#3F97C4',txt:'This box is the whole argument. Their manual gives the person one paragraph while balances get a system. Everything in the redesign below fixes exactly that.'},
+    {sel:'#gOwn',cat:'Membership',dot:'#005288',txt:'Members own this bank and the old portal never says so. Stock, patronage, and five years of history, one glance, and one tap for the proof.'},
+    {sel:'#gPrefs',cat:'Consent',dot:'#B45309',txt:'Consent should read like a choice. Every channel names its purpose, and legal notices can never silently switch off.'}
   ];
   const sides=new Map();
   function sideFor(el){
@@ -682,8 +683,9 @@
     if(getComputedStyle(t).position==='static')t.style.position='relative';
     const dot=document.createElement('span');dot.className='dn2-dot';dot.setAttribute('aria-hidden','true');t.appendChild(dot);
     const note=document.createElement('div');note.className='dn2-note';note.setAttribute('role','note');
-    const lbl=n.key?'Key decision':'Design note';
-    note.innerHTML='<div class="dn2-head"><img src="'+AV+'" alt=""><div><b>Scott Jewell</b><span>'+lbl+'</span></div></div><div class="dn2-txt">'+n.txt+'</div>';
+    const lbl=n.cat||(n.key?'Key decision':'Design note');
+    const cdot=n.key?'#C8811E':(n.dot||'#7FB3D3');
+    note.innerHTML='<div class="dn2-head"><img src="'+AV+'" alt=""><div><b>Scott Jewell</b><span><i class="cdot" style="background:'+cdot+'"></i>'+lbl+'</span></div></div><div class="dn2-txt">'+n.txt+'</div>';
     S.rail.appendChild(note);
     const path=document.createElementNS('http://www.w3.org/2000/svg','path');S.svg.appendChild(path);
     if(n.key){note.classList.add('dn2-key');dot.classList.add('k');path.classList.add('k');}
