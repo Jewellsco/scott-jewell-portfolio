@@ -159,12 +159,12 @@
     box-shadow:inset 0 0 70px rgba(8,4,40,.4);}
   .card .thumb.cv-cover::before,.card .thumb.win-cover::before{display:none;}
   .card:hover .thumb.cv-cover,.card:hover .thumb.win-cover{box-shadow:inset 0 0 70px rgba(8,4,40,.4),0 30px 56px rgba(20,16,80,.22);}
-  /* full-bleed image cover (polished mockup fills the tile) */
-  .card .thumb.img-cover{background:#0c0c0d;}
+  /* framed screenshot on shared light backdrop (matches Ibotta / Caregiver) */
+  .card .thumb.img-cover{background:linear-gradient(150deg,#E4E8EE 0%,#EFF1F5 55%,#FBFBFC 100%);}
   .card .thumb.img-cover::before{display:none;}
-  .card .thumb.img-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;
-    border:0;border-radius:0;box-shadow:none;transform:scale(1.01);}
-  .card:hover .thumb.img-cover img{transform:scale(1.05);}
+  .card .thumb.img-cover img{position:absolute;inset:24px;width:calc(100% - 48px);height:calc(100% - 48px);object-fit:cover;object-position:top center;
+    border:1px solid rgba(12,19,34,.08);border-radius:14px;box-shadow:0 18px 44px rgba(13,40,120,.18);transform:scale(1);transition:transform .6s var(--ease-out),box-shadow .6s var(--ease-out);}
+  .card:hover .thumb.img-cover img{transform:translateY(-4px) scale(1.015);box-shadow:0 26px 58px rgba(13,40,120,.22);}
 
   /* ===== BAGEQUITY ANIMATED COVER ===== */
   .be-cover{--be-green:#1BC55C;background:radial-gradient(140% 120% at 78% -15%,#15211a 0%,#0d120f 46%,#080a08 100%);
@@ -660,7 +660,7 @@
     <div class="work-grid">
 
       <a class="card reveal" href="case-cvs.html" style="--i:0">
-        <div class="thumb img-cover"><span class="badge">Live prototype</span><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/668c152f7bd26d0002aa21a3/iEIbtq6uoVE9qbXi.png" alt="CVS mobile app redesign"></div>
+        <div class="thumb img-cover"><span class="badge">Live prototype</span><img loading="lazy" src="assets/case/iEIbtq6uoVE9qbXi.png" alt="CVS mobile app redesign"></div>
         <div class="card-body">
           <div class="ctags">Healthcare · iOS / Android · Prototype</div>
           <h3>CVS Health Mobile App Redesign</h3>
@@ -730,7 +730,7 @@
       </a>
 
       <a class="card reveal" href="case-freebird.html" style="--i:0">
-        <div class="thumb img-cover"><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/63193e7a3b7a930003306740/cd9YssCwvrRFhY6o.jpeg" alt="Freebird product page redesign"></div>
+        <div class="thumb img-cover"><img loading="lazy" src="assets/case/cd9YssCwvrRFhY6o.jpeg" alt="Freebird product page redesign"></div>
         <div class="card-body">
           <div class="ctags">eCommerce · Product Vision · Redesign</div>
           <h3>Freebird Product Page Redesign</h3>
@@ -740,7 +740,7 @@
       </a>
 
       <a class="card reveal" href="case-brandgo.html" style="--i:1">
-        <div class="thumb img-cover"><img loading="lazy" src="https://uxfolio-prod.s3.us-east-1.amazonaws.com/618aa389bc92a50003ebac8f/62028bc6b0dc93000367ca77/ss9gV8z6BNOB1GCA.png" alt="Brand GO social shopping"></div>
+        <div class="thumb img-cover"><img loading="lazy" src="assets/case/ss9gV8z6BNOB1GCA.png" alt="Brand GO social shopping"></div>
         <div class="card-body">
           <div class="ctags">Social Commerce · Concept · Mobile</div>
           <h3>Brand GO Social Shopping</h3>
@@ -813,11 +813,11 @@
       <div class="about-statement">I'm a designer with over a decade in visual design. I thrive on <span style="color:var(--accent);">simplifying complex apps</span>, and I care about the customer journey and the details that make products feel effortless.<span class="mut"> Creative, collaborative, and dedicated to outstanding user experiences.</span></div>
       <div class="about-body">
         <p>From print and visual design into product, I've spent fifteen years learning what makes interfaces feel inevitable: <b>research, clear hierarchy, accessible patterns,</b> and a relentless focus on the person on the other side of the screen.</p>
-        <p>Today I design for healthcare and fintech, lead 0&nbsp;→&nbsp;1 product work, and bring AI-first practices into how I design and ship.</p>
+        <p>Today I design for healthcare and fintech, lead 0&nbsp;→&nbsp;1 product work, and use AI to ship faster without lowering the bar on trust or craft.</p>
         <div class="skills">
           <span class="skill">UX Design</span><span class="skill">UI Design</span><span class="skill">Design Systems</span>
           <span class="skill">Prototyping</span><span class="skill">User Research</span><span class="skill">Accessibility</span>
-          <span class="skill">AI-first design</span><span class="skill">Figma</span><span class="skill">Framer</span>
+          <span class="skill">Design for trust</span><span class="skill">Figma</span><span class="skill">Framer</span>
         </div>
       </div>
     </div>
