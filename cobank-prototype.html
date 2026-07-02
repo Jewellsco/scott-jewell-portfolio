@@ -95,6 +95,19 @@
   .meter .lbl em{font-style:normal;color:var(--cb-accent);font-weight:800;}
   .chipbtn2{font-family:var(--ui);font-size:11.5px;font-weight:700;color:var(--cb);background:var(--cb-tint);border:1px solid var(--cb-line);border-radius:999px;padding:6px 13px;white-space:nowrap;cursor:pointer;}
   .chipbtn2.done{background:#E7F4EE;color:var(--cb-pos);border-color:#BFE3D2;}
+  .phform{grid-column:1 / -1;display:none;gap:9px;align-items:center;flex-wrap:wrap;padding-top:11px;border-top:1px dashed var(--cb-line);margin-top:5px;}
+  .meter.adding .phform{display:flex;}
+  .meter.adding .chipbtn2{opacity:.45;pointer-events:none;}
+  .phform input{font-family:var(--ui);font-size:13px;font-weight:600;color:var(--cb-navy);padding:8px 12px;border:1.5px solid var(--cb-line);border-radius:9px;width:172px;outline:none;transition:border-color .2s;}
+  .phform input:focus{border-color:var(--cb);}
+  .phform input.err{border-color:#B42318;animation:phShake .3s;}
+  @keyframes phShake{25%{transform:translateX(-3px);}75%{transform:translateX(3px);}}
+  .ph-save{font-family:var(--ui);font-size:11.5px;font-weight:700;color:#fff;background:var(--cb);border:none;border-radius:999px;padding:8px 15px;cursor:pointer;}
+  .ph-save:hover{background:#003D66;}
+  .ph-cancel{font-family:var(--ui);font-size:11px;font-weight:700;color:#5B7285;background:none;border:none;cursor:pointer;}
+  .ph-err{font-size:10.5px;color:#B42318;display:none;flex-basis:100%;}
+  .phform.showerr .ph-err{display:block;}
+
   .track{grid-column:1 / -1;height:8px;background:var(--cb-tint);border-radius:99px;overflow:hidden;}
   .track i{display:block;height:100%;width:80%;background:var(--cb-accent);border-radius:99px;transition:width .9s cubic-bezier(.16,1,.3,1);}
   .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
@@ -278,6 +291,12 @@
               <div class="lbl">Profile strength, <em id="meterVal">80 percent</em></div>
               <button class="chipbtn2" type="button" id="phoneChip">Add a backup phone to reach 100</button>
               <div class="track"><i id="meterBar"></i></div>
+              <div class="phform" id="phForm">
+                <input id="phIn" type="tel" inputmode="tel" placeholder="(720) 555-0123" aria-label="Backup phone number" maxlength="14">
+                <button class="ph-save" id="phSave" type="button">Save number</button>
+                <button class="ph-cancel" id="phCancel" type="button">Cancel</button>
+                <span class="ph-err" id="phErr">Enter a 10 digit US phone number</span>
+              </div>
             </div>
 
             <div class="cgrid">
@@ -421,7 +440,7 @@
     own:{t:'<b>Ownership made visible.</b> Stock value, the yearly patronage payment, five years of history, and one sentence saying why it exists. Tap either line for the detail.<span class="q">Their docs, a balance overview of the loan and/or investment relationships you have with CoBank. The stock you own is a table row above.</span>',el:'gOwn'},
     roles:{t:'<b>Roles in plain language.</b> Borrower, member owner, voting member, admin. Tap any role, each one opens.<span class="q">Their docs describe accounts and reports. Who you are to the bank appears nowhere above.</span>',el:'gRoles'},
     vote:{t:'<b>The vote they never mention.</b> CoBank customers elect the board. Tap the role for how the election works.<span class="q">Elections are absent from every documented page.</span>',el:'gVote'},
-    meter:{t:'<b>A profile that guides.</b> Strength at 80 percent with one next action. Try the button, it finishes the job.<span class="q">Their docs, update the Online Banking system if your e-mail address has changed. A form, not a guide.</span>',el:'gMeter'},
+    meter:{t:'<b>A profile that guides.</b> Strength at 80 percent with one next action. Try the button, add a number, and watch it finish. Real completion needs real data.<span class="q">Their docs, update the Online Banking system if your e-mail address has changed. A form, not a guide.</span>',el:'gMeter'},
     name:{t:'<b>Preferred name, phone as your sign in, verified email.</b> Press Edit and change the name, it updates everywhere.<span class="q">The documented profile above holds an email address and specific components of your security profile. That is all of it.</span>',el:'gName'},
     sec:{t:'<b>Security in sentences.</b> Last sign in as a plain answer, and Review devices actually reviews them.<span class="q">Their nearest feature is a Session Activity Report, buried under Preferences next to Time Out.</span>',el:'gSec'},
     prefs:{t:'<b>Preferences about people.</b> Statements, rates, patronage, elections, each with a purpose line and email or text. Legal notices never silently off.<span class="q">Their documented preferences, Session Activity Report, Time Out, Bank Lookup, Transaction Search. Settings for a system, not a person.</span>',el:'gPrefs'}
@@ -506,14 +525,37 @@
     cap('<b>Instant revocation.</b> One tap ends the session on the other device, and the member watched it happen.');});
 
   const phoneChip=document.getElementById('phoneChip'),meterBar=document.getElementById('meterBar'),meterVal=document.getElementById('meterVal');
+  const meterBox=phoneChip.closest('.meter'),phForm=document.getElementById('phForm'),phIn=document.getElementById('phIn'),phSave=document.getElementById('phSave'),phCancel=document.getElementById('phCancel');
   let done=false;
+  function phFormat(){
+    const d=phIn.value.replace(/\D/g,'').slice(0,10);
+    let v=d;
+    if(d.length>6)v='('+d.slice(0,3)+') '+d.slice(3,6)+'-'+d.slice(6);
+    else if(d.length>3)v='('+d.slice(0,3)+') '+d.slice(3);
+    else if(d.length>0)v='('+d;
+    phIn.value=v;
+  }
+  phIn.addEventListener('input',()=>{phIn.classList.remove('err');phForm.classList.remove('showerr');phFormat();});
   phoneChip.addEventListener('click',()=>{
-    if(done)return;done=true;
-    meterBar.style.width='100%';meterVal.textContent='100 percent';
-    phoneChip.classList.add('done');phoneChip.textContent='Backup phone added';
-    toast('Profile complete');
-    cap('<b>Completion by design.</b> One tap, the meter fills, and the profile is done. This exact pattern lifted profile completion in my CVS account work.');
+    if(done)return;
+    meterBox.classList.add('adding');
+    setTimeout(()=>phIn.focus(),60);
+    cap('<b>Two honest clicks.</b> Completion still needs real data. The button opens the field, the field explains itself, and the meter fills only when a real number is saved.');
   });
+  function phDone(){
+    const d=phIn.value.replace(/\D/g,'');
+    if(d.length!==10){phIn.classList.add('err');phForm.classList.add('showerr');phIn.focus();return;}
+    done=true;
+    meterBox.classList.remove('adding');
+    meterBar.style.width='100%';meterVal.textContent='100 percent';
+    phoneChip.style.pointerEvents='none';
+    phoneChip.classList.add('done');phoneChip.textContent='Backup phone added, ...'+d.slice(6);
+    toast('Backup phone saved, profile complete');
+    cap('<b>Completion by design.</b> One field, one save, and the meter fills. This exact pattern lifted profile completion in my CVS account work.');
+  }
+  phSave.addEventListener('click',phDone);
+  phCancel.addEventListener('click',()=>{meterBox.classList.remove('adding');phIn.classList.remove('err');phForm.classList.remove('showerr');});
+  phIn.addEventListener('keydown',e=>{if(e.key==='Enter')phDone();if(e.key==='Escape')phCancel.click();});
 
   document.getElementById('mailBadge').addEventListener('click',()=>{
     toast('Verified June 14, 2026');
@@ -548,9 +590,13 @@
     const vx=document.querySelector('#gVote .rx');if(vx)vx.classList.add('open');
     cap(GAPS.roles.t);
     await sleep(3000);
-    highlight('gMeter');cap(GAPS.meter.t);await sleep(2200);
-    if(!done)phoneChip.click();
-    await sleep(2400);
+    highlight('gMeter');cap(GAPS.meter.t);await sleep(2000);
+    if(!done){
+      phoneChip.click();await sleep(900);
+      phIn.value='(720) 555-0123';await sleep(900);
+      phDone();
+    }
+    await sleep(2200);
     highlight('gSec');devList.classList.add('open');devBtn.textContent='Hide devices';
     cap('<b>5 · Devices, reviewed.</b> Where you are signed in and a sign out that works, instead of a session report under Preferences.');
     await sleep(3000);
