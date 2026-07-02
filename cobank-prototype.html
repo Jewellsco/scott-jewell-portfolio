@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoBank Flow · Documented Today vs the Concept · Scott Jewell</title>
+<meta name="description" content="A working prototype that switches between CoBank's documented member portal and a member first concept, with every gap tied to their own help pages.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#005288;--cyan:#3F97C4;--navy:#061C2C;--gold:#C8811E;
+    --cb:#005288;--cb-navy:#0A2A42;--cb-tint:#E8F0F6;--cb-tint-2:#F4F8FB;--cb-line:#D8E4EE;
+    --cb-accent:#C8811E;--cb-pos:#1C7C54;
+    --ink:#16181F;--sec:#6B7280;--line:#ECEEF2;
+    --display:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,sans-serif;--ui:"Figtree",-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--sans);min-height:100vh;color:#fff;
+    background:radial-gradient(1000px 560px at 82% -6%,rgba(0,82,136,.45),transparent 62%),
+               radial-gradient(760px 480px at 8% 8%,rgba(63,151,196,.22),transparent 58%),
+               radial-gradient(560px 380px at 55% 108%,rgba(200,129,30,.10),transparent 60%),var(--navy);
+    display:flex;flex-direction:column;align-items:center;padding:40px 20px 70px;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .top{max-width:820px;text-align:center;margin-bottom:28px;}
+  .eyebrow{font-family:var(--sans);font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#7FB3D3;margin-bottom:14px;}
+  h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,4.6vw,42px);letter-spacing:-.5px;line-height:1.1;}
+  h1 .g{background:linear-gradient(120deg,#9CCBEA,#E4B96B);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .sub{margin-top:16px;color:#B9CBD9;font-size:16px;line-height:1.65;}
+  .stage{display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap;justify-content:center;max-width:1360px;}
+
+  /* browser frame */
+  .bframe{width:min(880px,94vw);background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 44px 100px rgba(2,16,28,.55),0 0 0 1px rgba(255,255,255,.06);}
+  .chrome{display:flex;align-items:center;gap:12px;padding:11px 16px;background:#EEF0F3;border-bottom:1px solid #E0E3E8;}
+  .dots{display:flex;gap:6px;}
+  .dots i{width:10px;height:10px;border-radius:50%;background:#D3D7DE;}
+  .urlbar{flex:1;max-width:380px;font-size:12px;color:#6B7280;background:#fff;border:1px solid #E0E3E8;border-radius:7px;padding:4px 11px;}
+  .modewrap{position:relative;height:640px;overflow:hidden;}
+  .mode{position:absolute;inset:0;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .45s ease;}
+  .mode.on{opacity:1;pointer-events:auto;}
+  .mode::-webkit-scrollbar{width:0;}
+
+  /* pulse highlight */
+  @keyframes pulseHl{0%{box-shadow:0 0 0 0 rgba(200,129,30,.22);}60%{box-shadow:0 0 0 7px rgba(200,129,30,0);}100%{box-shadow:0 0 0 0 rgba(200,129,30,0);}}
+  .hl{animation:pulseHl 1.5s ease 1;border-color:#E2C089;position:relative;z-index:5;transition:border-color .6s ease;}
+
+  /* ---------- TODAY, from their documentation ---------- */
+  .today{font-family:Verdana,Geneva,sans-serif;background:#FFFFFF;color:#333;}
+  .t-band{background:#1B4E79;color:#fff;padding:10px 18px;font-size:13px;font-weight:700;display:flex;justify-content:space-between;align-items:center;}
+  .t-band .sm{font-size:10px;font-weight:400;color:#B9CDE0;}
+  .t-nav{display:flex;gap:2px;background:#E8ECF0;border-bottom:1px solid #C9D2DA;padding:6px 12px 0;}
+  .t-tab{font-size:11px;padding:7px 13px;background:#D5DDE4;border:1px solid #C9D2DA;border-bottom:none;border-radius:4px 4px 0 0;color:#41546A;cursor:pointer;}
+  .t-tab.on{background:#fff;font-weight:700;color:#1B4E79;}
+  .t-wrap{padding:16px 18px 30px;}
+  .t-h{font-size:14px;font-weight:700;color:#1B4E79;margin:14px 0 8px;}
+  .t-note{font-size:10.5px;color:#777;margin:2px 0 10px;font-style:italic;}
+  table.t-tbl{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:6px;}
+  .t-tbl th{background:#DCE4EA;border:1px solid #C9D2DA;padding:6px 8px;text-align:left;color:#33475C;}
+  .t-tbl td{border:1px solid #DCE2E8;padding:6px 8px;}
+  .t-tbl a{color:#1B4E79;}
+  .t-box{border:1px solid #C9D2DA;background:#F4F6F8;padding:10px 12px;font-size:11px;margin-bottom:12px;}
+  .t-box b{color:#1B4E79;}
+  .t-list{font-size:11px;margin:6px 0 0 18px;}
+  .t-list li{margin-bottom:4px;}
+  .t-btn{display:inline-block;font-size:11px;background:#E8ECF0;border:1px solid #AEB9C4;padding:4px 12px;border-radius:3px;color:#33475C;cursor:pointer;}
+  .t-doc{display:inline-block;font-size:9.5px;background:#FFF6E4;border:1px solid #E3C98F;color:#8a6A1F;border-radius:3px;padding:2px 7px;margin-left:8px;vertical-align:1px;}
+
+  /* ---------- CONCEPT ---------- */
+  .cbk{font-family:var(--ui);color:var(--cb-navy);background:var(--cb-tint-2);display:grid;grid-template-columns:250px 1fr;min-height:100%;}
+  .cbk *{line-height:1.5;}
+  .cbk-rail{background:#fff;border-right:1px solid var(--cb-line);padding:22px 16px;display:flex;flex-direction:column;gap:0;}
+  .cbk-mark{width:32px;height:32px;border-radius:9px;background:var(--cb);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;}
+  .cbk-brand{display:flex;align-items:center;gap:10px;padding-bottom:18px;border-bottom:1px solid var(--cb-line);margin-bottom:16px;}
+  .cbk-brand b{font-size:14px;font-weight:800;}
+  .cbk-brand span{display:block;font-size:10.5px;color:#5B7285;font-weight:600;}
+  .cbk-org{display:flex;gap:10px;align-items:center;padding:10px;background:var(--cb-tint);border-radius:11px;margin-bottom:16px;}
+  .cbk-org .av{width:34px;height:34px;border-radius:9px;background:var(--cb-navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex:none;}
+  .cbk-org b{font-size:12.5px;display:block;}
+  .cbk-org span{font-size:11px;color:#4A6478;}
+  .cbk-nav a{display:block;padding:9px 11px;border-radius:8px;font-size:13px;font-weight:600;color:#3D5A70;cursor:pointer;}
+  .cbk-nav a.on{background:var(--cb);color:#fff;}
+  .cbk-railfoot{margin-top:auto;padding-top:14px;border-top:1px solid var(--cb-line);font-size:10px;color:#5B7285;line-height:1.5;}
+  .cbk-main{padding:26px 28px 40px;}
+  .cbk-main h1{font-family:var(--ui);font-size:23px;font-weight:800;letter-spacing:-.02em;color:var(--cb-navy);}
+  .cbk-main .sub2{font-size:13.5px;color:#4A6478;margin-top:3px;}
+  .meter{margin-top:16px;background:#fff;border:1px solid var(--cb-line);border-radius:13px;padding:15px 18px;display:grid;grid-template-columns:1fr auto;gap:7px 16px;align-items:center;}
+  .meter .lbl{font-size:12.5px;font-weight:700;}
+  .meter .lbl em{font-style:normal;color:var(--cb-accent);font-weight:800;}
+  .chipbtn2{font-family:var(--ui);font-size:11.5px;font-weight:700;color:var(--cb);background:var(--cb-tint);border:1px solid var(--cb-line);border-radius:999px;padding:6px 13px;white-space:nowrap;cursor:pointer;}
+  .chipbtn2.done{background:#E7F4EE;color:var(--cb-pos);border-color:#BFE3D2;}
+  .track{grid-column:1 / -1;height:8px;background:var(--cb-tint);border-radius:99px;overflow:hidden;}
+  .track i{display:block;height:100%;width:80%;background:var(--cb-accent);border-radius:99px;transition:width .9s cubic-bezier(.16,1,.3,1);}
+  .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:14px;}
+  .ccard{background:#fff;border:1px solid var(--cb-line);border-radius:13px;padding:17px;transition:border-color .3s;}
+  .ccard h3{font-size:13.5px;font-weight:800;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+  .ccard h3 a{font-size:11px;font-weight:700;color:var(--cb);cursor:pointer;}
+  .fld{padding:9px 0;border-top:1px solid var(--cb-tint);display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;}
+  .fld:first-of-type{border-top:none;padding-top:0;}
+  .fld .k{font-size:10.5px;font-weight:700;color:#5B7285;text-transform:uppercase;letter-spacing:.06em;}
+  .fld .v{font-size:13.5px;font-weight:600;grid-column:1;}
+  .fld .note{grid-column:1 / -1;font-size:11px;color:#4A6478;}
+  .badge2{font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;grid-row:span 2;}
+  .badge2.ok{background:#E7F4EE;color:var(--cb-pos);}
+  .badge2.cb{background:var(--cb-tint);color:var(--cb);}
+  .role{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;padding:9px 0;border-top:1px solid var(--cb-tint);align-items:baseline;}
+  .role:first-of-type{border-top:none;padding-top:0;}
+  .role .tag{font-size:10.5px;font-weight:800;color:var(--cb);background:var(--cb-tint);border-radius:6px;padding:2px 9px;white-space:nowrap;}
+  .role span{font-size:12px;color:#3D5A70;}
+  .own-line{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;padding:8px 0;border-top:1px solid var(--cb-tint);}
+  .own-line .rx{flex-basis:100%;}
+  .own-line:first-of-type{border-top:none;padding-top:0;}
+  .own-line .k{font-size:12px;font-weight:600;color:#3D5A70;}
+  .own-line .v{font-size:16.5px;font-weight:800;font-variant-numeric:tabular-nums;}
+  .own-note{font-size:11px;color:#4A6478;margin-top:8px;}
+  .wide{grid-column:1 / -1;}
+  .prefrow{display:grid;grid-template-columns:1fr auto auto;gap:4px 22px;align-items:center;padding:10px 0;border-top:1px solid var(--cb-tint);}
+  .prefrow:first-of-type{border-top:none;}
+  .prefrow .t{font-size:13px;font-weight:700;}
+  .prefrow .d{grid-column:1;font-size:11px;color:#4A6478;}
+  .sw{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;color:#5B7285;background:none;border:none;cursor:pointer;grid-row:span 2;font-family:var(--ui);}
+  .sw .pill{width:32px;height:19px;border-radius:99px;background:#C9D7E2;position:relative;transition:background .2s;flex:none;}
+  .sw .pill::after{content:"";position:absolute;top:2.5px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(10,42,66,.3);}
+  .sw[aria-checked="true"] .pill{background:var(--cb);}
+  .sw[aria-checked="true"] .pill::after{left:15px;}
+  .pref-note{font-size:11px;color:#4A6478;margin-top:11px;padding-top:11px;border-top:1px solid var(--cb-tint);}
+
+  /* ---------- side panel ---------- */
+  .panel{width:330px;max-width:94vw;}
+  .panel h2{font-family:var(--display);font-size:20px;font-weight:600;margin-bottom:8px;}
+  .pdesc{color:#B9CBD9;font-size:13.5px;line-height:1.6;margin-bottom:16px;}
+  .modeswitch{display:flex;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:13px;padding:4px;margin-bottom:16px;backdrop-filter:blur(10px);}
+  .modeswitch button{flex:1;font-family:var(--sans);font-size:12.5px;font-weight:600;padding:9px 6px;border:none;border-radius:10px;background:none;color:#B9CBD9;cursor:pointer;}
+  .modeswitch button.on{background:linear-gradient(130deg,#005288,#1179B5);color:#fff;box-shadow:0 6px 18px rgba(0,82,136,.45);}
+  .chipbtn{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);border-radius:13px;padding:11px 13px;color:#fff;cursor:pointer;margin-bottom:9px;font-family:var(--sans);transition:background .2s;}
+  .chipbtn:hover{background:rgba(255,255,255,.11);}
+  .chipbtn.primary{background:linear-gradient(130deg,rgba(0,82,136,.55),rgba(63,151,196,.30));border-color:rgba(127,179,211,.45);}
+  .chipbtn .dot{width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex:none;}
+  .chipbtn .dot svg{width:15px;height:15px;}
+  .chipbtn .t{font-size:13px;font-weight:600;}
+  .chipbtn .d{font-size:11px;color:#93AEC0;margin-top:1px;}
+  .caption{margin-top:14px;background:rgba(3,20,32,.62);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:15px 17px;font-size:12.5px;line-height:1.6;color:#CFDDE7;min-height:88px;backdrop-filter:blur(10px);}
+  .caption b{color:#fff;}
+  .caption .q{display:block;margin-top:7px;padding-left:10px;border-left:2px solid var(--gold);color:#A9BFCE;font-style:italic;}
+  .backlink{margin-top:34px;font-size:13.5px;color:#8AA6B8;}
+  .backlink a{color:#CBE2F1;}
+  @media(max-width:1240px){.stage{flex-direction:column;align-items:center;}.panel{width:min(880px,94vw);}}
+
+  /* live concept components */
+  .role[data-acc],.own-line[data-acc]{cursor:pointer;}
+  .role[data-acc]:hover .tag{background:#DCEAF4;}
+  .own-line[data-acc]:hover .k{color:var(--cb);}
+  .rx{grid-column:1 / -1;max-height:0;overflow:hidden;transition:max-height .35s ease;}
+  .rx.open{max-height:240px;}
+  .rx-in{padding:9px 0 3px;font-size:11.5px;color:#4A6478;border-top:1px dashed var(--cb-line);margin-top:8px;line-height:1.55;}
+  .rx table{width:100%;border-collapse:collapse;font-size:11px;margin-top:6px;}
+  .rx th{text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:#5B7285;padding:4px 6px;border-bottom:1px solid var(--cb-tint);}
+  .rx td{padding:5px 6px;border-bottom:1px solid var(--cb-tint);font-variant-numeric:tabular-nums;}
+  .devlist{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+  .devlist.open{max-height:200px;}
+  .devrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-top:1px dashed var(--cb-line);font-size:12px;}
+  .devrow:first-of-type{margin-top:8px;}
+  .devrow b{font-size:12.5px;display:block;}
+  .devrow span{color:#4A6478;font-size:11px;}
+  .devrow .this{font-size:9.5px;font-weight:800;color:var(--cb-pos);background:#E7F4EE;border-radius:999px;padding:2px 8px;}
+  .devrow button{font-family:var(--ui);font-size:10.5px;font-weight:700;color:#B42318;background:#FEE4E2;border:none;border-radius:999px;padding:4px 10px;cursor:pointer;}
+  .devrow.gone{opacity:.45;}
+  .devrow.gone button{visibility:hidden;}
+  .pinput{font-family:var(--ui);font-weight:600;font-size:13.5px;color:var(--cb-navy);border:1.5px solid var(--cb);border-radius:7px;padding:3px 9px;width:150px;outline:none;}
+  .sheetwrap{position:absolute;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center;}
+  .sheetwrap[hidden]{display:none;}
+  .scrim{position:absolute;inset:0;background:rgba(10,42,66,.42);}
+  .sheet{position:relative;font-family:var(--ui);color:var(--cb-navy);background:#fff;border-radius:18px 18px 0 0;width:100%;max-width:620px;padding:22px 24px 20px;box-shadow:0 -18px 50px rgba(10,42,66,.3);animation:sheetUp .3s cubic-bezier(.16,1,.3,1);}
+  @keyframes sheetUp{from{transform:translateY(40px);opacity:0;}to{transform:none;opacity:1;}}
+  .sheet h4{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .sheet .shsub{font-size:12px;color:#4A6478;margin-bottom:12px;}
+  .shrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 2px;border-top:1px solid var(--cb-tint);font-size:13px;font-weight:600;cursor:pointer;border-radius:6px;}
+  .shrow:hover{background:var(--cb-tint-2);}
+  .shrow span{font-size:11px;color:#4A6478;font-weight:400;}
+  .shrow .go{color:var(--cb);font-size:11.5px;font-weight:700;white-space:nowrap;}
+  .sheetclose{margin-top:14px;width:100%;font-family:var(--ui);font-size:13px;font-weight:700;padding:11px;border:1px solid var(--cb-line);background:#fff;color:var(--cb-navy);border-radius:10px;cursor:pointer;}
+  .ctoast{position:absolute;left:50%;bottom:16px;transform:translateX(-50%) translateY(16px);background:var(--cb-navy);color:#fff;font-family:var(--ui);font-size:12px;font-weight:600;padding:9px 16px;border-radius:999px;opacity:0;transition:all .3s ease;z-index:70;pointer-events:none;white-space:nowrap;}
+  .ctoast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="eyebrow">CoBank &middot; Working Flow &middot; Evidence Based</div>
+    <h1>The portal they document, <span class="g">next to the one members deserve.</span></h1>
+    <p class="sub">The left screen is CoBank's member portal rebuilt faithfully from their own help pages, nothing added. Flip the switch to the concept, then use the gap buttons, each one quotes their documentation and lights up the thing it lacks.</p>
+  </div>
+
+  <div class="stage">
+    <div class="bframe">
+      <div class="chrome"><div class="dots"><i></i><i></i><i></i></div><div class="urlbar" id="urlbar">portal.cobank.com &middot; documented feature set</div></div>
+      <div class="modewrap">
+
+        <!-- ============ MODE, TODAY ============ -->
+        <div class="mode on today" id="mToday">
+          <div class="t-band">CoBank Online Banking <span class="sm">Welcome. Last visit 06/28/2026</span></div>
+          <div class="t-nav">
+            <span class="t-tab on">Home</span><span class="t-tab" data-na>Account Management</span><span class="t-tab" data-na>Payment Transfers</span><span class="t-tab" data-na>Rates &amp; Fixes</span><span class="t-tab" data-na>Reporting</span>
+          </div>
+          <div class="t-wrap">
+            <div class="t-h">Consolidated Balance Summary <span class="t-doc">documented</span></div>
+            <p class="t-note">A balance overview of the loan and/or investment relationships you have with CoBank.</p>
+            <table class="t-tbl">
+              <tr><th>Description</th><th>Account</th><th>Balance</th></tr>
+              <tr><td><a href="#" data-na>Operating Line of Credit</a></td><td>...4412</td><td>$186,300.00</td></tr>
+              <tr><td><a href="#" data-na>Term Loan, Equipment</a></td><td>...7208</td><td>$412,750.00</td></tr>
+              <tr><td><a href="#" data-na>Class A Stock</a></td><td>...1104</td><td>$18,400.00</td></tr>
+            </table>
+            <p class="t-note">The stock you own appears only as a balance row. Nothing explains ownership, patronage, or your vote.</p>
+
+            <div class="t-h">Settlement Report <span class="t-doc">documented</span></div>
+            <div class="t-box">Settlement amount for 07/02/2026, <b>$3,118.42</b>. <span class="t-btn" data-na>View report</span></div>
+
+            <div class="t-h">Scheduled Reports <span class="t-doc">documented</span></div>
+            <div class="t-box">Set up email reports providing updates regarding transaction activity, account balances and interest rates. <span class="t-btn" data-na>Add or edit alerts</span></div>
+
+            <div class="t-h">User Profile <span class="t-doc">documented</span></div>
+            <div class="t-box" id="tProfile">
+              <b>Personal Information.</b> Update the Online Banking system if your e-mail address has changed.
+              <table class="t-tbl" style="margin-top:8px;">
+                <tr><th>Field</th><th>Value</th></tr>
+                <tr><td>E-mail address</td><td>scott@jewellfarms.coop <span class="t-btn" data-na>Edit</span></td></tr>
+                <tr><td>Security profile</td><td>Specific components <span class="t-btn" data-na>Edit</span></td></tr>
+              </table>
+              <p class="t-note" style="margin-top:6px;">This is the entire documented profile.</p>
+            </div>
+
+            <div class="t-h">Preferences <span class="t-doc">documented</span></div>
+            <div class="t-box" id="tPrefs">
+              Customize system default settings within the following categories.
+              <ul class="t-list">
+                <li>Session Activity Report</li>
+                <li>Time Out</li>
+                <li>Bank Lookup</li>
+                <li>Transaction Search</li>
+              </ul>
+              <p class="t-note" style="margin-top:6px;">Settings for operating a system, none for how the bank knows or reaches you.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ MODE, CONCEPT ============ -->
+        <div class="mode cbk" id="mConcept">
+          <aside class="cbk-rail">
+            <div class="cbk-brand"><div class="cbk-mark">CB</div><div><b>CoBank</b><span>Digital Banking</span></div></div>
+            <div class="cbk-org"><div class="av">JF</div><div><b>Jewell Farms Cooperative</b><span id="orgWho">Scott &middot; Admin</span></div></div>
+            <nav class="cbk-nav">
+              <a class="on" data-navgo="top">Profile</a><a data-navgo="gSec">Security</a><a data-navgo="gOwn">Ownership</a><a data-navgo="docs">Documents</a><a data-navgo="gPrefs">Preferences</a><a data-navgo="support">Support</a>
+            </nav>
+            <div class="cbk-railfoot">Proud member of the Farm Credit System. Equal Housing Lender. Equal Credit Opportunity Lender.</div>
+          </aside>
+          <main class="cbk-main">
+            <h1>Your profile</h1>
+            <p class="sub2">One place for who you are, how we reach you, and what you own as a member.</p>
+
+            <div class="meter" id="gMeter">
+              <div class="lbl">Profile strength, <em id="meterVal">80 percent</em></div>
+              <button class="chipbtn2" type="button" id="phoneChip">Add a backup phone to reach 100</button>
+              <div class="track"><i id="meterBar"></i></div>
+            </div>
+
+            <div class="cgrid">
+              <div class="ccard" id="gName">
+                <h3>Personal details <a id="editBtn" role="button" tabindex="0">Edit</a></h3>
+                <div class="fld"><span class="k">Preferred name</span><span class="v" id="pnameVal">Scott</span><span class="note">We use this everywhere we talk to you.</span></div>
+                <div class="fld"><span class="k">Mobile phone</span><span class="badge2 cb">Your sign in</span><span class="v">(720) 555-0164</span></div>
+                <div class="fld"><span class="k">Email</span><span class="badge2 ok" id="mailBadge" style="cursor:pointer;">Verified</span><span class="v">scott@jewellfarms.coop</span></div>
+              </div>
+
+              <div class="ccard" id="gRoles">
+                <h3>Your roles</h3>
+                <div class="role" data-acc><span class="tag">Borrower</span><span>Active credit relationship since 2019.</span><div class="rx"><div class="rx-in">Operating line and equipment term loan, both current. Your relationship manager is Dana Ortiz, one tap away in Support.</div></div></div>
+                <div class="role" data-acc><span class="tag">Member owner</span><span>You hold stock in CoBank.</span><div class="rx"><div class="rx-in">Class A stock, $18,400. Your ownership grows as patronage is retained each year, and it is yours when you leave.</div></div></div>
+                <div class="role" id="gVote" data-acc><span class="tag">Voting member</span><span>Board election opens March 2027.</span><div class="rx"><div class="rx-in">One member, one vote, regardless of stock held. Your region elects two directors this cycle, candidate statements arrive in February.</div></div></div>
+                <div class="role" data-acc><span class="tag">Admin</span><span>You manage access for 3 people at Jewell Farms Cooperative.</span><div class="rx"><div class="rx-in">Maria, Tom, and Alex have access today. You decide what each person can see and do, and every change is logged.</div></div></div>
+              </div>
+
+              <div class="ccard" id="gSec">
+                <h3>Security <a id="devBtn" role="button" tabindex="0">Review devices</a></h3>
+                <div class="fld"><span class="k">Two step sign in</span><span class="badge2 ok">On</span><span class="v">Text code to (720) 555-0164</span></div>
+                <div class="fld"><span class="k">Last sign in</span><span class="v">Today, 7:42 am &middot; iPhone &middot; Greeley, CO</span></div>
+                <div class="devlist" id="devList">
+                  <div class="devrow"><div><b>iPhone 15</b><span>Greeley, CO &middot; active now</span></div><span class="this">This device</span></div>
+                  <div class="devrow" id="devMac"><div><b>Mac, Safari</b><span>Fort Collins, CO &middot; yesterday, 4:18 pm</span></div><button type="button" id="macOut">Sign out</button></div>
+                </div>
+              </div>
+
+              <div class="ccard" id="gOwn">
+                <h3>Ownership at a glance</h3>
+                <div class="own-line" data-acc><span class="k">Your stock in CoBank</span><span class="v">$18,400</span><div class="rx"><div class="rx-in">Class A stock, $15,000 purchased at origination plus $3,400 in retained patronage. Paid out to you if you ever leave the cooperative.</div></div></div>
+                <div class="own-line" data-acc><span class="k">2025 patronage distribution</span><span class="v">$1,265</span><div class="rx"><div class="rx-in"><table><tr><th>Year</th><th>Cash paid</th><th>Retained</th></tr><tr><td>2025</td><td>$885</td><td>$380</td></tr><tr><td>2024</td><td>$777</td><td>$333</td></tr><tr><td>2023</td><td>$714</td><td>$306</td></tr><tr><td>2022</td><td>$633</td><td>$272</td></tr><tr><td>2021</td><td>$588</td><td>$252</td></tr></table></div></div></div>
+                <p class="own-note">As a cooperative, we return a share of our earnings to members every year.</p>
+                <svg viewBox="0 0 280 56" width="100%" height="56" role="img" aria-label="Patronage rising over five years">
+                  <polyline points="10,42 75,38 140,30 205,25 270,12" fill="none" stroke="#C8811E" stroke-width="2.5" stroke-linecap="round"/>
+                  <g fill="#C8811E"><circle cx="10" cy="42" r="3"/><circle cx="75" cy="38" r="3"/><circle cx="140" cy="30" r="3"/><circle cx="205" cy="25" r="3"/><circle cx="270" cy="12" r="3.5"/></g>
+                  <g fill="#5B7285" font-size="9" font-family="Figtree"><text x="4" y="54">2021</text><text x="254" y="54">2025</text></g>
+                </svg>
+              </div>
+
+              <div class="ccard wide" id="gPrefs">
+                <h3>Communication preferences</h3>
+                <div class="prefrow"><span class="t">Statements</span>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                  <button class="sw" type="button" role="switch" aria-checked="false"><span class="pill"></span>Text</button>
+                  <span class="d">Monthly account statements the day they post.</span></div>
+                <div class="prefrow"><span class="t">Rate updates</span>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Text</button>
+                  <span class="d">Changes that affect your credit lines, as they happen.</span></div>
+                <div class="prefrow"><span class="t">Patronage notices</span>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                  <button class="sw" type="button" role="switch" aria-checked="false"><span class="pill"></span>Text</button>
+                  <span class="d">Your annual distribution, announced and paid.</span></div>
+                <div class="prefrow"><span class="t">Board elections</span>
+                  <button class="sw" type="button" role="switch" aria-checked="true"><span class="pill"></span>Email</button>
+                  <button class="sw" type="button" role="switch" aria-checked="false"><span class="pill"></span>Text</button>
+                  <span class="d">Ballots, candidates, and results for your voting region.</span></div>
+                <p class="pref-note">You choose how we reach you. Required legal notices always arrive by mail or email.</p>
+              </div>
+            </div>
+          </main>
+        </div>
+
+        <div class="sheetwrap" id="sheetWrap" hidden>
+          <div class="scrim" data-close></div>
+          <div class="sheet">
+            <h4 id="sheetTitle"></h4>
+            <div class="shsub" id="sheetSub"></div>
+            <div id="sheetBody"></div>
+            <button class="sheetclose" type="button" data-close>Close</button>
+          </div>
+        </div>
+        <div class="ctoast" id="cToast"></div>
+
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Flip it, then press the gaps</h2>
+      <p class="pdesc">Everything on the Today screen comes from CoBank's own help pages. Every gap button quotes them, switches to the concept, and lights up the answer.</p>
+      <div class="modeswitch">
+        <button id="btnToday" class="on" type="button">CoLink today, documented</button>
+        <button id="btnConcept" type="button">The concept</button>
+      </div>
+      <button class="chipbtn primary" data-gap="tour"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v14l11-7z"/></svg></span><span><div class="t">Play the guided walkthrough</div><div class="d">Every gap, in order</div></span></button>
+      <button class="chipbtn" data-gap="own"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><span><div class="t">Ownership made visible</div><div class="d">Stock, patronage, and the why</div></span></button>
+      <button class="chipbtn" data-gap="roles"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span><div class="t">Roles in plain language</div><div class="d">Borrower, owner, voter, admin</div></span></button>
+      <button class="chipbtn" data-gap="vote"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-11"/></svg></span><span><div class="t">The vote they never mention</div><div class="d">Board election awareness</div></span></button>
+      <button class="chipbtn" data-gap="meter"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 12l6-6"/></svg></span><span><div class="t">A profile that guides</div><div class="d">Strength meter, tap it to finish</div></span></button>
+      <button class="chipbtn" data-gap="name"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h10M4 17h7"/></svg></span><span><div class="t">Preferred name, phone as sign in</div><div class="d">Identity, not just an email field</div></span></button>
+      <button class="chipbtn" data-gap="sec"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></span><span><div class="t">Security in sentences</div><div class="d">A log becomes a plain answer</div></span></button>
+      <button class="chipbtn" data-gap="prefs"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><span><div class="t">Preferences about people</div><div class="d">Purpose and channel, not timeouts</div></span></button>
+      <div class="caption" id="caption"><b>Start on the left.</b> That screen is not a parody, it is their documented feature set rebuilt line for line, balance summary, settlement report, scheduled email reports, a profile that edits an email address, and preferences that manage timeouts.</div>
+    </div>
+  </div>
+
+  <div class="backlink">&larr; <a href="cobank-concept.html">Back to the CoBank concept</a> &middot; <a href="index.html">All work</a></div>
+
+<script>
+(()=>{
+  const mToday=document.getElementById('mToday'),mConcept=document.getElementById('mConcept');
+  const bToday=document.getElementById('btnToday'),bConcept=document.getElementById('btnConcept');
+  const caption=document.getElementById('caption'),urlbar=document.getElementById('urlbar');
+  const cToast=document.getElementById('cToast');
+  let busy=false,toastT=null;
+  const cap=h=>caption.innerHTML=h;
+  const toast=m=>{cToast.textContent=m;cToast.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>cToast.classList.remove('show'),1700);};
+  function setMode(m){
+    const con=m==='concept';
+    mToday.classList.toggle('on',!con);mConcept.classList.toggle('on',con);
+    bToday.classList.toggle('on',!con);bConcept.classList.toggle('on',con);
+    urlbar.textContent=con?'cobank.com/portal/profile · the concept':'portal.cobank.com · documented feature set';
+  }
+  bToday.addEventListener('click',()=>{if(!busy){setMode('today');cap('<b>CoLink today.</b> Rebuilt from their help pages. Notice what gets a whole system, balances and reports, and what gets one paragraph, the person.');}});
+  bConcept.addEventListener('click',()=>{if(!busy){setMode('concept');cap('<b>The concept.</b> Every component on this side is live. Edit the name, open the roles, review devices, tap the patronage history, use the rail.');}});
+
+  function highlight(id){
+    const el=document.getElementById(id);if(!el)return;
+    el.scrollIntoView({behavior:'smooth',block:'center'});
+    el.classList.remove('hl');void el.offsetWidth;el.classList.add('hl');
+    setTimeout(()=>el.classList.remove('hl'),1700);
+  }
+  const GAPS={
+    own:{t:'<b>Ownership made visible.</b> Stock value, the yearly patronage payment, five years of history, and one sentence saying why it exists. Tap either line for the detail.<span class="q">Their docs, a balance overview of the loan and/or investment relationships you have with CoBank. The stock you own is a table row.</span>',el:'gOwn'},
+    roles:{t:'<b>Roles in plain language.</b> Borrower, member owner, voting member, admin. Tap any role, each one opens.<span class="q">Their docs describe accounts and reports. Who you are to the bank appears nowhere.</span>',el:'gRoles'},
+    vote:{t:'<b>The vote they never mention.</b> CoBank customers elect the board. Tap the role for how the election works.<span class="q">Elections are absent from every documented page.</span>',el:'gVote'},
+    meter:{t:'<b>A profile that guides.</b> Strength at 80 percent with one next action. Try the button, it finishes the job.<span class="q">Their docs, update the Online Banking system if your e-mail address has changed. A form, not a guide.</span>',el:'gMeter'},
+    name:{t:'<b>Preferred name, phone as your sign in, verified email.</b> Press Edit and change the name, it updates everywhere.<span class="q">The documented profile holds an email address and specific components of your security profile. That is all of it.</span>',el:'gName'},
+    sec:{t:'<b>Security in sentences.</b> Last sign in as a plain answer, and Review devices actually reviews them.<span class="q">Their nearest feature is a Session Activity Report, buried under Preferences next to Time Out.</span>',el:'gSec'},
+    prefs:{t:'<b>Preferences about people.</b> Statements, rates, patronage, elections, each with a purpose line and email or text. Legal notices never silently off.<span class="q">Their documented preferences, Session Activity Report, Time Out, Bank Lookup, Transaction Search. Settings for a system, not a person.</span>',el:'gPrefs'}
+  };
+  document.querySelectorAll('[data-gap]').forEach(b=>b.addEventListener('click',()=>{
+    const g=b.dataset.gap;
+    if(g==='tour')return tour();
+    if(busy)return;
+    const it=GAPS[g];if(!it)return;
+    setMode('concept');setTimeout(()=>highlight(it.el),350);cap(it.t);
+  }));
+
+  /* ---------- concept, every component live ---------- */
+
+  /* rail navigation + sheets */
+  const sheetWrap=document.getElementById('sheetWrap'),sheetTitle=document.getElementById('sheetTitle'),sheetSub=document.getElementById('sheetSub'),sheetBody=document.getElementById('sheetBody');
+  const SHEETS={
+    docs:{t:'Documents',s:'Statements and tax forms, readable on screen first, downloadable always.',rows:[
+      ['2026 statements, January through June','Six monthly statements','View'],
+      ['2025 annual statement','Full year, all accounts','View'],
+      ['Form 1099-PATR, 2025','Patronage income for your taxes','Download']]},
+    support:{t:'Support',s:'A person, with your context already attached.',rows:[
+      ['Message Dana Ortiz','Your relationship manager, replies within one business day','Message'],
+      ['Call member services','Weekdays 6 am to 6 pm Mountain','800 542 8072'],
+      ['Report something suspicious','Straight to the security team, day or night','Report']]}
+  };
+  function openSheet(k){const d=SHEETS[k];if(!d)return;
+    sheetTitle.textContent=d.t;sheetSub.textContent=d.s;
+    sheetBody.innerHTML=d.rows.map(r=>'<div class="shrow" data-shrow><div>'+r[0]+'<br><span>'+r[1]+'</span></div><span class="go">'+r[2]+'</span></div>').join('');
+    sheetWrap.hidden=false;}
+  sheetWrap.addEventListener('click',e=>{
+    if(e.target.closest('[data-close]')){sheetWrap.hidden=true;return;}
+    const r=e.target.closest('[data-shrow]');
+    if(r){toast('Opens in the full product');}
+  });
+  document.querySelectorAll('[data-navgo]').forEach(a=>a.addEventListener('click',()=>{
+    const go=a.dataset.navgo;
+    document.querySelectorAll('[data-navgo]').forEach(x=>x.classList.toggle('on',x===a));
+    if(go==='top'){mConcept.scrollTop=0;cap('<b>Profile.</b> The page you are on, one place for who you are, how we reach you, and what you own.');}
+    else if(go==='docs'){openSheet('docs');cap('<b>Documents.</b> Statements and the patronage tax form, named in plain language, viewable before downloadable.');}
+    else if(go==='support'){openSheet('support');cap('<b>Support.</b> A named person first, then the phone line, then the security path. Context travels with you.');}
+    else{highlight(go);cap('<b>Rail navigation.</b> Every section is reachable, and every section answers a member question, not a system setting.');}
+  }));
+
+  /* edit preferred name */
+  const editBtn=document.getElementById('editBtn'),pname=document.getElementById('pnameVal'),orgWho=document.getElementById('orgWho');
+  let editing=false;
+  function startEdit(){
+    editing=true;editBtn.textContent='Save';
+    const cur=pname.textContent.trim();
+    pname.innerHTML='<input class="pinput" id="pIn" type="text" maxlength="18" value="'+cur.replace(/"/g,'')+'" aria-label="Preferred name">';
+    const inp=document.getElementById('pIn');inp.focus();inp.select();
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')saveEdit();});
+  }
+  function saveEdit(){
+    const inp=document.getElementById('pIn');
+    const v=(inp&&inp.value.trim())||'Scott';
+    editing=false;editBtn.textContent='Edit';
+    pname.textContent=v;orgWho.textContent=v+' · Admin';
+    toast('Preferred name updated everywhere');
+    cap('<b>One change, everywhere.</b> The preferred name updates across the portal the moment it is saved, the same inclusive pattern I shipped at CVS.');
+  }
+  editBtn.addEventListener('click',()=>editing?saveEdit():startEdit());
+  editBtn.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();editing?saveEdit():startEdit();}});
+
+  /* roles + ownership accordions */
+  document.querySelectorAll('[data-acc]').forEach(el=>el.addEventListener('click',e=>{
+    if(e.target.closest('.rx'))return;
+    const x=el.querySelector('.rx');if(!x)return;
+    const open=x.classList.toggle('open');
+    if(open&&el.id==='gVote')cap('<b>The vote, opened.</b> One member, one vote, regardless of stock held. Their documented portal never says the word election.');
+    else if(open)cap('<b>Progressive detail.</b> The card answers at a glance, the tap answers the follow up question, nothing hides in a PDF.');
+  }));
+
+  /* devices */
+  const devBtn=document.getElementById('devBtn'),devList=document.getElementById('devList');
+  devBtn.addEventListener('click',()=>{
+    const open=devList.classList.toggle('open');
+    devBtn.textContent=open?'Hide devices':'Review devices';
+    if(open)cap('<b>Review devices, for real.</b> Every signed in device, where and when, and a sign out that works. Their docs offer a Session Activity Report under Preferences.');
+  });
+  devBtn.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();devBtn.click();}});
+  const macOut=document.getElementById('macOut');
+  macOut.addEventListener('click',e=>{e.stopPropagation();
+    document.getElementById('devMac').classList.add('gone');
+    toast('Signed out on Mac, Safari');
+    cap('<b>Instant revocation.</b> One tap ends the session on the other device, and the member watched it happen.');});
+
+  /* profile strength */
+  const phoneChip=document.getElementById('phoneChip'),meterBar=document.getElementById('meterBar'),meterVal=document.getElementById('meterVal');
+  let done=false;
+  phoneChip.addEventListener('click',()=>{
+    if(done)return;done=true;
+    meterBar.style.width='100%';meterVal.textContent='100 percent';
+    phoneChip.classList.add('done');phoneChip.textContent='Backup phone added';
+    toast('Profile complete');
+    cap('<b>Completion by design.</b> One tap, the meter fills, and the profile is done. This exact pattern lifted profile completion in my CVS account work.');
+  });
+
+  /* badges + toggles */
+  document.getElementById('mailBadge').addEventListener('click',()=>{
+    toast('Verified June 14, 2026');
+    cap('<b>Verified means something.</b> Tap the badge and it tells you when and how. Status you can interrogate is status you can trust.');});
+  document.querySelectorAll('.sw').forEach(sw=>sw.addEventListener('click',()=>{
+    sw.setAttribute('aria-checked',sw.getAttribute('aria-checked')==='true'?'false':'true');
+    cap('<b>A real choice.</b> Channel by purpose, one tap, and the note below promises legal notices never silently disappear.');
+  }));
+
+  /* today mode links stay documentation scoped */
+  document.querySelectorAll('[data-na]').forEach(el=>el.addEventListener('click',e=>{
+    e.preventDefault();
+    cap('<b>Documented, not the argument.</b> This control exists in their portal and works fine. The prototype keeps the interactivity on the concept side, where the gaps are.');
+  }));
+
+  /* tour */
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  async function tour(){
+    if(busy)return;busy=true;
+    setMode('today');
+    cap('<b>1 · Start with their truth.</b> This is the documented portal, balances, settlement, email reports, a profile that edits an email, preferences that manage timeouts.');
+    mToday.scrollTop=0;await sleep(3400);
+    document.getElementById('tProfile').scrollIntoView({behavior:'smooth',block:'center'});
+    cap('<b>2 · The entire documented profile.</b> An email address and security components. Balances get a system, the person gets a paragraph.');
+    await sleep(3400);
+    setMode('concept');mConcept.scrollTop=0;
+    cap('<b>3 · Same bank, organized around the member.</b> Who you are, what you own, how you vote, how we reach you. Everything here is live.');
+    await sleep(2800);
+    highlight('gOwn');cap(GAPS.own.t);await sleep(2600);
+    const pat=document.querySelector('#gOwn .own-line[data-acc]:nth-of-type(2) .rx')||document.querySelectorAll('#gOwn .rx')[1];
+    if(pat){pat.classList.add('open');}
+    cap('<b>4 · Five years of patronage, opened.</b> Cash paid and retained, per year. In their portal this is a balance row.');
+    await sleep(3000);
+    highlight('gRoles');cap(GAPS.roles.t);
+    const vx=document.querySelector('#gVote .rx');if(vx)vx.classList.add('open');
+    await sleep(3000);
+    highlight('gMeter');cap(GAPS.meter.t);await sleep(2200);
+    if(!done)phoneChip.click();
+    await sleep(2400);
+    highlight('gSec');devList.classList.add('open');devBtn.textContent='Hide devices';
+    cap('<b>5 · Devices, reviewed.</b> Where you are signed in and a sign out that works, instead of a session report under Preferences.');
+    await sleep(3000);
+    highlight('gPrefs');cap(GAPS.prefs.t);await sleep(3000);
+    cap('<b>Done.</b> Every claim traces to their help pages, and every answer on this side is a working control. Tap anything.');
+    busy=false;
+  }
+})();
+</script>
+</body>
+</html>
