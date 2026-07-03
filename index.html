@@ -754,7 +754,9 @@
   let shown = false;
   function show(){
     if(shown) return;
+    try{ if(sessionStorage.getItem('cvs_rework_invite')){ shown = true; return; } }catch(e){}
     shown = true;
+    try{ sessionStorage.setItem('cvs_rework_invite','1'); }catch(e){}
     setTimeout(() => { fli.setAttribute('aria-hidden','false'); fli.classList.add('show'); }, 250);
   }
   function hide(){ fli.classList.remove('show'); fli.setAttribute('aria-hidden','true'); }
@@ -779,8 +781,6 @@
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchSection);
   else watchSection();
   fli.querySelector('.fli-go').addEventListener('click', hide);
-  fli.addEventListener('click', e => { if(e.target === fli) hide(); });
-  document.addEventListener('keydown', e => { if(e.key === 'Escape' && fli.classList.contains('show')) hide(); });
 })();
 </script>
 <section id="featured" aria-label="Featured interface" class="fl-sec">

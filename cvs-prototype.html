@@ -827,7 +827,9 @@
       try{ parent.postMessage({ type: 'cvsInvite' }, '*'); }catch(e){}
       return;
     }
+    try{ if(sessionStorage.getItem('cvs_rework_invite')){ invShown = true; return; } }catch(e){}
     invShown = true;
+    try{ sessionStorage.setItem('cvs_rework_invite','1'); }catch(e){}
     setTimeout(() => { inv.setAttribute('aria-hidden','false'); inv.classList.add('show'); }, 250);
   }
   function hideInvite(){ inv.classList.remove('show'); inv.setAttribute('aria-hidden','true'); }
@@ -872,12 +874,9 @@
     if(!embedded){ e.preventDefault(); hideInvite(); openRw(); }
     else hideInvite();
   });
-  inv.addEventListener('click', e => { if(e.target === inv) hideInvite(); });
   rwBack.addEventListener('click', closeRw);
   document.addEventListener('keydown', e => {
-    if(e.key !== 'Escape') return;
-    if(inv.classList.contains('show')) return hideInvite();
-    if(rw.classList.contains('show')) closeRw();
+    if(e.key === 'Escape' && rw.classList.contains('show')) closeRw();
   });
 
   document.querySelectorAll('[data-demo]').forEach(btn => {

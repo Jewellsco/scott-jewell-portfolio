@@ -237,6 +237,19 @@
   #caption.swap{opacity:0;transform:translateY(5px);}
   #caption b{color:#fff;}
 
+  .pnav{position:fixed;top:18px;right:18px;z-index:50;display:flex;gap:10px;
+    opacity:0;transform:translateY(-8px);transition:opacity .7s ease .7s,transform .8s cubic-bezier(.16,1,.3,1) .7s;}
+  body.go .pnav{opacity:1;transform:none;}
+  .pnav a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border-radius:30px;
+    padding:10px 16px;font:600 13px var(--sans);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    transition:transform .25s cubic-bezier(.2,.9,.3,1.4),box-shadow .3s ease,background .25s ease;}
+  .pnav a svg{width:14px;height:14px;flex:none;}
+  .pnav .pn-home{background:rgba(9,12,21,.75);border:1px solid rgba(148,170,220,.25);color:#dfe7f5;}
+  .pnav .pn-home:hover{background:rgba(20,26,42,.9);transform:translateY(-2px);}
+  .pnav .pn-deep{background:linear-gradient(120deg,#E8B04B,#F2CE8B);color:#221604;font-weight:700;
+    box-shadow:0 10px 26px rgba(232,176,75,.3);}
+  .pnav .pn-deep:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(232,176,75,.4);}
+  @media(max-width:640px){.pnav{top:12px;right:12px;}.pnav a{padding:9px 13px;font-size:12px;}}
   .backlink{margin-top:44px;font-size:14px;color:var(--slate);}
   .backlink a{color:#9fb0d0;text-decoration:none;font-weight:600;}
   .backlink a:hover{color:#fff;}
@@ -498,6 +511,11 @@
 
   </div>
 
+  <nav class="pnav" id="pnav" aria-label="Page navigation">
+    <a class="pn-home" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a>
+    <a class="pn-deep" href="cvs-prototype.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></svg>Dig deeper</a>
+  </nav>
+
   <div class="backlink">← <a href="cvs-prototype.html">Back to the documented rebuild</a> · <a href="case-cvs.html">CVS case study</a></div>
 
 <script>
@@ -634,6 +652,9 @@
       showToast('Passkey created');
       setCaption('<b>Passkeys first.</b> The modern default, a password you cannot forget or phish.'); return; }
   });
+
+  // hide page nav when framed, the host page owns navigation there
+  if(window.top !== window.self){ const pn = document.getElementById('pnav'); if(pn) pn.remove(); }
 
   // entrance
   requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('go')));
