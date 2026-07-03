@@ -101,6 +101,17 @@
   /* WORK */
   .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:36px 32px;}
   /* designer margin notes beside BagEquity */
+
+  /* tava audit thumb */
+  .thumb.tvx{background:linear-gradient(160deg,#2A6365,#173F41);display:flex;align-items:center;justify-content:center;padding:26px;}
+  .tvx-panel{background:#FAF6F1;border-radius:16px;padding:18px 20px;width:min(300px,84%);box-shadow:0 18px 44px rgba(8,26,27,.35);}
+  .tvx-brand{display:flex;align-items:center;gap:6px;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:14px;color:#1E4A4C;margin-bottom:8px;}
+  .tvx-brand i{width:8px;height:8px;border-radius:50%;background:#FD7472;}
+  .tvx-q{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:16.5px;color:#1E4A4C;letter-spacing:-.2px;line-height:1.25;margin-bottom:11px;}
+  .tvx-chip{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:#1E5C40;background:#EAF6F0;border:1px solid #BFE3D2;border-radius:20px;padding:6px 11px;margin-bottom:12px;}
+  .tvx-chip i{width:14px;height:14px;border-radius:50%;background:#2E9E6B;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:800;}
+  .tvx-bar{height:10px;border-radius:6px;background:#E8E2D7;margin-top:7px;}
+  .tvx-bar.s{width:62%;}
   .bqn{display:flex;flex-direction:column;justify-content:center;gap:16px;padding-left:26px;}
   .bqn-head{display:flex;align-items:center;gap:11px;margin-bottom:2px;}
   .bqn-head img{width:36px;height:36px;border-radius:50%;object-fit:cover;box-shadow:0 4px 12px rgba(24,22,16,.16);}
@@ -953,7 +964,7 @@
   <div class="wrap">
     <div class="sec-head reveal">
       <h2>Selected work</h2>
-      <span class="idx">Six projects</span>
+      <span class="idx">Seven projects</span>
     </div>
     <div class="work-grid">
 
@@ -1070,6 +1081,25 @@
           <p>One green on black system runs the site, the app, and the card. Tokens first, so a solo designer can stay consistent at speed.</p>
         </div>
       </div>
+      <a class="card reveal" href="tava-concept.html" style="--i:4">
+        <div class="thumb tvx">
+          <span class="badge">Audit</span>
+          <div class="tvx-panel">
+            <div class="tvx-brand"><i></i>tava</div>
+            <div class="tvx-q">Does my insurance cover therapy?</div>
+            <span class="tvx-chip"><i>&#10003;</i>You are covered · about $25</span>
+            <div class="tvx-bar"></div>
+            <div class="tvx-bar s"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="ctags">Healthtech · Audit + Concept</div>
+          <h3>Tava Health, a Coverage First Signup</h3>
+          <p>I audited Tava's live patient funnel and found signup asking for identity before it answers coverage. This concept keeps their homepage promise. Answer first, faces second, identity last.</p>
+          <span class="more">View the audit <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
+
 
 
     </div>

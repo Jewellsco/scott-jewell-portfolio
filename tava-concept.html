@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tava Health · Coverage First Concept · Scott Jewell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#2A6365;--teal-deep:#1E4A4C;--teal-ink:#15393B;
+    --coral:#FD7472;--coral-deep:#E4504E;--cream:#FAF6F1;--card:#FFFFFF;
+    --ink:#1C2B2B;--sec:#5F7473;--line:#E4DED4;--good:#2E9E6B;
+    --display:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--sans);background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;
+    padding:52px 20px 70px;display:flex;flex-direction:column;align-items:center;}
+  a{color:inherit;}
+
+  .top{max-width:760px;text-align:center;margin-bottom:16px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--teal);border:1px solid #CFE0DE;border-radius:30px;padding:7px 14px;
+    background:#EDF4F3;margin-bottom:16px;}
+  h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,4.4vw,42px);letter-spacing:-.8px;line-height:1.06;color:var(--teal-deep);}
+  h1 em{font-style:normal;color:var(--coral-deep);}
+  .sub{margin-top:14px;color:var(--sec);font-size:15.5px;line-height:1.65;max-width:640px;margin-left:auto;margin-right:auto;}
+  .sub b{color:var(--ink);font-weight:600;}
+  .note-strip{max-width:640px;margin:18px auto 40px;background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:13px 16px;font-size:13px;color:var(--sec);line-height:1.6;display:flex;gap:11px;align-items:flex-start;
+    box-shadow:0 10px 30px rgba(30,74,76,.06);}
+  .note-strip img{width:32px;height:32px;border-radius:50%;object-fit:cover;flex:none;}
+  .note-strip b{color:var(--ink);}
+
+  .flow{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;max-width:1180px;}
+  .step{width:352px;max-width:94vw;display:flex;flex-direction:column;}
+  .step-h{display:flex;align-items:center;gap:10px;margin:0 4px 12px;}
+  .step-h .n{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;
+    justify-content:center;font-size:12.5px;font-weight:700;flex:none;}
+  .step-h .t{font-family:var(--display);font-size:16.5px;font-weight:600;color:var(--teal-deep);letter-spacing:-.2px;}
+  .step-h .d{font-size:12px;color:var(--sec);margin-top:1px;}
+
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;flex:1;
+    box-shadow:0 2px 6px rgba(30,74,76,.05),0 24px 54px rgba(30,74,76,.1);display:flex;flex-direction:column;
+    opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .8s cubic-bezier(.16,1,.3,1);}
+  body.go .panel{opacity:1;transform:none;}
+  .step:nth-child(2) .panel{transition-delay:.12s;}
+  .step:nth-child(3) .panel{transition-delay:.24s;}
+  .p-head{background:var(--teal);color:#fff;padding:18px 20px 16px;}
+  .p-head .brand{display:flex;align-items:center;gap:7px;font-family:var(--display);font-weight:600;font-size:15px;margin-bottom:10px;}
+  .p-head .brand i{width:9px;height:9px;border-radius:50%;background:var(--coral);}
+  .p-head h2{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:-.3px;line-height:1.2;}
+  .p-head p{font-size:12.5px;color:#CFE3E1;margin-top:5px;line-height:1.5;}
+  .p-body{padding:18px 20px 20px;flex:1;display:flex;flex-direction:column;gap:12px;}
+
+  .fl{font-size:12px;font-weight:600;color:#3A5252;}
+  select,.pill-in{width:100%;font-family:inherit;font-size:14px;color:var(--ink);background:#F4F1EA;
+    border:1.5px solid transparent;border-radius:11px;padding:12px 13px;outline:none;appearance:none;}
+  select:focus{border-color:var(--teal);background:#fff;}
+  .why{font-size:11.5px;color:var(--sec);line-height:1.5;}
+  .answer{border-radius:14px;padding:14px 15px;background:#EAF6F0;border:1px solid #BFE3D2;display:flex;gap:11px;align-items:flex-start;}
+  .answer .ic{width:30px;height:30px;border-radius:50%;background:var(--good);display:flex;align-items:center;justify-content:center;flex:none;}
+  .answer .ic svg{width:14px;height:14px;color:#fff;}
+  .answer .t{display:block;font-size:13.5px;font-weight:700;color:#1E5C40;}
+  .answer .d{display:block;font-size:12.5px;color:#3A6B54;margin-top:2px;line-height:1.5;}
+  .quiet{font-size:11.5px;color:var(--sec);text-align:center;}
+
+  .ther{border:1px solid var(--line);border-radius:14px;padding:13px 14px;display:flex;gap:12px;align-items:flex-start;
+    transition:transform .25s ease,box-shadow .25s ease;cursor:pointer;}
+  .ther:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(30,74,76,.1);}
+  .ther .av{width:42px;height:42px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:14px;color:#fff;}
+  .ther > span:last-child{flex:1;}
+  .ther .nm{font-size:14px;font-weight:700;}
+  .ther .tags,.ther .slot{display:block;}
+  .tags{display:flex;}
+  .ther .cred{font-size:11.5px;color:var(--sec);margin-top:1px;}
+  .tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;}
+  .tags span{font-size:10.5px;font-weight:600;color:var(--teal-deep);background:#EDF4F3;border-radius:20px;padding:3px 9px;}
+  .slot{font-size:11.5px;font-weight:600;color:var(--coral-deep);margin-top:7px;}
+
+  .cost{border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  .cost .row{display:flex;justify-content:space-between;padding:11px 14px;font-size:13px;}
+  .cost .row+.row{border-top:1px solid var(--line);}
+  .cost .row span:first-child{color:var(--sec);}
+  .cost .row b{font-weight:700;}
+  .cost .row.you{background:#FFF3F0;}
+  .cost .row.you span:first-child{color:var(--coral-deep);font-weight:700;}
+  .cost .row.you b{color:var(--coral-deep);font-size:15px;}
+
+  .btn{border:none;cursor:pointer;font-family:inherit;border-radius:12px;padding:13px;text-align:center;font-size:14px;
+    font-weight:700;color:#fff;background:var(--teal);transition:transform .15s ease,background .2s ease;}
+  .btn:hover{background:var(--teal-deep);}
+  .btn:active{transform:scale(.98);}
+  .btn.coral{background:var(--coral-deep);}
+
+  .idrow{display:flex;gap:10px;}
+  .idrow .pill-in{flex:1;}
+  .keep{display:flex;gap:9px;align-items:flex-start;background:#EDF4F3;border-radius:12px;padding:11px 13px;}
+  .keep svg{width:15px;height:15px;color:var(--teal);flex:none;margin-top:1px;}
+  .keep p{font-size:11.5px;color:#3A5252;line-height:1.5;}
+
+  /* designer notes */
+  .notes{max-width:1180px;margin:44px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+  .dn{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 17px;
+    box-shadow:0 10px 30px rgba(30,74,76,.06);}
+  .dn .cat{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--sec);margin-bottom:8px;}
+  .dn .cat i{width:7px;height:7px;border-radius:50%;}
+  .dn p{font-size:13px;color:#3A5252;line-height:1.62;}
+  .dn p b{color:var(--ink);}
+
+  .backlink{margin-top:46px;font-size:14px;color:var(--sec);text-align:center;}
+  .backlink a{font-weight:600;color:var(--teal-deep);text-decoration:none;}
+  .backlink a:hover{color:var(--coral-deep);}
+
+  @media(prefers-reduced-motion:reduce){.panel{transition:none;opacity:1;transform:none;}}
+</style>
+</head>
+<body>
+
+  <div class="top">
+    <div class="eyebrow">Tava Health · Unsolicited concept · Not affiliated</div>
+    <h1>Show the coverage <em>before</em> you ask for the person</h1>
+    <p class="sub">Tava's homepage promises a coverage answer in a few clicks. The live signup opens by asking for a legal name, a birth date, and an email before it shows a single therapist or price. For someone reaching out for help on a hard day, that is trust asked for before trust is earned. <b>This concept flips the order.</b> Answer first, faces second, identity last.</p>
+    <div class="note-strip">
+      <img src="assets/scott-avatar.jpg" alt="Scott Jewell">
+      <div><b>A study, not a shipped product.</b> Built from Tava's public pages in their brand language. All people and prices below are fictional and plausible. I designed the account experience used by millions at CVS Health, this is the same trust first thinking applied to Tava's front door.</div>
+    </div>
+  </div>
+
+  <div class="flow">
+
+    <div class="step">
+      <div class="step-h"><span class="n">1</span><span><span class="t">The answer, up front</span><br><span class="d">No account needed yet</span></span></div>
+      <div class="panel">
+        <div class="p-head">
+          <div class="brand"><i></i>tava</div>
+          <h2>Does my insurance cover therapy?</h2>
+          <p>Two quick questions. No name, no email, no commitment.</p>
+        </div>
+        <div class="p-body">
+          <div>
+            <div class="fl">Your insurance</div>
+            <select id="carrier" aria-label="Insurance carrier">
+              <option>Blue Cross Blue Shield</option>
+              <option>UnitedHealthcare</option>
+              <option>Aetna</option>
+              <option>Cigna</option>
+              <option>I want to pay without insurance</option>
+            </select>
+          </div>
+          <div>
+            <div class="fl">Your state</div>
+            <select id="state" aria-label="State">
+              <option>Colorado</option>
+              <option>Utah</option>
+              <option>Texas</option>
+            </select>
+          </div>
+          <div class="answer" id="answer">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span><span class="t" id="ansT">You are covered</span><span class="d" id="ansD">Most members with this plan pay about $25 per session. You will see your exact number before you book anything.</span></span>
+          </div>
+          <button class="btn" type="button">See therapists who take my plan</button>
+          <div class="quiet">We have not asked who you are yet. That is the point.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-h"><span class="n">2</span><span><span class="t">Real faces, real openings</span><br><span class="d">Matches before signup</span></span></div>
+      <div class="panel">
+        <div class="p-head">
+          <div class="brand"><i></i>tava</div>
+          <h2>Therapists who take your plan</h2>
+          <p>Matched to your answers. Browse freely, choose when ready.</p>
+        </div>
+        <div class="p-body">
+          <div class="ther">
+            <span class="av" style="background:#2A6365;">MJ</span>
+            <span><span class="nm">Maren J.</span><span class="cred"> · LCSW, 11 years</span>
+              <span class="tags"><span>Anxiety</span><span>Life changes</span><span>Evenings</span></span>
+              <span class="slot">Tomorrow, 6:30 pm open</span></span>
+          </div>
+          <div class="ther">
+            <span class="av" style="background:#E4504E;">DR</span>
+            <span><span class="nm">David R.</span><span class="cred"> · LMFT, 8 years</span>
+              <span class="tags"><span>Couples</span><span>Stress</span><span>In person</span></span>
+              <span class="slot">Thursday, 12:00 pm open</span></span>
+          </div>
+          <div class="ther">
+            <span class="av" style="background:#B98A2F;">AS</span>
+            <span><span class="nm">Ana S.</span><span class="cred"> · PhD, 15 years</span>
+              <span class="tags"><span>Depression</span><span>Spanish</span><span>Weekends</span></span>
+              <span class="slot">Saturday, 9:00 am open</span></span>
+          </div>
+          <div class="quiet">Every profile shows the next real opening, not a promise to call back.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-h"><span class="n">3</span><span><span class="t">One clear price, then identity</span><br><span class="d">Now the account earns its ask</span></span></div>
+      <div class="panel">
+        <div class="p-head">
+          <div class="brand"><i></i>tava</div>
+          <h2>Book with Maren J.</h2>
+          <p>Tomorrow at 6:30 pm, online session.</p>
+        </div>
+        <div class="p-body">
+          <div class="cost">
+            <div class="row"><span>Session rate</span><b>$140</b></div>
+            <div class="row"><span>Your plan pays</span><b>$115</b></div>
+            <div class="row you"><span>You pay</span><b>$25</b></div>
+          </div>
+          <div class="idrow">
+            <input class="pill-in" placeholder="Legal first name" aria-label="Legal first name">
+            <input class="pill-in" placeholder="Legal last name" aria-label="Legal last name">
+          </div>
+          <div class="why">Needed now because insurance bills under your legal name. This is the first moment we ask, and we say why.</div>
+          <input class="pill-in" placeholder="Preferred name" aria-label="Preferred name">
+          <div class="keep">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9.5-9A5.6 5.6 0 0 1 12 6a5.6 5.6 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+            <p>Tava already asks for a preferred name today. Keep it. It is the single most humane field in the flow, your provider greets you as you, not as your insurance card.</p>
+          </div>
+          <button class="btn coral" type="button">Confirm my session</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="notes">
+    <div class="dn"><span class="cat"><i style="background:#E4504E;"></i>The evidence</span>
+      <p><b>Their own homepage sets the bar.</b> Step one of "Simplifying Your Path" reads "Check your coverage. No guesswork needed." The live funnel opens with legal name, date of birth, and email instead. The concept simply makes the product keep the promise the marketing already made.</p></div>
+    <div class="dn"><span class="cat"><i style="background:#2A6365;"></i>Next best action</span>
+      <p><b>One question per moment.</b> Anxiety shrinks working memory. Each screen asks exactly one thing, are you covered, who fits you, what will it cost. Identity waits until it has a reason a person can read in plain words.</p></div>
+    <div class="dn"><span class="cat"><i style="background:#B98A2F;"></i>Trust and consent</span>
+      <p><b>Say why before you ask.</b> Every identity field carries one line of purpose, the pattern that lifted profile completion when I redesigned the account experience at CVS Health. Labels are real labels, not placeholders, for screen readers and for people who look away mid form.</p></div>
+  </div>
+
+  <div class="backlink">← <a href="index.html">Back to the portfolio</a></div>
+
+<script>
+(() => {
+  'use strict';
+  requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('go')));
+  const carrier = document.getElementById('carrier');
+  const ansT = document.getElementById('ansT');
+  const ansD = document.getElementById('ansD');
+  function update(){
+    if(carrier.value.indexOf('without insurance') > -1){
+      ansT.textContent = 'You can pay as you go';
+      ansD.textContent = 'Sessions start at $140 and many members use HSA or FSA dollars. You will see the exact number before you book anything.';
+    } else {
+      ansT.textContent = 'You are covered';
+      ansD.textContent = 'Most members with this plan pay about $25 per session. You will see your exact number before you book anything.';
+    }
+  }
+  carrier.addEventListener('change', update);
+  document.getElementById('state').addEventListener('change', update);
+})();
+</script>
+</body>
+</html>
