@@ -274,7 +274,10 @@
   .again:hover{color:#fff;}
   .again:hover svg{transform:rotate(-180deg);}
 
-  .note{margin-top:14px;display:flex;gap:12px;align-items:flex-start;
+  .note{display:none;}
+  .note.live{display:flex;animation:noteIn .45s cubic-bezier(.16,1,.3,1);}
+  @keyframes noteIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .note{margin-top:14px;gap:12px;align-items:flex-start;
     background:rgba(9,12,21,.6);border:1px solid rgba(148,170,220,.15);border-radius:16px;
     padding:14px 15px;box-shadow:0 16px 40px rgba(2,6,20,.35);}
   .note img{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none;
@@ -538,19 +541,19 @@
         <button class="again" data-demo="reset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/></svg>Start over</button>
       </div>
 
-      <div class="note">
-        <img src="assets/scott-avatar.jpg" alt="Scott Jewell">
-        <div class="nt">
-          <div class="who">Notes from Scott</div>
-          <div id="caption">Tap the phone directly. Every row, toggle, and button responds. Or press play and I will drive.</div>
-        </div>
-      </div>
-
       <a class="push" href="cvs-prototype-next.html" target="_blank" rel="noopener">
         <span class="pf">I would push this even further</span>
         <span class="ps">This rebuild documents what shipped. The rework removes every red header and modernizes the whole flow.</span>
         <span class="pa">Open the rework<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
+
+      <div class="note" id="noteCard">
+        <img src="assets/scott-avatar.jpg" alt="Scott Jewell">
+        <div class="nt">
+          <div class="who">Notes from Scott</div>
+          <div id="caption"></div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -584,6 +587,8 @@
   tick(); setInterval(tick, 10000);
 
   function setCaption(html){
+    const nc = document.getElementById('noteCard');
+    if(nc && !nc.classList.contains('live')) nc.classList.add('live');
     if(reduce){ caption.innerHTML = html; return; }
     caption.classList.add('swap');
     setTimeout(()=>{ caption.innerHTML = html; caption.classList.remove('swap'); }, 180);
