@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CVS Health — Interactive Prototype · Scott Jewell</title>
+<title>CVS Health · Live Prototype · Scott Jewell</title>
+<script>if(location.search.indexOf('embed')>-1)document.documentElement.className='embed';</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,21 +16,59 @@
     --display:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:var(--sans);min-height:100vh;color:#fff;
-    background:radial-gradient(900px 500px at 80% -5%,rgba(19,200,255,.22),transparent 60%),
-               radial-gradient(700px 460px at 10% 10%,rgba(30,102,255,.28),transparent 58%),var(--navy);
-    display:flex;flex-direction:column;align-items:center;padding:40px 20px 70px;-webkit-font-smoothing:antialiased;}
+  html{background:#0B0E17;}
+  body{font-family:var(--sans);min-height:100vh;color:#fff;background:#0B0E17;
+    display:flex;flex-direction:column;align-items:center;padding:44px 20px 64px;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;}
   a{color:inherit;}
-  .top{max-width:760px;text-align:center;margin-bottom:30px;}
-  .eyebrow{font-family:var(--display);font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
-    color:#8fb0ff;margin-bottom:14px;}
-  h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4.5vw,40px);letter-spacing:-1px;line-height:1.08;}
+
+  /* ---------- SCENE (layered environment, not flat black) ---------- */
+  .scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  .scene .a{position:absolute;border-radius:50%;filter:blur(72px);}
+  .scene .a1{width:620px;height:620px;left:-160px;top:-200px;
+    background:radial-gradient(circle,rgba(30,102,255,.32),transparent 66%);animation:drift1 17s ease-in-out infinite alternate;}
+  .scene .a2{width:540px;height:540px;right:-140px;top:-130px;
+    background:radial-gradient(circle,rgba(19,200,255,.20),transparent 66%);animation:drift2 21s ease-in-out infinite alternate;}
+  .scene .a3{width:680px;height:440px;left:50%;bottom:-240px;margin-left:-340px;
+    background:radial-gradient(circle,rgba(204,0,0,.15),transparent 66%);animation:drift3 24s ease-in-out infinite alternate;}
+  @keyframes drift1{to{transform:translate(70px,44px);}}
+  @keyframes drift2{to{transform:translate(-56px,60px);}}
+  @keyframes drift3{to{transform:translate(48px,-36px);}}
+  .scene .gridbg{position:absolute;inset:0;
+    background-image:linear-gradient(rgba(148,170,220,.055) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(148,170,220,.055) 1px,transparent 1px);
+    background-size:56px 56px;
+    -webkit-mask-image:radial-gradient(ellipse 72% 62% at 50% 42%,#000 28%,transparent 76%);
+    mask-image:radial-gradient(ellipse 72% 62% at 50% 42%,#000 28%,transparent 76%);}
+  .scene .vig{position:absolute;inset:0;
+    background:radial-gradient(ellipse 130% 105% at 50% 18%,transparent 52%,rgba(3,5,11,.6));}
+
+  .top,.stage,.backlink{position:relative;z-index:1;}
+
+  /* ---------- HERO ---------- */
+  .top{max-width:720px;text-align:center;margin-bottom:36px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;
+    letter-spacing:.18em;text-transform:uppercase;color:#8fb0ff;margin-bottom:16px;
+    border:1px solid rgba(148,170,220,.22);border-radius:30px;padding:7px 14px;
+    background:rgba(255,255,255,.04);}
+  .eyebrow .hb{width:12px;height:11px;flex:none;color:#ff5a5a;}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4.2vw,38px);letter-spacing:-1px;line-height:1.08;}
   h1 .g{background:linear-gradient(120deg,#7fb2ff,#13C8FF);-webkit-background-clip:text;background-clip:text;color:transparent;}
-  .sub{margin-top:16px;color:#c4cee4;font-size:16px;line-height:1.6;}
+  .sub{margin-top:14px;color:#c4cee4;font-size:15.5px;line-height:1.65;max-width:600px;margin-left:auto;margin-right:auto;}
 
-  .stage{display:flex;gap:48px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:1000px;}
+  .stage{display:flex;gap:60px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:1040px;}
 
-  /* ---------- PHONE ---------- */
+  /* device presented on a lit pedestal */
+  .dev-wrap{position:relative;flex:none;perspective:1300px;
+    animation:bob 7.5s ease-in-out 1.6s infinite;}
+  @keyframes bob{0%,100%{translate:0 0;}50%{translate:0 -6px;}}
+  .dev-glow{position:absolute;inset:-14% -20%;z-index:0;filter:blur(56px);pointer-events:none;
+    background:radial-gradient(46% 42% at 38% 30%,rgba(30,102,255,.30),transparent 70%),
+               radial-gradient(42% 40% at 68% 74%,rgba(204,0,0,.14),transparent 70%);}
+  .dev-floor{position:absolute;left:6%;right:6%;bottom:-38px;height:48px;z-index:0;filter:blur(11px);pointer-events:none;
+    background:radial-gradient(50% 100% at 50% 0,rgba(0,0,0,.55),transparent 72%);}
+
+/* ---------- PHONE ---------- */
   .device{width:340px;height:712px;background:#0b0b0d;border-radius:52px;padding:13px;
     box-shadow:0 40px 90px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.06),inset 0 0 0 2px #2a2a2e;
     position:relative;flex:none;}
@@ -162,57 +201,134 @@
     font-size:13px;font-weight:500;padding:10px 18px;border-radius:30px;opacity:0;transition:all .3s;z-index:80;white-space:nowrap;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  /* ---------- CONTROLS / ANNOTATIONS ---------- */
-  .panel{flex:none;width:320px;max-width:100%;}
-  .panel h2{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.4px;margin-bottom:6px;}
-  .panel .pdesc{color:#c4cee4;font-size:14.5px;line-height:1.6;margin-bottom:22px;}
-  .chip{width:100%;text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(150,180,255,.22);color:#fff;
-    border-radius:14px;padding:14px 16px;margin-bottom:11px;cursor:pointer;transition:.2s;display:flex;gap:13px;align-items:center;}
-  .chip:hover{background:rgba(30,102,255,.18);border-color:rgba(120,160,255,.5);transform:translateX(3px);}
-  .chip .dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(120deg,#1E66FF,#13C8FF);flex:none;
-    display:flex;align-items:center;justify-content:center;}
-  .chip .dot svg{width:18px;height:18px;color:#fff;}
-  .chip .ct{flex:1;}
-  .chip .ct .t{font-size:14.5px;font-weight:600;}
-  .chip .ct .d{font-size:12.5px;color:var(--slate);margin-top:2px;}
-  .chip.primary{background:linear-gradient(120deg,#1E66FF,#13C8FF);border:none;}
-  .chip.primary .dot{background:rgba(255,255,255,.2);}
-  .chip.primary .ct .d{color:rgba(255,255,255,.85);}
+  
+  /* ---------- CONTROLS ---------- */
+  .device{position:relative;z-index:1;transform-style:preserve-3d;
+    transition:transform .22s ease-out;
+    box-shadow:0 2px 6px rgba(0,0,0,.5),
+               0 26px 52px rgba(2,6,20,.55),
+               0 80px 150px rgba(2,6,20,.62),
+               0 0 0 2px rgba(255,255,255,.07),
+               inset 0 0 0 2px #2a2a2e;}
 
-  .caption{margin-top:18px;background:rgba(255,255,255,.05);border-left:3px solid var(--cyan);border-radius:0 12px 12px 0;
-    padding:13px 16px;font-size:13.5px;color:#dfe7f5;min-height:54px;line-height:1.5;}
-  .caption b{color:#fff;}
+  .panel{flex:none;width:348px;max-width:100%;}
+  .p-card{background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.028));
+    border:1px solid rgba(148,170,220,.17);border-radius:22px;padding:22px 22px 16px;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    box-shadow:0 30px 70px rgba(2,6,20,.45),inset 0 1px 0 rgba(255,255,255,.08);}
+  .p-live{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;
+    letter-spacing:.16em;text-transform:uppercase;color:#7ee3a9;margin-bottom:12px;}
+  .p-dot{width:7px;height:7px;border-radius:50%;background:#34C759;animation:livep 2s ease-in-out infinite;}
+  @keyframes livep{0%,100%{box-shadow:0 0 0 0 rgba(52,199,89,.5);}55%{box-shadow:0 0 0 6px rgba(52,199,89,0);}}
+  .p-card h2{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.4px;margin-bottom:7px;}
+  .pdesc{color:#c4cee4;font-size:13.5px;line-height:1.6;margin-bottom:18px;}
 
-  .backlink{margin-top:40px;font-size:14px;color:var(--slate);}
+  .play{width:100%;position:relative;overflow:hidden;display:flex;gap:14px;align-items:center;text-align:left;
+    padding:14px 16px;border-radius:16px;border:none;cursor:pointer;color:#fff;font-family:inherit;
+    background:linear-gradient(120deg,#1E66FF,#13C8FF);
+    box-shadow:0 12px 30px rgba(30,102,255,.35),inset 0 1px 0 rgba(255,255,255,.28);
+    transition:transform .3s cubic-bezier(.2,.9,.3,1.4),box-shadow .3s ease,filter .3s ease;}
+  .play:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(30,102,255,.45),inset 0 1px 0 rgba(255,255,255,.28);}
+  .play:active{transform:translateY(0) scale(.985);}
+  .play .pi{width:40px;height:40px;flex:none;border-radius:50%;background:rgba(255,255,255,.22);
+    display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.25);}
+  .play .pi svg{width:16px;height:16px;margin-left:2px;}
+  .play .pt{flex:1;}
+  .play .pt b{display:block;font-size:15px;font-weight:700;letter-spacing:-.2px;}
+  .play .pt span{display:block;font-size:12px;color:rgba(255,255,255,.82);margin-top:2px;}
+  .play .bar{position:absolute;left:0;bottom:0;height:3px;width:0;background:#fff;opacity:.95;
+    border-radius:0 3px 3px 0;transition:width .7s cubic-bezier(.3,.7,.3,1);}
+  body.touring .play{pointer-events:none;filter:saturate(.85) brightness(.96);}
+  body.touring .play .pi svg{animation:pip 1.2s ease-in-out infinite;}
+  @keyframes pip{0%,100%{transform:scale(1);}50%{transform:scale(.82);}}
+
+  .steps{list-style:none;margin:16px 0 2px;position:relative;}
+  .steps::before{content:"";position:absolute;left:20px;top:18px;bottom:18px;width:2px;
+    background:rgba(148,170,220,.14);border-radius:2px;}
+  .step{display:flex;gap:13px;align-items:flex-start;padding:10px 10px 10px 6px;border-radius:14px;
+    cursor:pointer;transition:background .25s ease,transform .25s ease;position:relative;}
+  .step:hover{background:rgba(255,255,255,.05);transform:translateX(2px);}
+  .step .n{width:30px;height:30px;flex:none;border-radius:50%;background:#10131e;
+    border:1.5px solid rgba(148,170,220,.35);display:flex;align-items:center;justify-content:center;
+    position:relative;z-index:1;transition:all .35s cubic-bezier(.2,.9,.3,1.3);}
+  .step .n .num{font-size:12.5px;font-weight:700;color:#9fb0d0;transition:opacity .2s;}
+  .step .n svg{position:absolute;inset:0;margin:auto;width:13px;height:13px;color:#fff;opacity:0;
+    transform:scale(.4);transition:all .35s cubic-bezier(.2,.9,.3,1.5);}
+  .step .st{flex:1;padding-top:2px;}
+  .step .t{display:block;font-size:14px;font-weight:600;color:#fff;letter-spacing:-.1px;}
+  .step .d{display:block;font-size:12.5px;color:var(--slate);margin-top:2px;line-height:1.45;}
+  .step.on{background:rgba(30,102,255,.15);}
+  .step.on .n{border-color:#13C8FF;box-shadow:0 0 0 4px rgba(19,200,255,.14);}
+  .step.on .n .num{color:#fff;}
+  .step.done .n{background:linear-gradient(120deg,#1E66FF,#13C8FF);border-color:transparent;}
+  .step.done .n .num{opacity:0;}
+  .step.done .n svg{opacity:1;transform:scale(1);}
+
+  .again{display:inline-flex;gap:8px;align-items:center;background:none;border:none;cursor:pointer;
+    color:#9fb0d0;font:600 12.5px var(--sans);padding:10px 6px 6px;transition:color .2s;}
+  .again svg{width:13px;height:13px;transition:transform .45s cubic-bezier(.2,.9,.3,1.3);}
+  .again:hover{color:#fff;}
+  .again:hover svg{transform:rotate(-180deg);}
+
+  .note{margin-top:14px;display:flex;gap:12px;align-items:flex-start;
+    background:rgba(9,12,21,.6);border:1px solid rgba(148,170,220,.15);border-radius:16px;
+    padding:14px 15px;box-shadow:0 16px 40px rgba(2,6,20,.35);}
+  .note img{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none;
+    border:1.5px solid rgba(255,255,255,.22);}
+  .note .who{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#8fb0ff;
+    font-weight:700;margin-bottom:4px;}
+  #caption{font-size:13px;color:#dfe7f5;line-height:1.55;
+    transition:opacity .18s ease,transform .18s ease;}
+  #caption.swap{opacity:0;transform:translateY(5px);}
+  #caption b{color:#fff;}
+
+  .backlink{margin-top:44px;font-size:14px;color:var(--slate);}
   .backlink a{color:#9fb0d0;text-decoration:none;font-weight:600;}
   .backlink a:hover{color:#fff;}
 
-  @media(max-width:900px){.stage{gap:34px;}.panel{width:340px;}}
+  /* entrance choreography */
+  .dev-wrap,.panel{opacity:0;transform:translateY(28px);
+    transition:opacity .8s ease,transform .95s cubic-bezier(.16,1,.3,1);}
+  .panel{transition-delay:.16s;}
+  body.go .dev-wrap,body.go .panel{opacity:1;transform:none;}
+  .top{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .8s cubic-bezier(.16,1,.3,1);}
+  body.go .top{opacity:1;transform:none;}
 
-  /* device subtle hover lift */
-  .device{transition:transform .6s cubic-bezier(.16,1,.3,1),box-shadow .6s cubic-bezier(.16,1,.3,1);}
-  .stage:hover .device{box-shadow:0 50px 110px rgba(0,0,0,.55),0 0 0 2px rgba(255,255,255,.08),inset 0 0 0 2px #2a2a2e;}
+  /* embed mode (inside the portfolio featured frame) */
+  html.embed body{padding:14px 10px 18px;}
+  html.embed .top,html.embed .backlink{display:none;}
+  html.embed .stage{zoom:.9;}
+  html.embed .dev-wrap{animation:none;}
 
-  /* count-up draw for status / confirmations handled in JS */
+  @media(max-width:900px){.stage{gap:38px;}.panel{width:348px;}}
 
   @media(prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
     .screen{transition:none;}
     .screen.prev{transform:translateX(-22%);}
     .ripple{display:none;}
-    .device{transition:none;}
+    .device,.dev-wrap,.panel,.top{transition:none;}
+    .dev-wrap{animation:none;}
   }
 </style>
 </head>
 <body>
 
+  <div class="scene" aria-hidden="true">
+    <div class="a a1"></div><div class="a a2"></div><div class="a a3"></div>
+    <div class="gridbg"></div><div class="vig"></div>
+  </div>
+
   <div class="top">
-    <div class="eyebrow">CVS Health · Live prototype</div>
+    <div class="eyebrow"><svg class="hb" viewBox="0 0 24 22" fill="currentColor"><path d="M12 21.35 3.6 12.9a5.8 5.8 0 0 1 0-8.2 5.7 5.7 0 0 1 8.1 0l.3.3.3-.3a5.7 5.7 0 0 1 8.1 0 5.8 5.8 0 0 1 0 8.2Z"/></svg>CVS Health · Live prototype</div>
     <h1>Not a screenshot. <span class="g">A working product.</span></h1>
-    <p class="sub">The account and sign in experience I designed at CVS, used by millions, running here as real UI. Tap any row and it responds. Face ID, save states, screen transitions, all live. Or hit play and watch the whole flow run itself.</p>
+    <p class="sub">The account and sign in experience I designed at CVS, used by millions, rebuilt here as real UI. Tap any row and it responds. Face ID, save states, screen transitions, all live.</p>
   </div>
 
   <div class="stage">
+
+    <div class="dev-wrap" id="devWrap">
+      <div class="dev-glow" aria-hidden="true"></div>
 
     <!-- PHONE -->
     <div class="device">
@@ -297,11 +413,11 @@
               <div class="input">Ajee</div>
               <div class="flabel">Last name</div>
               <div class="input">Williams</div>
-              <div class="flabel">Date of birth <span class="opt">(optional)</span></div>
-              <div class="input" id="dobField"><span class="ph">MM/DD/YYYY</span></div>
+              <div class="flabel">Date of birth</div>
+              <div class="input" id="dobField">04/12/1988</div>
               <div class="checkrow"><div class="tog" data-toggle><div class="knob"></div></div><div class="lbl">Show date of birth</div></div>
-              <div class="flabel">Mobile phone number <span class="opt">(optional)</span></div>
-              <div class="input"><span class="ph">(000) 000-0000</span></div>
+              <div class="flabel">Mobile phone number</div>
+              <div class="input">(303) 555-0164</div>
               <div class="flabel">Home phone number <span class="opt">(optional)</span></div>
               <div class="input"><span class="ph">(000) 000-0000</span></div>
               <div class="btn red" id="saveBtn" data-save>
@@ -364,37 +480,51 @@
       </div>
     </div>
 
+          <div class="dev-floor" aria-hidden="true"></div>
+    </div>
+
     <!-- CONTROLS -->
     <div class="panel">
-      <h2>Micro-interactions</h2>
-      <p class="pdesc">Each control triggers a real interaction in the prototype on the left.</p>
+      <div class="p-card">
+        <div class="p-live"><span class="p-dot"></span>Live demo</div>
+        <h2>Drive it yourself</h2>
+        <p class="pdesc">This is working UI, not a video. Press play to watch the whole flow, or run any moment on its own.</p>
 
-      <button class="chip primary" data-demo="tour">
-        <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v14l11-7z"/></svg></span>
-        <span class="ct"><div class="t">Play guided walkthrough</div><div class="d">Auto-tour through the full flow</div></span>
-      </button>
+        <button class="play" data-demo="tour" id="playBtn">
+          <span class="pi"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="pt"><b id="playLbl">Play the whole flow</b><span>Four moments, fifteen seconds</span></span>
+          <span class="bar" id="playBar"></span>
+        </button>
 
-      <button class="chip" data-demo="nav">
-        <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        <span class="ct"><div class="t">Screen transitions</div><div class="d">iOS push / pop navigation</div></span>
-      </button>
+        <ol class="steps">
+          <li class="step" data-demo="nav" data-step="1">
+            <span class="n"><span class="num">1</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span class="st"><span class="t">Move between screens</span><span class="d">Screens slide in and settle like the native app</span></span>
+          </li>
+          <li class="step" data-demo="faceid" data-step="2">
+            <span class="n"><span class="num">2</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span class="st"><span class="t">Turn on Face ID</span><span class="d">A scan overlay confirms the change</span></span>
+          </li>
+          <li class="step" data-demo="edit" data-step="3">
+            <span class="n"><span class="num">3</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span class="st"><span class="t">Edit a detail</span><span class="d">Open the profile and flip a setting</span></span>
+          </li>
+          <li class="step" data-demo="save" data-step="4">
+            <span class="n"><span class="num">4</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span class="st"><span class="t">Save it</span><span class="d">The button becomes the confirmation</span></span>
+          </li>
+        </ol>
 
-      <button class="chip" data-demo="faceid">
-        <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 8v1M16 8v1M9 15c1.5 1.2 4.5 1.2 6 0"/></svg></span>
-        <span class="ct"><div class="t">Face ID toggle</div><div class="d">Animated enable with scan feedback</div></span>
-      </button>
+        <button class="again" data-demo="reset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/></svg>Start over</button>
+      </div>
 
-      <button class="chip" data-demo="save">
-        <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span>
-        <span class="ct"><div class="t">Save → success</div><div class="d">Button morphs into a checkmark</div></span>
-      </button>
-
-      <button class="chip" data-demo="reset">
-        <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/></svg></span>
-        <span class="ct"><div class="t">Reset</div><div class="d">Back to the Account screen</div></span>
-      </button>
-
-      <div class="caption" id="caption"><b>Tip:</b> tap the phone directly, or hit “Play guided walkthrough” to watch every micro-interaction in sequence.</div>
+      <div class="note">
+        <img src="assets/scott-avatar.jpg" alt="Scott Jewell">
+        <div class="nt">
+          <div class="who">Notes from Scott</div>
+          <div id="caption">Tap the phone directly. Every row, toggle, and button responds. Or press play and I will drive.</div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -427,7 +557,11 @@
   const tick = () => { const d=new Date(); clock.textContent = d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}); };
   tick(); setInterval(tick, 10000);
 
-  function setCaption(html){ caption.innerHTML = html; }
+  function setCaption(html){
+    if(reduce){ caption.innerHTML = html; return; }
+    caption.classList.add('swap');
+    setTimeout(()=>{ caption.innerHTML = html; caption.classList.remove('swap'); }, 180);
+  }
   function showToast(msg){ toast.textContent=msg; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1600); }
 
   function rippleAt(el){
@@ -506,62 +640,118 @@
   stack.addEventListener('click', e => {
     if(busy) return;
     const back = e.target.closest('[data-back]');
-    if(back){ press(back); rippleAt(back); pop(); setCaption('<b>Pop transition.</b> The screen slides back to the right while the previous one eases in from its parallax offset.'); return; }
+    if(back){ press(back); rippleAt(back); pop(); setCaption('<b>Back.</b> The screen slides away to the right and the one beneath eases back in. Real pop physics.'); return; }
     const go = e.target.closest('[data-go]');
-    if(go){ press(go); rippleAt(go); push(go.dataset.go); setCaption('<b>Push transition.</b> Tapping a list row pushes the next screen in from the right — iOS-style, with a subtle parallax dim on the outgoing screen.'); return; }
+    if(go){ press(go); rippleAt(go); push(go.dataset.go); setCaption('<b>Push.</b> The next screen slides in from the right while the old one dims and slips left, the same physics the native app uses.'); return; }
     const tog = e.target.closest('[data-toggle]');
     if(tog){ const on=flipToggle(tog); rippleAt(tog);
       if(tog.hasAttribute('data-faceid') && on) playFaceId();
-      setCaption('<b>Toggle.</b> The knob springs across on a weighted ease and the track cross-fades to green — instant, tactile state feedback.'); return; }
+      setCaption('<b>Toggle.</b> The knob springs across on a weighted ease and the track fades to green. Instant, tactile feedback.'); return; }
     const save = e.target.closest('[data-save]');
-    if(save){ rippleAt(save); playSave(); setCaption('<b>Save → success.</b> The label fades out and the button morphs to green as the checkmark stroke draws on — confirmation without a disruptive dialog.'); return; }
+    if(save){ rippleAt(save); playSave(); setCaption('<b>Save.</b> The label fades, the button turns green, and the checkmark draws itself on. Confirmation without a popup.'); return; }
   });
 
-  // ---- guided demo ----
-  const sleep = ms => new Promise(r=>setTimeout(r,ms));
+  // ---- guided demo + panel ----
+  const stepEls = Array.from(document.querySelectorAll('.step'));
+  const playLbl = document.getElementById('playLbl');
+  const playBar = document.getElementById('playBar');
+
+  function setStep(n){ stepEls.forEach(el => {
+    const i = +el.dataset.step;
+    el.classList.toggle('on', i === n);
+    el.classList.toggle('done', i < n);
+  }); }
+  function clearSteps(){ stepEls.forEach(el => el.classList.remove('on','done')); }
+  function setBar(p){ if(playBar) playBar.style.width = p + '%'; }
+
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
   async function tapEl(el){ if(!el) return; rippleAt(el); el.classList.add('tap'); await sleep(260); el.classList.remove('tap'); }
 
   async function tour(){
-    if(busy) return; busy=true; reset(); await sleep(400);
-    setCaption('<b>1 · Navigate.</b> Opening Sign in &amp; Security with a push transition.');
-    await tapEl(screens.account.querySelector('[data-go="signin"]')); push('signin'); await sleep(900);
-    setCaption('<b>2 · Face ID.</b> Toggling Face ID off, then back on with the scan animation.');
+    if(busy) return; busy = true;
+    document.body.classList.add('touring');
+    playLbl.textContent = 'Playing';
+    reset(); clearSteps(); setBar(4); await sleep(450);
+
+    setStep(1);
+    setCaption('<b>1 of 4.</b> Opening Sign in and Security. Watch the screen push in while the old one dims.');
+    await tapEl(screens.account.querySelector('[data-go="signin"]')); push('signin'); setBar(20); await sleep(950);
+
+    setStep(2);
+    setCaption('<b>2 of 4.</b> Turning Face ID on. The scan overlay makes a security change feel deliberate.');
     const fTog = screens.signin.querySelector('[data-faceid]');
-    await tapEl(fTog); flipToggle(fTog); await sleep(700);
-    await tapEl(fTog); flipToggle(fTog); playFaceId(); await sleep(2100);
-    setCaption('<b>3 · Back.</b> Pop transition returns to Account.');
-    await tapEl(screens.signin.querySelector('[data-back]')); pop(); await sleep(900);
-    setCaption('<b>4 · Drill in.</b> Account → Profile → Edit personal info.');
-    await tapEl(screens.account.querySelector('[data-go="profile"]')); push('profile'); await sleep(900);
-    await tapEl(screens.profile.querySelector('[data-go="editinfo"]')); push('editinfo'); await sleep(900);
-    setCaption('<b>5 · Toggle.</b> Flipping “Show date of birth”.');
+    await tapEl(fTog); flipToggle(fTog); await sleep(650);
+    await tapEl(fTog); flipToggle(fTog); playFaceId(); setBar(46); await sleep(2050);
+    await tapEl(screens.signin.querySelector('[data-back]')); pop(); setBar(56); await sleep(850);
+
+    setStep(3);
+    setCaption('<b>3 of 4.</b> Drilling into the profile to edit personal info.');
+    await tapEl(screens.account.querySelector('[data-go="profile"]')); push('profile'); await sleep(850);
+    await tapEl(screens.profile.querySelector('[data-go="editinfo"]')); push('editinfo'); setBar(72); await sleep(850);
     const dTog = screens.editinfo.querySelector('[data-toggle]');
-    await tapEl(dTog); flipToggle(dTog); await sleep(800);
-    setCaption('<b>6 · Save → success.</b> The button morphs into an animated checkmark.');
-    await tapEl(document.getElementById('saveBtn')); playSave(); await sleep(2000);
-    setCaption('<b>Done.</b> That’s the redesigned account flow end to end. Replay any single interaction from the panel, or tap through the phone yourself.');
-    busy=false;
+    await tapEl(dTog); flipToggle(dTog); setBar(80); await sleep(700);
+
+    setStep(4);
+    setCaption('<b>4 of 4.</b> Saving. The button itself becomes the confirmation.');
+    await tapEl(document.getElementById('saveBtn')); playSave(); setBar(100); await sleep(1900);
+
+    setStep(5);
+    setCaption('<b>That is the whole flow.</b> Replay any step from the list, or tap through the phone yourself.');
+    playLbl.textContent = 'Play it again';
+    document.body.classList.remove('touring');
+    busy = false;
+    setTimeout(() => { if(!busy){ setBar(0); clearSteps(); } }, 3000);
   }
 
-  // ---- panel controls ----
   document.querySelectorAll('[data-demo]').forEach(btn => {
     btn.addEventListener('click', async () => {
       const d = btn.dataset.demo;
-      if(d==='tour') return tour();
+      if(d === 'tour') return tour();
       if(busy) return;
-      if(d==='reset'){ reset(); setCaption('<b>Reset.</b> Back to the Account root screen.'); }
-      if(d==='nav'){ reset(); await sleep(300); await tapEl(screens.account.querySelector('[data-go="addresses"]')); push('addresses');
-        setCaption('<b>Push / pop.</b> Watch the outgoing screen dim and shift left as the new one slides in. Tap “Back” on the phone to pop.'); }
-      if(d==='faceid'){ reset(); await sleep(300); push('signin'); await sleep(550);
+      if(btn.classList.contains('step')){
+        clearSteps(); btn.classList.add('on');
+        setTimeout(() => btn.classList.remove('on'), 2800);
+      }
+      if(d === 'reset'){ reset(); clearSteps(); setBar(0);
+        setCaption('<b>Fresh start.</b> Back to the Account screen.'); }
+      if(d === 'nav'){ reset(); await sleep(300);
+        await tapEl(screens.account.querySelector('[data-go="addresses"]')); push('addresses');
+        setCaption('<b>Push and pop.</b> The outgoing screen dims and shifts left as the new one slides in. Tap Back on the phone to return.'); }
+      if(d === 'faceid'){ reset(); await sleep(300); push('signin'); await sleep(550);
         const fTog = screens.signin.querySelector('[data-faceid]');
         if(fTog.classList.contains('on')){ flipToggle(fTog); await sleep(500); }
         await tapEl(fTog); flipToggle(fTog); playFaceId();
-        setCaption('<b>Face ID toggle.</b> Enabling it fires a scan overlay — animated corner brackets and a confirmation tick — so the security action feels deliberate and trustworthy.'); }
-      if(d==='save'){ reset(); await sleep(300); push('profile'); await sleep(500); push('editinfo'); await sleep(650);
+        setCaption('<b>Face ID.</b> Enabling it fires a scan overlay, animated corner brackets and a confirmation tick, so the security action feels deliberate and trustworthy.'); }
+      if(d === 'edit'){ reset(); await sleep(300); push('profile'); await sleep(500); push('editinfo'); await sleep(650);
+        const dTog = screens.editinfo.querySelector('[data-toggle]');
+        await tapEl(dTog); flipToggle(dTog);
+        setCaption('<b>Edit a detail.</b> Fields respond instantly and the toggle springs with real weight.'); }
+      if(d === 'save'){ reset(); await sleep(300); push('profile'); await sleep(500); push('editinfo'); await sleep(650);
         resetSaveBtn(); await sleep(100); playSave();
-        setCaption('<b>Save → success.</b> No modal, no page reload — the primary button itself becomes the confirmation.'); }
+        setCaption('<b>Save.</b> No modal and no page reload. The primary button itself becomes the confirmation.'); }
     });
   });
+
+  // ---- entrance ----
+  requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('go')));
+
+  // ---- pointer tilt on the device ----
+  const devWrap = document.getElementById('devWrap');
+  const dev = document.querySelector('.device');
+  if(devWrap && dev && matchMedia('(pointer:fine)').matches && !reduce){
+    let raf = 0;
+    devWrap.addEventListener('mousemove', e => {
+      if(raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const r = devWrap.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - .5;
+        const y = (e.clientY - r.top) / r.height - .5;
+        dev.style.transform = 'rotateY(' + (x * 5).toFixed(2) + 'deg) rotateX(' + (-y * 4).toFixed(2) + 'deg)';
+      });
+    });
+    devWrap.addEventListener('mouseleave', () => { dev.style.transform = ''; });
+  }
 })();
 </script>
 </body>
