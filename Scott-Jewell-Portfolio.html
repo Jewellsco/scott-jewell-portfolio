@@ -678,11 +678,24 @@
   </div>
 </header>
 
+<section class="reveal" id="featured" aria-label="Featured interface" style="padding:36px 0 6px;">
+  <div class="wrap">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap;">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent,#1E66FF);">One interface, live</div>
+      <a href="case-cvs.html" style="font-size:13.5px;font-weight:600;color:#5a6070;">See how it was built &rarr;</a>
+    </div>
+    <div style="border-radius:20px;overflow:hidden;border:1px solid var(--line,#E7E4DD);box-shadow:0 30px 62px rgba(13,40,120,.15);background:#0C0C0D;">
+      <iframe src="cvs-prototype.html" title="CVS account experience, live prototype" loading="lazy" style="width:100%;height:760px;border:0;display:block;"></iframe>
+    </div>
+    <div style="text-align:center;font-size:13px;color:#8a90a0;margin-top:12px;">The CVS account and sign in flow, rebuilt as working UI. Tap through it.</div>
+  </div>
+</section>
+
 <section id="work">
   <div class="wrap">
     <div class="sec-head reveal">
       <h2>Selected work</h2>
-      <span class="idx">Seven projects</span>
+      <span class="idx">Six projects</span>
     </div>
     <div class="work-grid">
 
@@ -731,6 +744,65 @@
           <span class="more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </a>
+
+      <a class="card reveal" href="case-bagequity.html" style="--i:2">
+        <div class="thumb be-cover" aria-label="BagEquity Visa debit card across phone and desktop">
+          <span class="badge">Live product</span>
+          <div class="be-stage">
+            <span class="be-glow" aria-hidden="true"></span>
+            <span class="be-grid" aria-hidden="true"></span>
+            <!-- desktop / browser surface behind -->
+            <div class="be-desktop" aria-hidden="true">
+              <div class="be-desk-bar"><i></i><i></i><i></i></div>
+              <div class="be-desk-body">
+                <div class="be-desk-line w1"></div>
+                <div class="be-desk-line w2"></div>
+                <div class="be-desk-line w3"></div>
+              </div>
+            </div>
+            <!-- phone surface beside -->
+            <div class="be-phone" aria-hidden="true">
+              <span class="be-notch"></span>
+              <div class="be-phone-scr">
+                <div class="be-ph-line w1"></div>
+                <div class="be-ph-line w2"></div>
+                <div class="be-ph-chip"></div>
+              </div>
+            </div>
+            <!-- the BagEquity Visa debit card -->
+            <div class="be-card">
+              <div class="be-card-top">
+                <div class="be-brand">BAG<b>EQUITY</b></div>
+                <svg class="be-wave" viewBox="0 0 18 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 5a9 9 0 0 1 0 12"/><path d="M8 3a13 13 0 0 1 0 16"/><path d="M12 1.5a16.5 16.5 0 0 1 0 19"/></svg>
+              </div>
+              <div class="be-chip" aria-hidden="true">
+                <svg viewBox="0 0 44 33" preserveAspectRatio="none"><g fill="none" stroke="rgba(120,90,30,.45)" stroke-width="1"><rect x="1" y="1" width="42" height="31" rx="5"/><line x1="1" y1="11.5" x2="15" y2="11.5"/><line x1="29" y1="11.5" x2="43" y2="11.5"/><line x1="1" y1="21.5" x2="15" y2="21.5"/><line x1="29" y1="21.5" x2="43" y2="21.5"/><line x1="15" y1="1" x2="15" y2="32"/><line x1="29" y1="1" x2="29" y2="32"/></g></svg>
+              </div>
+              <div class="be-sp"></div>
+              <div class="be-num">••••&nbsp;&nbsp;••••&nbsp;&nbsp;••••&nbsp;&nbsp;<span class="be-last" data-be-last>4729</span></div>
+              <div class="be-foot">
+                <div class="be-holder">Cardholder<span class="be-nm">JORDAN FIELDS</span></div>
+                <div class="be-visa">VISA</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="ctags">Fintech · 0 → 1 · Founder</div>
+          <h3>BagEquity Fintech Platform</h3>
+          <p>Founder and lead designer of a platform helping families and youth-sports coaches manage money together, spanning onboarding, money-movement, and the full design system.</p>
+          <span class="more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="more-head" style="display:flex;align-items:center;gap:16px;margin:6px 0 30px;">
+      <span style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#5a6070;white-space:nowrap;">More work</span>
+      <span style="flex:1;height:1px;background:var(--line,#E7E4DD);"></span>
+    </div>
+
+    <div class="work-grid">
 
       <a class="card reveal" href="ibotta-concept.html" style="--i:0">
         <div class="thumb ibx"><span class="badge">Audit</span>
@@ -793,56 +865,6 @@
           <div class="ctags">Social Commerce · Concept · Mobile</div>
           <h3>Brand GO Social Shopping</h3>
           <p>A concept that brings the entire catalogue of online apparel into one place to find, buy, and build a wardrobe, with social shopping and peer reviews baked in.</p>
-          <span class="more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </div>
-      </a>
-
-      <a class="card reveal" href="case-bagequity.html" style="--i:0">
-        <div class="thumb be-cover" aria-label="BagEquity Visa debit card across phone and desktop">
-          <span class="badge">Live product</span>
-          <div class="be-stage">
-            <span class="be-glow" aria-hidden="true"></span>
-            <span class="be-grid" aria-hidden="true"></span>
-            <!-- desktop / browser surface behind -->
-            <div class="be-desktop" aria-hidden="true">
-              <div class="be-desk-bar"><i></i><i></i><i></i></div>
-              <div class="be-desk-body">
-                <div class="be-desk-line w1"></div>
-                <div class="be-desk-line w2"></div>
-                <div class="be-desk-line w3"></div>
-              </div>
-            </div>
-            <!-- phone surface beside -->
-            <div class="be-phone" aria-hidden="true">
-              <span class="be-notch"></span>
-              <div class="be-phone-scr">
-                <div class="be-ph-line w1"></div>
-                <div class="be-ph-line w2"></div>
-                <div class="be-ph-chip"></div>
-              </div>
-            </div>
-            <!-- the BagEquity Visa debit card -->
-            <div class="be-card">
-              <div class="be-card-top">
-                <div class="be-brand">BAG<b>EQUITY</b></div>
-                <svg class="be-wave" viewBox="0 0 18 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 5a9 9 0 0 1 0 12"/><path d="M8 3a13 13 0 0 1 0 16"/><path d="M12 1.5a16.5 16.5 0 0 1 0 19"/></svg>
-              </div>
-              <div class="be-chip" aria-hidden="true">
-                <svg viewBox="0 0 44 33" preserveAspectRatio="none"><g fill="none" stroke="rgba(120,90,30,.45)" stroke-width="1"><rect x="1" y="1" width="42" height="31" rx="5"/><line x1="1" y1="11.5" x2="15" y2="11.5"/><line x1="29" y1="11.5" x2="43" y2="11.5"/><line x1="1" y1="21.5" x2="15" y2="21.5"/><line x1="29" y1="21.5" x2="43" y2="21.5"/><line x1="15" y1="1" x2="15" y2="32"/><line x1="29" y1="1" x2="29" y2="32"/></g></svg>
-              </div>
-              <div class="be-sp"></div>
-              <div class="be-num">••••&nbsp;&nbsp;••••&nbsp;&nbsp;••••&nbsp;&nbsp;<span class="be-last" data-be-last>4729</span></div>
-              <div class="be-foot">
-                <div class="be-holder">Cardholder<span class="be-nm">JORDAN FIELDS</span></div>
-                <div class="be-visa">VISA</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="ctags">Fintech · 0 → 1 · Founder</div>
-          <h3>BagEquity Fintech Platform</h3>
-          <p>Founder and lead designer of a platform helping families and youth-sports coaches manage money together, spanning onboarding, money-movement, and the full design system.</p>
           <span class="more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </a>
