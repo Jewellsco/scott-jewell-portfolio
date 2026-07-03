@@ -1754,7 +1754,25 @@
     pin.addEventListener('click',function(e){e.stopPropagation();
       var open=!bub.classList.contains('open');
       pins.forEach(function(p){p.bub.classList.remove('open');});
+      hoverOpened=false;
       if(open)bub.classList.add('open');});
+    /* hover 1.2s opens the note before any click */
+    var hoverT=null,hoverOpened=false;
+    function hoverClose(){
+      setTimeout(function(){
+        if(hoverOpened&&!bub.matches(':hover')&&!pin.matches(':hover')){
+          bub.classList.remove('open');hoverOpened=false;}
+      },350);}
+    if(window.matchMedia('(pointer: fine)').matches){
+      pin.addEventListener('mouseenter',function(){
+        clearTimeout(hoverT);
+        hoverT=setTimeout(function(){
+          pins.forEach(function(p){p.bub.classList.remove('open');});
+          bub.classList.add('open');hoverOpened=true;
+        },1200);});
+      pin.addEventListener('mouseleave',function(){clearTimeout(hoverT);hoverClose();});
+      bub.addEventListener('mouseleave',hoverClose);
+    }
     setTimeout(function(){pin.classList.add('in');},400+Math.random()*900);
     return o;
   }
