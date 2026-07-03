@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CVS Health · The Rework · Scott Jewell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#CC0000;--red-tint:#FDECEC;--red-deep:#A20000;
+    --ink:#101318;--sec:#68707E;--line:#ECEEF2;--bg:#F6F7F9;
+    --blue:#1E66FF;--cyan:#13C8FF;--slate:#9fb0d0;--green:#34C759;
+    --gold:#F2CE8B;
+    --display:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{background:#0B0E17;}
+  body{font-family:var(--sans);min-height:100vh;color:#fff;background:#0B0E17;
+    display:flex;flex-direction:column;align-items:center;padding:44px 20px 64px;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;}
+
+  /* scene */
+  .scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  .scene .a{position:absolute;border-radius:50%;filter:blur(72px);}
+  .scene .a1{width:620px;height:620px;left:-160px;top:-200px;
+    background:radial-gradient(circle,rgba(30,102,255,.30),transparent 66%);animation:drift1 17s ease-in-out infinite alternate;}
+  .scene .a2{width:540px;height:540px;right:-140px;top:-130px;
+    background:radial-gradient(circle,rgba(242,206,139,.12),transparent 66%);animation:drift2 21s ease-in-out infinite alternate;}
+  .scene .a3{width:680px;height:440px;left:50%;bottom:-240px;margin-left:-340px;
+    background:radial-gradient(circle,rgba(204,0,0,.13),transparent 66%);animation:drift3 24s ease-in-out infinite alternate;}
+  @keyframes drift1{to{transform:translate(70px,44px);}}
+  @keyframes drift2{to{transform:translate(-56px,60px);}}
+  @keyframes drift3{to{transform:translate(48px,-36px);}}
+  .scene .gridbg{position:absolute;inset:0;
+    background-image:linear-gradient(rgba(148,170,220,.055) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(148,170,220,.055) 1px,transparent 1px);
+    background-size:56px 56px;
+    -webkit-mask-image:radial-gradient(ellipse 72% 62% at 50% 42%,#000 28%,transparent 76%);
+    mask-image:radial-gradient(ellipse 72% 62% at 50% 42%,#000 28%,transparent 76%);}
+  .scene .vig{position:absolute;inset:0;
+    background:radial-gradient(ellipse 130% 105% at 50% 18%,transparent 52%,rgba(3,5,11,.6));}
+
+  .top,.stage,.backlink{position:relative;z-index:1;}
+
+  /* hero */
+  .top{max-width:740px;text-align:center;margin-bottom:36px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;
+    letter-spacing:.18em;text-transform:uppercase;color:#F2CE8B;margin-bottom:16px;
+    border:1px solid rgba(232,176,75,.35);border-radius:30px;padding:7px 14px;
+    background:rgba(232,176,75,.07);}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4.2vw,38px);letter-spacing:-1px;line-height:1.08;}
+  h1 .g{background:linear-gradient(120deg,#F2CE8B,#FFE9C4);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .sub{margin-top:14px;color:#c4cee4;font-size:15.5px;line-height:1.65;max-width:620px;margin-left:auto;margin-right:auto;}
+
+  .stage{display:flex;gap:60px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:1040px;}
+
+  /* device */
+  .dev-wrap{position:relative;flex:none;perspective:1300px;animation:bob 7.5s ease-in-out 1.6s infinite;}
+  @keyframes bob{0%,100%{translate:0 0;}50%{translate:0 -6px;}}
+  .dev-glow{position:absolute;inset:-14% -20%;z-index:0;filter:blur(56px);pointer-events:none;
+    background:radial-gradient(46% 42% at 38% 30%,rgba(30,102,255,.26),transparent 70%),
+               radial-gradient(42% 40% at 68% 74%,rgba(242,206,139,.12),transparent 70%);}
+  .dev-floor{position:absolute;left:6%;right:6%;bottom:-38px;height:48px;z-index:0;filter:blur(11px);pointer-events:none;
+    background:radial-gradient(50% 100% at 50% 0,rgba(0,0,0,.55),transparent 72%);}
+  .device{width:340px;height:712px;background:#0b0b0d;border-radius:52px;padding:13px;position:relative;z-index:1;flex:none;
+    transform-style:preserve-3d;transition:transform .22s ease-out;
+    box-shadow:0 2px 6px rgba(0,0,0,.5),0 26px 52px rgba(2,6,20,.55),0 80px 150px rgba(2,6,20,.62),
+      0 0 0 2px rgba(255,255,255,.07),inset 0 0 0 2px #2a2a2e;}
+  .screenframe{position:relative;width:100%;height:100%;border-radius:40px;overflow:hidden;background:var(--bg);}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:130px;height:26px;background:#0b0b0d;
+    border-radius:0 0 18px 18px;z-index:60;}
+  .statusbar{position:absolute;top:0;left:0;right:0;height:46px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 26px;font-size:13px;font-weight:600;z-index:55;color:#101318;
+    background:rgba(246,247,249,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+  .sb-icons{display:flex;align-items:center;gap:6px;}
+  .sb-icons svg{display:block;}
+
+  /* screen stack */
+  .stack{position:absolute;inset:0;}
+  .screen{position:absolute;inset:0;background:var(--bg);transform:translateX(100%);border-radius:40px;
+    transition:transform .55s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;overflow:hidden;will-change:transform;}
+  .screen.active{transform:translateX(0);box-shadow:-10px 0 34px rgba(10,16,30,.16);}
+  .screen.prev{transform:translateX(-24%) scale(.96);}
+  .screen .dim{position:absolute;inset:0;background:#0a0c14;opacity:0;pointer-events:none;transition:opacity .55s cubic-bezier(.32,.72,0,1);z-index:30;}
+  .screen.prev .dim{opacity:.18;}
+
+  .body{flex:1;overflow-y:auto;padding:58px 18px 108px;-webkit-overflow-scrolling:touch;}
+  .body::-webkit-scrollbar{width:0;}
+
+  /* NO red header. content first, large titles */
+  .crumb{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .backchip{width:34px;height:34px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 8px rgba(20,30,60,.1);cursor:pointer;flex:none;transition:transform .15s;}
+  .backchip:active{transform:scale(.92);}
+  .backchip svg{width:13px;height:13px;color:var(--ink);}
+  .greet{font-size:13px;color:var(--sec);font-weight:500;margin-bottom:2px;}
+  .lgt{font-family:var(--sans);font-weight:800;font-size:28px;letter-spacing:-.8px;color:var(--ink);line-height:1.1;margin-bottom:16px;}
+  .toprow{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+  .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(130deg,var(--red),#E85A5A);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex:none;
+    box-shadow:0 6px 14px rgba(204,0,0,.25);}
+
+  /* completion card, the one clear next best action */
+  .meter{background:#fff;border-radius:20px;padding:16px;display:flex;gap:14px;align-items:center;margin-bottom:18px;
+    box-shadow:0 2px 6px rgba(20,30,60,.05),0 14px 34px rgba(20,30,60,.08);}
+  .ring{width:58px;height:58px;flex:none;position:relative;}
+  .ring svg{transform:rotate(-90deg);}
+  .ring .trk{stroke:#EDEFF3;}
+  .ring .arc{stroke:var(--red);stroke-linecap:round;transition:stroke-dashoffset 1.1s cubic-bezier(.3,.7,.3,1),stroke .4s;}
+  .ring.full .arc{stroke:var(--green);}
+  .ring .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:800;color:var(--ink);letter-spacing:-.3px;}
+  .meter .mt{flex:1;}
+  .meter .mh{font-size:14.5px;font-weight:700;color:var(--ink);letter-spacing:-.2px;}
+  .meter .md{font-size:12.5px;color:var(--sec);margin-top:2px;line-height:1.4;}
+  .meter .go{font-size:13px;font-weight:700;color:var(--red);margin-top:8px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;}
+  .meter .go svg{width:11px;height:11px;transition:transform .25s;}
+  .meter .go:hover svg{transform:translateX(3px);}
+  .meter.donefx{animation:meterpop .5s cubic-bezier(.2,.9,.3,1.4);}
+  @keyframes meterpop{0%{transform:scale(1);}45%{transform:scale(1.025);}100%{transform:scale(1);}}
+
+  .sect{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sec);margin:20px 6px 9px;}
+
+  .rows{background:#fff;border-radius:20px;overflow:hidden;
+    box-shadow:0 2px 6px rgba(20,30,60,.05),0 14px 34px rgba(20,30,60,.07);}
+  .row{display:flex;align-items:center;gap:13px;padding:14px 16px;cursor:pointer;position:relative;transition:background .2s;}
+  .row+.row{border-top:1px solid var(--line);}
+  .row:active,.row.tap{background:#F1F3F6;}
+  .chipic{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none;}
+  .chipic svg{width:18px;height:18px;}
+  .chipic.r{background:var(--red-tint);color:var(--red);}
+  .chipic.b{background:#EAF1FF;color:#1E66FF;}
+  .chipic.g{background:#E9F9EF;color:#1C9E4F;}
+  .chipic.p{background:#F3EDFF;color:#7A4DE8;}
+  .row .lbl{flex:1;}
+  .row .lbl .t{display:block;font-size:14.5px;font-weight:600;color:var(--ink);letter-spacing:-.1px;}
+  .row .lbl .d{display:block;font-size:12px;color:var(--sec);margin-top:2px;}
+  .row .chev{width:9px;height:9px;color:#C2C7D0;flex:none;}
+  .row .stat{font-size:12px;font-weight:700;color:#1C9E4F;background:#E9F9EF;border-radius:20px;padding:4px 10px;flex:none;}
+
+  /* toggle */
+  .tog{width:46px;height:28px;border-radius:20px;background:#d7d8dc;position:relative;flex:none;cursor:pointer;transition:background .3s;}
+  .tog .knob{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;
+    box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .28s cubic-bezier(.4,0,.2,1);}
+  .tog.on{background:var(--green);}
+  .tog.on .knob{left:21px;}
+
+  /* floating pill tab bar */
+  .tabbar{position:absolute;left:18px;right:18px;bottom:16px;height:62px;background:rgba(255,255,255,.92);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:31px;display:flex;z-index:40;
+    box-shadow:0 6px 24px rgba(20,30,60,.16),inset 0 0 0 1px rgba(255,255,255,.6);}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#9AA1AC;cursor:pointer;}
+  .tab.on{color:var(--red);}
+  .tab svg{width:21px;height:21px;}
+  .tab span{font-size:9.5px;font-weight:600;}
+
+  /* face id overlay */
+  .faceid{position:absolute;inset:0;border-radius:40px;background:rgba(8,10,20,.55);backdrop-filter:blur(3px);z-index:70;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;opacity:0;pointer-events:none;transition:opacity .3s;}
+  .faceid.show{opacity:1;}
+  .faceid .ringfx{width:96px;height:96px;}
+  .faceid .txt{color:#fff;font-size:15px;font-weight:500;}
+
+  /* bottom sheet editing */
+  .sheetdim{position:absolute;inset:0;background:rgba(10,12,20,.4);opacity:0;pointer-events:none;transition:opacity .4s;z-index:80;border-radius:40px;}
+  .sheetdim.show{opacity:1;pointer-events:auto;}
+  .sheet{position:absolute;left:0;right:0;bottom:0;height:86%;background:var(--bg);border-radius:28px 28px 40px 40px;z-index:85;
+    transform:translateY(104%);transition:transform .55s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;overflow:hidden;
+    box-shadow:0 -18px 50px rgba(10,16,30,.25);}
+  .sheet.show{transform:translateY(0);}
+  .grab{width:40px;height:5px;border-radius:3px;background:#D6DAE1;margin:10px auto 4px;flex:none;}
+  .sheet .sh-head{display:flex;align-items:center;justify-content:space-between;padding:6px 18px 10px;flex:none;}
+  .sheet .sh-t{font-size:17px;font-weight:800;letter-spacing:-.4px;color:var(--ink);}
+  .sheet .sh-x{font-size:14px;font-weight:600;color:var(--sec);cursor:pointer;padding:6px;}
+  .sheet .sh-body{flex:1;overflow-y:auto;padding:4px 18px 18px;}
+  .fcard{background:#fff;border-radius:18px;padding:4px 16px 16px;margin-bottom:14px;
+    box-shadow:0 2px 10px rgba(20,30,60,.07);}
+  .flabel{font-size:12.5px;font-weight:600;color:#3A3F49;margin:14px 0 6px;}
+  .input{background:#F1F2F5;border:1.5px solid transparent;border-radius:12px;padding:12px 14px;font-size:15px;color:var(--ink);
+    transition:border-color .2s,background .2s;}
+  .checkrow{display:flex;align-items:center;gap:10px;margin:13px 0 2px;}
+  .checkrow .lbl{font-size:13.5px;color:#3A3F49;}
+  .btn{border-radius:14px;padding:15px;text-align:center;font-size:15.5px;font-weight:700;color:#fff;cursor:pointer;
+    position:relative;overflow:hidden;transition:transform .12s;background:var(--red);
+    box-shadow:0 10px 24px rgba(204,0,0,.28);}
+  .btn:active{transform:scale(.97);}
+  .btn.success{background:var(--green);box-shadow:0 10px 24px rgba(52,199,89,.3);}
+  .btn .lbltxt{transition:opacity .2s;}
+  .btn .spin{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;}
+  .btn .spin svg{width:24px;height:24px;}
+
+  /* toast */
+  .toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:#1c1d22;color:#fff;
+    font-size:13px;font-weight:500;padding:10px 18px;border-radius:30px;opacity:0;transition:all .3s;z-index:95;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* tap ripple */
+  .ripple{position:absolute;width:46px;height:46px;border-radius:50%;background:rgba(204,0,0,.22);
+    border:2px solid rgba(255,255,255,.9);transform:translate(-50%,-50%) scale(.2);opacity:0;z-index:90;pointer-events:none;}
+  .ripple.go{animation:rip .6s ease-out;}
+  @keyframes rip{0%{opacity:.9;transform:translate(-50%,-50%) scale(.2);}100%{opacity:0;transform:translate(-50%,-50%) scale(1.3);}}
+
+  /* home entrance stagger */
+  .body .in{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .7s cubic-bezier(.16,1,.3,1);}
+  body.go .body .in{opacity:1;transform:none;}
+  .body .in.d1{transition-delay:.08s;}.body .in.d2{transition-delay:.16s;}.body .in.d3{transition-delay:.24s;}
+  .body .in.d4{transition-delay:.32s;}.body .in.d5{transition-delay:.4s;}
+
+  /* ---------- PANEL ---------- */
+  .panel{flex:none;width:348px;max-width:100%;}
+  .p-card{background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.028));
+    border:1px solid rgba(148,170,220,.17);border-radius:22px;padding:22px;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    box-shadow:0 30px 70px rgba(2,6,20,.45),inset 0 1px 0 rgba(255,255,255,.08);}
+  .p-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+  .p-card h2{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.4px;margin-bottom:7px;}
+  .pdesc{color:#c4cee4;font-size:13.5px;line-height:1.6;margin-bottom:16px;}
+  .moves{list-style:none;}
+  .move{display:flex;gap:12px;padding:10px 2px;align-items:flex-start;}
+  .move+.move{border-top:1px solid rgba(148,170,220,.1);}
+  .move .mi{width:30px;height:30px;flex:none;border-radius:10px;background:rgba(242,206,139,.12);
+    border:1px solid rgba(242,206,139,.3);display:flex;align-items:center;justify-content:center;}
+  .move .mi svg{width:15px;height:15px;color:var(--gold);}
+  .move .mt2{flex:1;}
+  .move .t{display:block;font-size:13.5px;font-weight:600;color:#fff;letter-spacing:-.1px;}
+  .move .d{display:block;font-size:12px;color:var(--slate);margin-top:2px;line-height:1.5;}
+  .note{margin-top:14px;display:flex;gap:12px;align-items:flex-start;
+    background:rgba(9,12,21,.6);border:1px solid rgba(148,170,220,.15);border-radius:16px;
+    padding:14px 15px;box-shadow:0 16px 40px rgba(2,6,20,.35);}
+  .note img{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none;border:1.5px solid rgba(255,255,255,.22);}
+  .note .who{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#F2CE8B;font-weight:700;margin-bottom:4px;}
+  #caption{font-size:13px;color:#dfe7f5;line-height:1.55;transition:opacity .18s ease,transform .18s ease;}
+  #caption.swap{opacity:0;transform:translateY(5px);}
+  #caption b{color:#fff;}
+
+  .backlink{margin-top:44px;font-size:14px;color:var(--slate);}
+  .backlink a{color:#9fb0d0;text-decoration:none;font-weight:600;}
+  .backlink a:hover{color:#fff;}
+
+  /* entrance */
+  .dev-wrap,.panel{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .95s cubic-bezier(.16,1,.3,1);}
+  .panel{transition-delay:.16s;}
+  body.go .dev-wrap,body.go .panel{opacity:1;transform:none;}
+  .top{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .8s cubic-bezier(.16,1,.3,1);}
+  body.go .top{opacity:1;transform:none;}
+
+  @media(max-width:900px){.stage{gap:38px;}.panel{width:348px;}}
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
+    .screen{transition:none;}
+    .screen.prev{transform:translateX(-24%) scale(.96);}
+    .ripple{display:none;}
+    .device,.dev-wrap,.panel,.top{transition:none;}
+    .dev-wrap{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="scene" aria-hidden="true">
+    <div class="a a1"></div><div class="a a2"></div><div class="a a3"></div>
+    <div class="gridbg"></div><div class="vig"></div>
+  </div>
+
+  <div class="top">
+    <div class="eyebrow">CVS Health · The rework</div>
+    <h1>Same flow. <span class="g">Pushed all the way.</span></h1>
+    <p class="sub">The rebuild next door documents what shipped. This is where I would take it. No red header bars, content leads every screen, editing happens in a sheet so you never lose your place, and the account greets you with one clear next step.</p>
+  </div>
+
+  <div class="stage">
+
+    <div class="dev-wrap" id="devWrap">
+      <div class="dev-glow" aria-hidden="true"></div>
+      <div class="device">
+        <div class="screenframe" id="frame">
+          <div class="notch"></div>
+          <div class="statusbar">
+            <span id="clock">9:41</span>
+            <span class="sb-icons">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 9.5a2 2 0 0 1 2 2H6a2 2 0 0 1 2-2zM3.5 7.2a6.4 6.4 0 0 1 9 0l-1.4 1.4a4.4 4.4 0 0 0-6.2 0zM.7 4.4a10.4 10.4 0 0 1 14.6 0l-1.4 1.4a8.4 8.4 0 0 0-11.8 0z"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="21" height="11" rx="3" stroke="currentColor"/><rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z" fill="currentColor"/></svg>
+            </span>
+          </div>
+
+          <div class="stack" id="stack">
+
+            <!-- HOME -->
+            <section class="screen active" data-screen="home">
+              <div class="dim"></div>
+              <div class="body">
+                <div class="toprow in">
+                  <div>
+                    <div class="greet">Good morning</div>
+                    <div class="lgt" style="margin-bottom:0;">Ajee Williams</div>
+                  </div>
+                  <div class="avatar">AW</div>
+                </div>
+
+                <div class="meter in d1" id="meter">
+                  <div class="ring" id="ring">
+                    <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
+                      <circle class="trk" cx="29" cy="29" r="25" stroke-width="6"/>
+                      <circle class="arc" id="arc" cx="29" cy="29" r="25" stroke-width="6" stroke-dasharray="157" stroke-dashoffset="157"/>
+                    </svg>
+                    <div class="pct" id="pct">92%</div>
+                  </div>
+                  <div class="mt">
+                    <div class="mh" id="mh">Your account is almost complete</div>
+                    <div class="md" id="md">One step left. A backup phone keeps you from ever losing access.</div>
+                    <div class="go" id="addPhone">Add backup phone<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+                  </div>
+                </div>
+
+                <div class="sect in d2">Security</div>
+                <div class="rows in d2">
+                  <div class="row" data-go="security">
+                    <span class="chipic r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+                    <span class="lbl"><span class="t">Sign in and security</span><span class="d">Face ID, passkeys, password</span></span>
+                    <svg class="chev" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m2 2 6 6-6 6"/></svg>
+                  </div>
+                  <div class="row">
+                    <span class="chipic b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></svg></span>
+                    <span class="lbl"><span class="t">Payment methods</span><span class="d">Visa ending 4021</span></span>
+                    <svg class="chev" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m2 2 6 6-6 6"/></svg>
+                  </div>
+                  <div class="row">
+                    <span class="chipic g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9A5.6 5.6 0 0 1 12 6a5.6 5.6 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg></span>
+                    <span class="lbl"><span class="t">Addresses</span><span class="d">1818 S Quebec Way, Denver</span></span>
+                    <svg class="chev" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m2 2 6 6-6 6"/></svg>
+                  </div>
+                </div>
+
+                <div class="sect in d3">You</div>
+                <div class="rows in d3">
+                  <div class="row" data-sheet>
+                    <span class="chipic p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>
+                    <span class="lbl"><span class="t">Personal info</span><span class="d">Name, date of birth, phone</span></span>
+                    <svg class="chev" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m2 2 6 6-6 6"/></svg>
+                  </div>
+                  <div class="row">
+                    <span class="chipic b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v12H8l-4 4z"/></svg></span>
+                    <span class="lbl"><span class="t">Communication preferences</span><span class="d">Texts on, two emails a week</span></span>
+                    <svg class="chev" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m2 2 6 6-6 6"/></svg>
+                  </div>
+                  <div class="row">
+                    <span class="chipic g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3h8l4 4v14H4V3z"/><path d="M9 12h6M9 16h6"/></svg></span>
+                    <span class="lbl"><span class="t">Health records</span><span class="d">Vaccines, tests, visits</span></span>
+                    <svg class="chev" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m2 2 6 6-6 6"/></svg>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tabbar">
+                <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 12 3l9 8v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></div>
+                <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3h4l1 5-3 2-3-2zM5 21c0-3.5 3-5.5 7-5.5s7 2 7 5.5"/></svg><span>Pharmacy</span></div>
+                <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6V4h8v2"/></svg><span>Shop</span></div>
+                <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg><span>Account</span></div>
+              </div>
+            </section>
+
+            <!-- SECURITY -->
+            <section class="screen" data-screen="security">
+              <div class="dim"></div>
+              <div class="body">
+                <div class="crumb"><div class="backchip" data-back><svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 2 3 11l9 9"/></svg></div></div>
+                <div class="lgt">Sign in and security</div>
+
+                <div class="rows">
+                  <div class="row" data-faceid-row>
+                    <span class="chipic r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M8 9v1M16 9v1M9 15c1.5 1.2 4.5 1.2 6 0"/></svg></span>
+                    <span class="lbl"><span class="t">Face ID sign in</span><span class="d">Skip the password on this phone</span></span>
+                    <div class="tog on" data-faceid><div class="knob"></div></div>
+                  </div>
+                  <div class="row" id="passkeyRow">
+                    <span class="chipic b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="12" r="5"/><path d="M13 12h8M18 12v4M21 12v2.5"/></svg></span>
+                    <span class="lbl"><span class="t">Passkeys</span><span class="d" id="pkd">Sign in with your face or fingerprint, no password</span></span>
+                    <span class="stat" id="pkstat" style="display:none;">Added</span>
+                    <svg class="chev" id="pkchev" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m2 2 6 6-6 6"/></svg>
+                  </div>
+                  <div class="row">
+                    <span class="chipic p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+                    <span class="lbl"><span class="t">Change password</span><span class="d">Last changed four months ago</span></span>
+                    <svg class="chev" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m2 2 6 6-6 6"/></svg>
+                  </div>
+                  <div class="row">
+                    <span class="chipic g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 4 6v6c0 5 3.4 7.8 8 9 4.6-1.2 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span>
+                    <span class="lbl"><span class="t">Two step verification</span><span class="d">Text to (303) 555 0164</span></span>
+                    <span class="stat">On</span>
+                  </div>
+                </div>
+
+                <div class="sect">Where you are signed in</div>
+                <div class="rows">
+                  <div class="row">
+                    <span class="chipic b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg></span>
+                    <span class="lbl"><span class="t">iPhone 15 Pro</span><span class="d">This device, Denver CO</span></span>
+                    <span class="stat">Now</span>
+                  </div>
+                  <div class="row">
+                    <span class="chipic p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+                    <span class="lbl"><span class="t">Mac, Safari</span><span class="d">Signed in two days ago</span></span>
+                    <svg class="chev" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m2 2 6 6-6 6"/></svg>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+          </div><!-- /stack -->
+
+          <!-- edit sheet -->
+          <div class="sheetdim" id="sheetdim"></div>
+          <div class="sheet" id="sheet">
+            <div class="grab"></div>
+            <div class="sh-head">
+              <div class="sh-t">Personal info</div>
+              <div class="sh-x" id="sheetClose">Done</div>
+            </div>
+            <div class="sh-body">
+              <div class="fcard">
+                <div class="flabel">First name</div>
+                <div class="input">Ajee</div>
+                <div class="flabel">Last name</div>
+                <div class="input">Williams</div>
+              </div>
+              <div class="fcard">
+                <div class="flabel">Date of birth</div>
+                <div class="input">04/12/1988</div>
+                <div class="checkrow"><div class="tog" data-toggle><div class="knob"></div></div><div class="lbl">Show date of birth</div></div>
+              </div>
+              <div class="fcard">
+                <div class="flabel">Mobile phone number</div>
+                <div class="input">(303) 555-0164</div>
+              </div>
+              <div class="btn" id="saveBtn">
+                <span class="lbltxt">Save changes</span>
+                <span class="spin"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path id="checkPath" d="M5 13l4 4 10-11" stroke-dasharray="30" stroke-dashoffset="30"/></svg></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- face id overlay -->
+          <div class="faceid" id="faceid">
+            <svg class="ringfx" viewBox="0 0 96 96" fill="none" stroke="#13C8FF" stroke-width="3" stroke-linecap="round">
+              <path d="M20 8H10a2 2 0 0 0-2 2v10M76 8h10a2 2 0 0 1 2 2v10M20 88H10a2 2 0 0 1-2-2V76M76 88h10a2 2 0 0 0 2-2V76"/>
+              <circle cx="38" cy="42" r="2.6" fill="#fff" stroke="none"/><circle cx="58" cy="42" r="2.6" fill="#fff" stroke="none"/>
+              <path d="M38 60c3 3.4 17 3.4 20 0" stroke="#fff"/>
+            </svg>
+            <div class="txt" id="faceTxt">Scanning…</div>
+          </div>
+
+          <div class="ripple" id="ripple"></div>
+          <div class="toast" id="toast"></div>
+        </div>
+      </div>
+      <div class="dev-floor" aria-hidden="true"></div>
+    </div>
+
+    <!-- PANEL -->
+    <div class="panel">
+      <div class="p-card">
+        <div class="p-eyebrow">The push further</div>
+        <h2>What changed, and why</h2>
+        <p class="pdesc">Every move below is live in the phone. Tap around and feel the difference.</p>
+        <ul class="moves">
+          <li class="move">
+            <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h7"/></svg></span>
+            <span class="mt2"><span class="t">Red is an accent, not a ceiling</span><span class="d">The red header bars are gone. Content leads, the brand shows up in moments that matter.</span></span>
+          </li>
+          <li class="move">
+            <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
+            <span class="mt2"><span class="t">One clear next step</span><span class="d">The account opens with a completion ring and a single action. Tap it and watch it finish.</span></span>
+          </li>
+          <li class="move">
+            <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M9 21V14h6v7"/></svg></span>
+            <span class="mt2"><span class="t">Editing keeps your place</span><span class="d">Personal info opens in a sheet over the page instead of navigating away. Save morphs into the confirmation.</span></span>
+          </li>
+          <li class="move">
+            <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="12" r="5"/><path d="M13 12h8M18 12v4"/></svg></span>
+            <span class="mt2"><span class="t">Passkeys ahead of passwords</span><span class="d">Security reads like a checklist you can finish, with sessions listed in plain language.</span></span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <img src="assets/scott-avatar.jpg" alt="Scott Jewell">
+        <div class="nt">
+          <div class="who">Notes from Scott</div>
+          <div id="caption">Start on the completion card. Tap Add backup phone and watch the ring close the loop.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="backlink">← <a href="cvs-prototype.html">Back to the documented rebuild</a> · <a href="case-cvs.html">CVS case study</a></div>
+
+<script>
+(() => {
+  'use strict';
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const stack = document.getElementById('stack');
+  const screens = {};
+  stack.querySelectorAll('.screen').forEach(s => screens[s.dataset.screen] = s);
+  const ripple = document.getElementById('ripple');
+  const toast = document.getElementById('toast');
+  const frame = document.getElementById('frame');
+  const caption = document.getElementById('caption');
+  let navStack = ['home'];
+
+  const clock = document.getElementById('clock');
+  const tick = () => { const d = new Date(); clock.textContent = d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}); };
+  tick(); setInterval(tick, 10000);
+
+  function setCaption(html){
+    if(reduce){ caption.innerHTML = html; return; }
+    caption.classList.add('swap');
+    setTimeout(() => { caption.innerHTML = html; caption.classList.remove('swap'); }, 180);
+  }
+  function showToast(msg){ toast.textContent = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 1700); }
+  function rippleAt(el){
+    const fr = frame.getBoundingClientRect(); const r = el.getBoundingClientRect();
+    ripple.style.left = (r.left - fr.left + r.width/2) + 'px';
+    ripple.style.top  = (r.top - fr.top + r.height/2) + 'px';
+    ripple.classList.remove('go'); void ripple.offsetWidth; ripple.classList.add('go');
+  }
+
+  function current(){ return navStack[navStack.length-1]; }
+  function push(name){
+    if(name === current()) return;
+    const cur = screens[current()], nxt = screens[name];
+    cur.classList.remove('active'); cur.classList.add('prev');
+    nxt.classList.remove('prev'); nxt.classList.add('active');
+    navStack.push(name);
+  }
+  function pop(){
+    if(navStack.length < 2) return;
+    const cur = screens[navStack.pop()], prev = screens[current()];
+    cur.classList.remove('active');
+    prev.classList.remove('prev'); prev.classList.add('active');
+  }
+
+  // completion ring, 92 to 100
+  const arc = document.getElementById('arc');
+  const pct = document.getElementById('pct');
+  const CIRC = 157;
+  let done = false;
+  function setRing(p){ arc.style.strokeDashoffset = String(CIRC * (1 - p/100)); }
+  setTimeout(() => setRing(92), reduce ? 0 : 700);
+
+  document.getElementById('addPhone').addEventListener('click', e => {
+    if(done) return; done = true;
+    rippleAt(e.currentTarget);
+    const meter = document.getElementById('meter');
+    setRing(100);
+    let v = 92;
+    const iv = setInterval(() => { v++; pct.textContent = v + '%';
+      if(v >= 100){ clearInterval(iv);
+        document.getElementById('ring').classList.add('full');
+        document.getElementById('mh').textContent = 'Your account is complete';
+        document.getElementById('md').textContent = 'Backup phone saved. You will never be locked out.';
+        e.target.style.display = 'none';
+        if(!reduce) meter.classList.add('donefx');
+        showToast('Backup phone added');
+      }
+    }, reduce ? 1 : 90);
+    setCaption('<b>The loop closes.</b> One tap, the ring fills, and the next best action retires itself. That pattern lifted profile completion on the real product.');
+  });
+
+  // face id
+  function playFaceId(){
+    const fid = document.getElementById('faceid'), txt = document.getElementById('faceTxt');
+    fid.classList.add('show'); txt.textContent = 'Scanning…';
+    setTimeout(() => { txt.textContent = 'Face ID enabled'; }, 1100);
+    setTimeout(() => { fid.classList.remove('show'); }, 1900);
+  }
+
+  // sheet
+  const sheet = document.getElementById('sheet');
+  const sheetdim = document.getElementById('sheetdim');
+  function openSheet(){ sheet.classList.add('show'); sheetdim.classList.add('show');
+    setCaption('<b>Sheet, not a detour.</b> The page stays underneath, so saving drops you right back where you were.'); }
+  function closeSheet(){ sheet.classList.remove('show'); sheetdim.classList.remove('show'); }
+  document.getElementById('sheetClose').addEventListener('click', closeSheet);
+  sheetdim.addEventListener('click', closeSheet);
+
+  // save morph
+  const saveBtn = document.getElementById('saveBtn');
+  saveBtn.addEventListener('click', () => {
+    if(saveBtn.classList.contains('success')) return;
+    saveBtn.querySelector('.lbltxt').style.opacity = '0';
+    setTimeout(() => {
+      saveBtn.classList.add('success');
+      saveBtn.querySelector('.spin').style.opacity = '1';
+      const p = document.getElementById('checkPath');
+      p.style.transition = 'stroke-dashoffset .5s ease'; p.style.strokeDashoffset = '0';
+      showToast('Changes saved');
+      setTimeout(() => { closeSheet();
+        setTimeout(() => {
+          saveBtn.classList.remove('success');
+          saveBtn.querySelector('.lbltxt').style.opacity = '1';
+          saveBtn.querySelector('.spin').style.opacity = '0';
+          p.style.transition = 'none'; p.style.strokeDashoffset = '30';
+        }, 600);
+      }, 1100);
+    }, 220);
+  });
+
+  // taps
+  stack.addEventListener('click', e => {
+    const back = e.target.closest('[data-back]');
+    if(back){ rippleAt(back); pop(); return; }
+    const go = e.target.closest('[data-go]');
+    if(go){ rippleAt(go); push(go.dataset.go);
+      setCaption('<b>No red bar up top.</b> A large title anchors the screen and the content starts immediately.'); return; }
+    const sh = e.target.closest('[data-sheet]');
+    if(sh){ rippleAt(sh); openSheet(); return; }
+    const tog = e.target.closest('[data-faceid]');
+    if(tog){ rippleAt(tog); tog.classList.toggle('on');
+      if(tog.classList.contains('on')) playFaceId();
+      setCaption('<b>Security feels deliberate.</b> The scan overlay confirms the change before it settles.'); return; }
+    const dtog = e.target.closest('[data-toggle]');
+    if(dtog){ dtog.classList.toggle('on'); return; }
+    const pk = e.target.closest('#passkeyRow');
+    if(pk){ rippleAt(pk);
+      document.getElementById('pkstat').style.display = '';
+      document.getElementById('pkchev').style.display = 'none';
+      document.getElementById('pkd').textContent = 'Saved to your keychain';
+      showToast('Passkey created');
+      setCaption('<b>Passkeys first.</b> The modern default, a password you cannot forget or phish.'); return; }
+  });
+
+  // entrance
+  requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('go')));
+
+  // pointer tilt
+  const devWrap = document.getElementById('devWrap');
+  const dev = document.querySelector('.device');
+  if(devWrap && dev && matchMedia('(pointer:fine)').matches && !reduce){
+    let raf = 0;
+    devWrap.addEventListener('mousemove', e => {
+      if(raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const r = devWrap.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - .5;
+        const y = (e.clientY - r.top) / r.height - .5;
+        dev.style.transform = 'rotateY(' + (x*5).toFixed(2) + 'deg) rotateX(' + (-y*4).toFixed(2) + 'deg)';
+      });
+    });
+    devWrap.addEventListener('mouseleave', () => { dev.style.transform = ''; });
+  }
+})();
+</script>
+</body>
+</html>

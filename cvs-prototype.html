@@ -286,6 +286,18 @@
   #caption.swap{opacity:0;transform:translateY(5px);}
   #caption b{color:#fff;}
 
+  .push{display:block;margin-top:14px;text-decoration:none;position:relative;
+    background:linear-gradient(180deg,rgba(232,176,75,.13),rgba(232,176,75,.05));
+    border:1px solid rgba(232,176,75,.4);border-radius:16px;padding:15px 16px;
+    box-shadow:0 16px 40px rgba(2,6,20,.35),0 0 0 0 rgba(232,176,75,.0);
+    transition:transform .3s cubic-bezier(.2,.9,.3,1.3),box-shadow .3s ease,border-color .3s ease;}
+  .push:hover{transform:translateY(-3px);border-color:rgba(232,176,75,.7);
+    box-shadow:0 22px 50px rgba(2,6,20,.45),0 0 24px rgba(232,176,75,.14);}
+  .push .pf{display:block;font-family:var(--display);font-size:15.5px;font-weight:600;color:#F2CE8B;letter-spacing:-.2px;}
+  .push .ps{display:block;font-size:12.5px;color:#D9CBAE;line-height:1.55;margin-top:5px;}
+  .push .pa{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:#F2CE8B;margin-top:10px;}
+  .push .pa svg{width:12px;height:12px;transition:transform .3s cubic-bezier(.2,.9,.3,1.4);}
+  .push:hover .pa svg{transform:translateX(4px);}
   .backlink{margin-top:44px;font-size:14px;color:var(--slate);}
   .backlink a{color:#9fb0d0;text-decoration:none;font-weight:600;}
   .backlink a:hover{color:#fff;}
@@ -427,8 +439,6 @@
               <div class="fcard">
                 <div class="flabel">Mobile phone number</div>
                 <div class="input">(303) 555-0164</div>
-                <div class="flabel">Home phone number <span class="opt">(optional)</span></div>
-                <div class="input"><span class="ph">(000) 000-0000</span></div>
               </div>
               <div class="btn red" id="saveBtn" data-save>
                 <span class="lbltxt">Save changes</span>
@@ -535,6 +545,12 @@
           <div id="caption">Tap the phone directly. Every row, toggle, and button responds. Or press play and I will drive.</div>
         </div>
       </div>
+
+      <a class="push" href="cvs-prototype-next.html" target="_blank" rel="noopener">
+        <span class="pf">I would push this even further</span>
+        <span class="ps">This rebuild documents what shipped. The rework removes every red header and modernizes the whole flow.</span>
+        <span class="pa">Open the rework<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
     </div>
 
   </div>
@@ -650,7 +666,7 @@
   stack.addEventListener('click', e => {
     if(busy) return;
     const back = e.target.closest('[data-back]');
-    if(back){ press(back); rippleAt(back); pop(); setCaption('<b>Back.</b> The screen slides away to the right and the one beneath eases back in. Real pop physics.'); return; }
+    if(back){ press(back); rippleAt(back); pop(); return; }
     const go = e.target.closest('[data-go]');
     if(go){ press(go); rippleAt(go); push(go.dataset.go); setCaption('<b>Push.</b> The next screen slides in from the right while the old one dims and slips left, the same physics the native app uses.'); return; }
     const tog = e.target.closest('[data-toggle]');
