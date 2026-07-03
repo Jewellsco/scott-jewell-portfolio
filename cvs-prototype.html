@@ -6,13 +6,13 @@
 <title>CVS Health — Interactive Prototype · Scott Jewell</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --blue:#1E66FF;--cyan:#13C8FF;--navy:#070C1C;--slate:#9fb0d0;
     --cvs-red:#CC0000;--cvs-red-dk:#A20000;--cvs-blue:#0061B0;
     --ink:#16181d;--sec:#6b7280;--line:#e9eaee;--field:#f1f2f4;--green:#34C759;
-    --display:"Space Grotesk",sans-serif;--sans:"Inter",-apple-system,sans-serif;
+    --display:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:var(--sans);min-height:100vh;color:#fff;
@@ -207,9 +207,9 @@
 <body>
 
   <div class="top">
-    <div class="eyebrow">CVS Health · Interaction Showcase</div>
-    <h1>The redesigned account flow, <span class="g">rebuilt and animated.</span></h1>
-    <p class="sub">A faithful recreation of the CVS mobile screens I designed — running as live UI, with the micro-interactions that make the experience feel effortless. Tap through it, or play the guided walkthrough.</p>
+    <div class="eyebrow">CVS Health · Live prototype</div>
+    <h1>Not a screenshot. <span class="g">A working product.</span></h1>
+    <p class="sub">The account and sign in experience I designed at CVS, used by millions, running here as real UI. Tap any row and it responds. Face ID, save states, screen transitions, all live. Or hit play and watch the whole flow run itself.</p>
   </div>
 
   <div class="stage">
@@ -232,10 +232,10 @@
           <!-- ACCOUNT (root) -->
           <section class="screen active" data-screen="account">
             <div class="dim"></div>
-            <div class="hdr noback"><svg class="brandheart" viewBox="0 0 104 96" fill="#ffffff" aria-label="CVS"><path d="M52 90C28 70 9 53 9 32 9 17 19 8 30 10 39 11.6 45 19 47 28 49 19 49 8 41 3 49 6 58 8 64 16 64 16 70 9 80 8 88 9 95 16 95 30 95 53 76 70 52 90Z"/></svg><div class="ttl">Account</div></div>
+            <div class="hdr noback"><svg class="brandheart" viewBox="0 0 104 96" fill="#ffffff" aria-label="CVS"><path d="M52 92 C40 78 10 60 10 40 L30 14 L52 32 L74 14 L94 40 C94 60 64 78 52 92 Z"/></svg><div class="ttl">Account</div></div>
             <div class="body">
               <div class="phero">
-                <svg class="heart" viewBox="0 0 104 96" fill="#CC0000"><path d="M52 90C28 70 9 53 9 32 9 17 19 8 30 10 39 11.6 45 19 47 28 49 19 49 8 41 3 49 6 58 8 64 16 64 16 70 9 80 8 88 9 95 16 95 30 95 53 76 70 52 90Z"/></svg>
+                <svg class="heart" viewBox="0 0 104 96" fill="#CC0000"><path d="M52 92 C40 78 10 60 10 40 L30 14 L52 32 L74 14 L94 40 C94 60 64 78 52 92 Z"/></svg>
                 <div><div class="hi">Hi, Ajee!</div><div class="edit">Edit profile</div></div>
               </div>
               <div class="card"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 2 4 6v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6l-2-4z"/><path d="M4 6h16M9 10a3 3 0 0 0 6 0"/></svg><div class="ct"><div class="t">Purchases</div></div></div>
@@ -253,7 +253,7 @@
               </div>
             </div>
             <div class="tabbar">
-              <div class="tab on"><svg viewBox="0 0 104 96" fill="currentColor"><path d="M52 90C28 70 9 53 9 32 9 17 19 8 30 10 39 11.6 45 19 47 28 49 19 49 8 41 3 49 6 58 8 64 16 64 16 70 9 80 8 88 9 95 16 95 30 95 53 76 70 52 90Z"/></svg><span>Home</span></div>
+              <div class="tab on"><svg viewBox="0 0 104 96" fill="currentColor"><path d="M52 92 C40 78 10 60 10 40 L30 14 L52 32 L74 14 L94 40 C94 60 64 78 52 92 Z"/></svg><span>Home</span></div>
               <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6"/></svg><span>Prescriptions</span></div>
               <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg><span>Card</span></div>
               <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m4 12 4 4 1.5-1.5M12 4l-2 2M20 8l-9 9-3-3"/><circle cx="6" cy="6" r="2.5"/></svg><span>Savings</span></div>
