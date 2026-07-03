@@ -276,7 +276,9 @@
 
   .note{display:none;}
   .note.live{display:flex;animation:noteIn .45s cubic-bezier(.16,1,.3,1);}
+  .note.live.bye{animation:noteOut .4s ease forwards;}
   @keyframes noteIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  @keyframes noteOut{to{opacity:0;transform:translateY(8px);}}
   .note{margin-top:14px;gap:12px;align-items:flex-start;
     background:rgba(9,12,21,.6);border:1px solid rgba(148,170,220,.15);border-radius:16px;
     padding:14px 15px;box-shadow:0 16px 40px rgba(2,6,20,.35);}
@@ -306,6 +308,38 @@
   .push .pa{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:#F2CE8B;margin-top:10px;}
   .push .pa svg{width:12px;height:12px;transition:transform .3s cubic-bezier(.2,.9,.3,1.4);}
   .push:hover .pa svg{transform:translateX(4px);}
+  /* the full stop */
+  .inv{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:24px;
+    background:rgba(4,6,12,0);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);
+    opacity:0;pointer-events:none;
+    transition:opacity .5s ease,background .5s ease,backdrop-filter .5s ease,-webkit-backdrop-filter .5s ease;}
+  .inv.show{opacity:1;pointer-events:auto;background:rgba(4,6,12,.62);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+  .inv-card{width:min(460px,92vw);text-align:center;position:relative;
+    background:linear-gradient(180deg,rgba(24,20,10,.92),rgba(12,13,20,.94));
+    border:1px solid rgba(232,176,75,.5);border-radius:24px;padding:34px 30px 28px;
+    box-shadow:0 50px 120px rgba(0,0,0,.6),0 0 0 0 rgba(232,176,75,0);
+    transform:translateY(26px) scale(.94);
+    transition:transform .65s cubic-bezier(.16,1,.3,1);}
+  .inv.show .inv-card{transform:none;animation:invGlow 1.8s ease .4s 1;}
+  @keyframes invGlow{0%{box-shadow:0 50px 120px rgba(0,0,0,.6),0 0 0 0 rgba(232,176,75,.5);}
+    100%{box-shadow:0 50px 120px rgba(0,0,0,.6),0 0 34px 12px rgba(232,176,75,0);}}
+  .inv-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#F2CE8B;margin-bottom:14px;}
+  .inv-card h3{font-family:var(--display);font-weight:700;font-size:25px;letter-spacing:-.5px;color:#fff;margin-bottom:10px;}
+  .inv-card p{font-size:14px;color:#D9CBAE;line-height:1.65;max-width:36ch;margin:0 auto 22px;}
+  .inv-go{display:inline-flex;align-items:center;gap:9px;text-decoration:none;
+    background:linear-gradient(120deg,#E8B04B,#F2CE8B);color:#221604;
+    font:700 14.5px var(--sans);border-radius:40px;padding:14px 26px;
+    box-shadow:0 14px 34px rgba(232,176,75,.3);
+    transition:transform .3s cubic-bezier(.2,.9,.3,1.4),box-shadow .3s ease;}
+  .inv-go:hover{transform:translateY(-2px);box-shadow:0 20px 44px rgba(232,176,75,.4);}
+  .inv-go svg{width:14px;height:14px;transition:transform .3s cubic-bezier(.2,.9,.3,1.4);}
+  .inv-go:hover svg{transform:translateX(4px);}
+  .inv-stay{display:block;margin:14px auto 0;background:none;border:none;cursor:pointer;
+    color:#9fb0d0;font:600 12.5px var(--sans);padding:8px;transition:color .2s;}
+  .inv-stay:hover{color:#fff;}
+  @media(prefers-reduced-motion:reduce){.inv,.inv-card{transition:none;}.inv.show .inv-card{animation:none;}}
+
   .rw{position:fixed;inset:0;z-index:100;background:#0B0E17;transform:translateX(100%);
     transition:transform .65s cubic-bezier(.32,.72,0,1);box-shadow:-30px 0 80px rgba(0,0,0,.55);}
   .rw.show{transform:translateX(0);}
@@ -577,6 +611,16 @@
 
   <div class="backlink">← <a href="case-cvs.html">Back to the CVS case study</a></div>
 
+  <div class="inv" id="inv" role="dialog" aria-modal="true" aria-label="See the rework" aria-hidden="true">
+    <div class="inv-card">
+      <div class="inv-eyebrow">Before you go</div>
+      <h3>I would push this even further</h3>
+      <p>This rebuild documents what shipped. The rework removes every red header and modernizes the whole flow.</p>
+      <a class="inv-go" id="invGo" href="cvs-prototype-next.html" target="_blank" rel="noopener">Open the rework<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <button class="inv-stay" id="invStay" type="button">Stay with this one</button>
+    </div>
+  </div>
+
   <div class="rw" id="rw" aria-hidden="true">
     <button class="rw-back" id="rwBack" type="button"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Back to the rebuild</button>
     <iframe id="rwFrame" title="The rework, no red headers"></iframe>
@@ -749,7 +793,7 @@
     await tapEl(document.getElementById('saveBtn')); playSave(); setBar(100); await sleep(1900);
 
     setStep(5);
-    setCaption('<b>That is the whole flow.</b> Replay any step from the list, or tap through the phone yourself.');
+    dismissNote();
     playLbl.textContent = 'Play it again';
     document.body.classList.remove('touring');
     busy = false;
@@ -757,8 +801,25 @@
     setTimeout(() => { if(!busy){ setBar(0); clearSteps(); } }, 3000);
   }
 
-  // ---- the earned invitation ----
-  function readyPush(){ document.body.classList.add('pushrdy'); }
+  function dismissNote(){
+    const nc = document.getElementById('noteCard');
+    if(!nc || !nc.classList.contains('live')) return;
+    nc.classList.add('bye');
+    setTimeout(() => { nc.classList.remove('live','bye'); caption.innerHTML = ''; }, 420);
+  }
+
+  // ---- the earned invitation, a full stop ----
+  const inv = document.getElementById('inv');
+  let invShown = false;
+  function showInvite(){
+    if(invShown) return;
+    try{ if(sessionStorage.getItem('cvs_invite')){ invShown = true; return; } }catch(e){}
+    invShown = true;
+    try{ sessionStorage.setItem('cvs_invite','1'); }catch(e){}
+    setTimeout(() => { inv.classList.remove('gone'); inv.setAttribute('aria-hidden','false'); inv.classList.add('show'); }, 450);
+  }
+  function hideInvite(){ inv.classList.remove('show'); inv.setAttribute('aria-hidden','true'); }
+  function readyPush(){ document.body.classList.add('pushrdy'); showInvite(); }
   const stageEl = document.querySelector('.stage');
   const pastEl = document.querySelector('.backlink');
   if('IntersectionObserver' in window && stageEl){
@@ -792,8 +853,19 @@
   if(pushCard && !embedded){
     pushCard.addEventListener('click', e => { e.preventDefault(); openRw(); });
   }
+  const invGo = document.getElementById('invGo');
+  invGo.addEventListener('click', e => {
+    if(!embedded){ e.preventDefault(); hideInvite(); openRw(); }
+    else hideInvite();
+  });
+  document.getElementById('invStay').addEventListener('click', hideInvite);
+  inv.addEventListener('click', e => { if(e.target === inv) hideInvite(); });
   rwBack.addEventListener('click', closeRw);
-  document.addEventListener('keydown', e => { if(e.key === 'Escape' && rw.classList.contains('show')) closeRw(); });
+  document.addEventListener('keydown', e => {
+    if(e.key !== 'Escape') return;
+    if(inv.classList.contains('show')) return hideInvite();
+    if(rw.classList.contains('show')) closeRw();
+  });
 
   document.querySelectorAll('[data-demo]').forEach(btn => {
     btn.addEventListener('click', async () => {
