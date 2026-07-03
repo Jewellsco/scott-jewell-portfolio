@@ -776,6 +776,7 @@
     try{ document.cookie = 'cvs_rework_invite=1;max-age=31536000;path=/;SameSite=Lax'; }catch(e){}
   }
   if(inviteSeen()) shown = true;
+  if(new URLSearchParams(location.search).has('r')){ markInviteSeen(); shown = true; }
   function show(){
     if(shown || inviteSeen()){ shown = true; return; }
     shown = true;
