@@ -754,23 +754,27 @@
   let shown = false;
   function show(){
     if(shown) return;
-    try{ if(sessionStorage.getItem('cvs_invite_home')){ shown = true; return; } }catch(e){}
     shown = true;
-    try{ sessionStorage.setItem('cvs_invite_home','1'); }catch(e){}
-    setTimeout(() => { fli.setAttribute('aria-hidden','false'); fli.classList.add('show'); }, 350);
+    setTimeout(() => { fli.setAttribute('aria-hidden','false'); fli.classList.add('show'); }, 250);
   }
   function hide(){ fli.classList.remove('show'); fli.setAttribute('aria-hidden','true'); }
   window.addEventListener('message', e => {
     if(e.data && e.data.type === 'cvsInvite') show();
   });
   function watchSection(){
+    const frame = document.getElementById('flIframe');
     const sec = document.getElementById('featured');
-    if('IntersectionObserver' in window && sec){
-      const io = new IntersectionObserver(es => es.forEach(en => {
-        if(!en.isIntersecting && en.boundingClientRect.top < 0) show();
-      }), { threshold: 0 });
-      io.observe(sec);
+    const target = frame || sec;
+    if(!target) return;
+    let raf = 0;
+    function check(){
+      raf = 0;
+      if(shown) return;
+      const r = target.getBoundingClientRect();
+      if(r.bottom > 0 && r.bottom < window.innerHeight * .5) show();
     }
+    window.addEventListener('scroll', () => { if(!raf) raf = requestAnimationFrame(check); }, { passive: true });
+    check();
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchSection);
   else watchSection();

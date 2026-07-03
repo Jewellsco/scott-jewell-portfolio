@@ -827,22 +827,22 @@
       try{ parent.postMessage({ type: 'cvsInvite' }, '*'); }catch(e){}
       return;
     }
-    try{ if(sessionStorage.getItem('cvs_invite')){ invShown = true; return; } }catch(e){}
     invShown = true;
-    try{ sessionStorage.setItem('cvs_invite','1'); }catch(e){}
-    setTimeout(() => { inv.setAttribute('aria-hidden','false'); inv.classList.add('show'); }, 450);
+    setTimeout(() => { inv.setAttribute('aria-hidden','false'); inv.classList.add('show'); }, 250);
   }
   function hideInvite(){ inv.classList.remove('show'); inv.setAttribute('aria-hidden','true'); }
   function readyPush(){ document.body.classList.add('pushrdy'); showInvite(); }
-  const stageEl = document.querySelector('.stage');
-  const pastEl = document.querySelector('.backlink');
-  if('IntersectionObserver' in window && stageEl){
-    const io = new IntersectionObserver(es => es.forEach(e => {
-      if(e.target === stageEl && !e.isIntersecting && e.boundingClientRect.top < 0) readyPush();
-      if(e.target === pastEl && e.isIntersecting) readyPush();
-    }), { threshold: 0 });
-    io.observe(stageEl);
-    if(pastEl) io.observe(pastEl);
+  const devEl = document.getElementById('devWrap');
+  if(devEl){
+    let sraf = 0;
+    function scheck(){
+      sraf = 0;
+      if(invShown) return;
+      const r = devEl.getBoundingClientRect();
+      const nearEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 90;
+      if((r.bottom > 0 && r.bottom < window.innerHeight * .5) || (nearEnd && window.scrollY > 40)) readyPush();
+    }
+    window.addEventListener('scroll', () => { if(!sraf) sraf = requestAnimationFrame(scheck); }, { passive: true });
   }
 
   // ---- push in the rework, push out the old ----
