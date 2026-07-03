@@ -700,10 +700,17 @@
 
 <div class="fli" id="fli" role="dialog" aria-modal="true" aria-label="See the rework" aria-hidden="true">
   <div class="fli-card">
-    <div class="fli-eyebrow">Before you go</div>
-    <h3>I would push this even further</h3>
-    <p>This rebuild documents what shipped. The rework removes every red header and modernizes the whole flow.</p>
+    <div class="fli-eyebrow">You just saw what shipped at CVS</div>
+    <h3>Now see where I would take it</h3>
+    <p>That live phone is the real CVS account and sign in flow, the one I designed for millions of members, rebuilt as working UI. The rework is the same product pushed further, live and tappable, not a mockup.</p>
+    <div class="fli-feats">
+      <span class="fli-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>No red header bars anywhere</span>
+      <span class="fli-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>One clear next step on every screen</span>
+      <span class="fli-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Editing in sheets that keep your place</span>
+      <span class="fli-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Passkeys ahead of passwords</span>
+    </div>
     <a class="fli-go" href="cvs-prototype-next.html" target="_blank" rel="noopener">Open the rework<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <div class="fli-sub">About a minute, every screen responds</div>
   </div>
 </div>
 <style>
@@ -713,7 +720,7 @@
     transition:opacity .5s ease,background .5s ease,backdrop-filter .5s ease,-webkit-backdrop-filter .5s ease;}
   .fli.show{opacity:1;pointer-events:auto;background:rgba(4,6,12,.62);
     backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
-  .fli-card{width:min(460px,92vw);text-align:center;position:relative;
+  .fli-card{width:min(500px,92vw);text-align:center;position:relative;
     background:linear-gradient(180deg,rgba(24,20,10,.94),rgba(12,13,20,.96));
     border:1px solid rgba(232,176,75,.5);border-radius:24px;padding:34px 30px 30px;
     box-shadow:0 50px 120px rgba(0,0,0,.6);
@@ -732,6 +739,12 @@
   .fli-go:hover{transform:translateY(-2px);box-shadow:0 20px 44px rgba(232,176,75,.4);}
   .fli-go svg{width:14px;height:14px;transition:transform .3s cubic-bezier(.2,.9,.3,1.4);}
   .fli-go:hover svg{transform:translateX(4px);}
+  .fli-feats{display:grid;grid-template-columns:1fr 1fr;gap:9px 14px;text-align:left;
+    margin:0 auto 24px;max-width:390px;}
+  .fli-feat{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:#E7DFCB;line-height:1.45;}
+  .fli-feat svg{width:14px;height:14px;flex:none;color:#F2CE8B;margin-top:1px;}
+  .fli-sub{font-size:11.5px;color:#9C8F70;margin-top:12px;}
+  @media(max-width:480px){.fli-feats{grid-template-columns:1fr;}}
   @media(prefers-reduced-motion:reduce){.fli,.fli-card{transition:none;}.fli.show .fli-card{animation:none;}}
 </style>
 <script>
