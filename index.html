@@ -112,6 +112,16 @@
   .tvx-chip i{width:14px;height:14px;border-radius:50%;background:#2E9E6B;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:800;}
   .tvx-bar{height:10px;border-radius:6px;background:#E8E2D7;margin-top:7px;}
   .tvx-bar.s{width:62%;}
+
+  /* stacked CVS card, two faces one cell */
+  .cvsx-faces{position:relative;display:flex;flex-direction:column;flex:1;}
+  .cvsx-face{display:flex;flex-direction:column;text-decoration:none;color:inherit;
+    transition:opacity .55s ease;position:relative;}
+  .cvsx-face:not(.on){position:absolute;inset:0;opacity:0;pointer-events:none;}
+  .cvsx-dots{display:flex;gap:7px;margin-top:14px;}
+  .cvsx-dots button{width:22px;height:6px;border-radius:4px;border:none;cursor:pointer;padding:0;
+    background:#DDD8CC;transition:background .3s ease,width .3s cubic-bezier(.2,.9,.3,1.3);}
+  .cvsx-dots button.on{background:var(--accent,#2418c9);width:34px;}
   .bqn{display:flex;flex-direction:column;justify-content:center;gap:16px;padding-left:26px;}
   .bqn-head{display:flex;align-items:center;gap:11px;margin-bottom:2px;}
   .bqn-head img{width:36px;height:36px;border-radius:50%;object-fit:cover;box-shadow:0 4px 12px rgba(24,22,16,.16);}
@@ -969,7 +979,8 @@
     </div>
     <div class="work-grid">
 
-      <a class="card reveal" href="case-caregiver.html" style="--i:0">
+      <div class="card reveal cvsx" style="--i:0">
+        <a class="cvsx-face on" href="case-caregiver.html">
         <div class="thumb cg"><span class="badge">Live prototype</span>
           <div class="hp-device">
             <div class="hp-screen">
@@ -1004,8 +1015,7 @@
           <span class="more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </a>
-
-      <a class="card reveal" href="case-cvs.html" style="--i:1">
+        <a class="cvsx-face" href="case-cvs.html">
         <div class="thumb img-cover"><span class="badge">Live prototype</span><img loading="lazy" src="assets/case/iEIbtq6uoVE9qbXi.png" alt="CVS mobile app redesign"></div>
         <div class="card-body">
           <div class="ctags">Healthcare · iOS / Android · Prototype</div>
@@ -1014,6 +1024,10 @@
           <span class="more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </a>
+        <div class="cvsx-dots" role="tablist" aria-label="Two CVS projects"><button class="on" type="button" aria-label="Show the caregiver experience"></button><button type="button" aria-label="Show the app redesign"></button></div>
+      </div>
+
+      
 
       <a class="card reveal" href="case-bagequity.html" style="--i:2">
         <div class="thumb be-cover" aria-label="BagEquity Visa debit card across phone and desktop">
@@ -1138,7 +1152,6 @@
 
       <a class="card reveal" href="cobank-prototype.html" style="--i:1">
         <div class="thumb cbx"><span class="badge">Audit</span>
-          <span class="cbx-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Gated</span>
           <div class="cbx-frame">
             <div class="cbx-bar"><i></i><i></i><i></i></div>
             <div class="cbx-old"><div class="l"></div><div class="l w2"></div><div class="l"></div></div>
@@ -1152,8 +1165,8 @@
         <div class="card-body">
           <div class="ctags">Banking &middot; Trust UX &middot; Audit</div>
           <h3>CoBank, a Working Before and After Audit</h3>
-          <p>A real bank's member site rebuilt line for line from its own help guides, next to my redesign where every control works. Each claim sourced, each fix annotated. Passphrase on request.</p>
-          <span class="more">Unlock the audit <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <p>A real bank's member site rebuilt line for line from its own help guides, next to my redesign where every control works. Each claim sourced, each fix annotated, every control live.</p>
+          <span class="more">View the audit <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </a>
 
@@ -1935,6 +1948,29 @@
   }
   window.addEventListener('scroll',function(){if(!pend){pend=true;requestAnimationFrame(check);}},{passive:true});
   el.querySelector('.kw-x').addEventListener('click',function(){el.classList.remove('up');setTimeout(function(){el.remove();},800);});
+})();
+</script>
+
+<script>
+(() => {
+  'use strict';
+  document.querySelectorAll('.cvsx').forEach(card => {
+    const faces = Array.from(card.querySelectorAll('.cvsx-face'));
+    const dots = Array.from(card.querySelectorAll('.cvsx-dots button'));
+    let i = 0, timer = null;
+    function go(n){ i = n;
+      faces.forEach((f, k) => f.classList.toggle('on', k === n));
+      dots.forEach((d, k) => d.classList.toggle('on', k === n));
+    }
+    dots.forEach((d, k) => d.addEventListener('click', e => {
+      e.preventDefault(); e.stopPropagation(); go(k); restart();
+    }));
+    function restart(){ clearInterval(timer); timer = setInterval(() => go((i + 1) % faces.length), 6000); }
+    card.addEventListener('mouseenter', () => clearInterval(timer));
+    card.addEventListener('mouseleave', restart);
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    restart();
+  });
 })();
 </script>
 </body>
