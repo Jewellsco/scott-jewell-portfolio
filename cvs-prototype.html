@@ -820,6 +820,19 @@
   // ---- the earned invitation, a full stop ----
   const inv = document.getElementById('inv');
   let invShown = false;
+
+  function inviteSeen(){
+    try{ if(localStorage.getItem('cvs_rework_invite')) return true; }catch(e){}
+    try{ if(sessionStorage.getItem('cvs_rework_invite')) return true; }catch(e){}
+    try{ if(document.cookie.indexOf('cvs_rework_invite=1') > -1) return true; }catch(e){}
+    return false;
+  }
+  function markInviteSeen(){
+    try{ localStorage.setItem('cvs_rework_invite','1'); }catch(e){}
+    try{ sessionStorage.setItem('cvs_rework_invite','1'); }catch(e){}
+    try{ document.cookie = 'cvs_rework_invite=1;max-age=31536000;path=/;SameSite=Lax'; }catch(e){}
+  }
+  if(inviteSeen()) invShown = true;
   function showInvite(){
     if(invShown) return;
     if(document.documentElement.classList.contains('embed')){
@@ -827,9 +840,9 @@
       try{ parent.postMessage({ type: 'cvsInvite' }, '*'); }catch(e){}
       return;
     }
-    try{ if(sessionStorage.getItem('cvs_rework_invite')){ invShown = true; return; } }catch(e){}
+    if(inviteSeen()){ invShown = true; return; }
     invShown = true;
-    try{ sessionStorage.setItem('cvs_rework_invite','1'); }catch(e){}
+    markInviteSeen();
     setTimeout(() => { inv.setAttribute('aria-hidden','false'); inv.classList.add('show'); }, 250);
   }
   function hideInvite(){ inv.classList.remove('show'); inv.setAttribute('aria-hidden','true'); }

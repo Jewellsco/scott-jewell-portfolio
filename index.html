@@ -752,11 +752,23 @@
   'use strict';
   const fli = document.getElementById('fli');
   let shown = false;
-  function show(){
-    if(shown) return;
-    try{ if(sessionStorage.getItem('cvs_rework_invite')){ shown = true; return; } }catch(e){}
-    shown = true;
+
+  function inviteSeen(){
+    try{ if(localStorage.getItem('cvs_rework_invite')) return true; }catch(e){}
+    try{ if(sessionStorage.getItem('cvs_rework_invite')) return true; }catch(e){}
+    try{ if(document.cookie.indexOf('cvs_rework_invite=1') > -1) return true; }catch(e){}
+    return false;
+  }
+  function markInviteSeen(){
+    try{ localStorage.setItem('cvs_rework_invite','1'); }catch(e){}
     try{ sessionStorage.setItem('cvs_rework_invite','1'); }catch(e){}
+    try{ document.cookie = 'cvs_rework_invite=1;max-age=31536000;path=/;SameSite=Lax'; }catch(e){}
+  }
+  if(inviteSeen()) shown = true;
+  function show(){
+    if(shown || inviteSeen()){ shown = true; return; }
+    shown = true;
+    markInviteSeen();
     setTimeout(() => { fli.setAttribute('aria-hidden','false'); fli.classList.add('show'); }, 250);
   }
   function hide(){ fli.classList.remove('show'); fli.setAttribute('aria-hidden','true'); }
