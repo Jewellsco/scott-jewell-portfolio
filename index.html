@@ -792,7 +792,20 @@
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchSection);
   else watchSection();
-  fli.querySelector('.fli-go').addEventListener('click', hide);
+  fli.querySelector('.fli-go').addEventListener('click', () => {
+    try{ localStorage.setItem('cvs_home_y', String(Math.round(window.scrollY))); }catch(e){}
+    hide();
+  });
+  // returning from the rework, put them back where they were
+  if(new URLSearchParams(location.search).has('resume')){
+    let y = 0;
+    try{ y = parseInt(localStorage.getItem('cvs_home_y') || '0', 10) || 0; }catch(e){}
+    if(y > 0){
+      const go = () => setTimeout(() => window.scrollTo({ top: y, behavior: 'instant' in window ? 'instant' : 'auto' }), 60);
+      if(document.readyState === 'complete') go();
+      else window.addEventListener('load', go);
+    }
+  }
 })();
 </script>
 <section id="featured" aria-label="Featured interface" class="fl-sec">
