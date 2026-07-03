@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CVS Health · Live Prototype · Scott Jewell</title>
-<script>if(location.search.indexOf('embed')>-1)document.documentElement.className='embed';</script>
+<script>if(location.search.indexOf('embed')>-1)document.documentElement.className='embed';if(location.search.indexOf('autoplay')>-1)document.documentElement.className+=' autoplay';</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -372,6 +372,11 @@
   html.embed .top,html.embed .backlink{display:none;}
   html.embed .stage{zoom:.9;}
   html.embed .dev-wrap{animation:none;}
+  html.autoplay .panel,html.autoplay .top,html.autoplay .backlink,html.autoplay .inv,html.autoplay .rw{display:none!important;}
+  html.autoplay body{padding:10px;display:block;}
+  html.autoplay .stage{zoom:1;display:block;}
+  html.autoplay .dev-wrap{animation:none;margin:0;}
+  html.autoplay .dev-glow,html.autoplay .dev-floor{display:none;}
 
   @media(max-width:900px){.stage{gap:38px;}.panel{width:348px;}}
 
@@ -921,6 +926,12 @@
         setCaption('<b>Save.</b> No modal and no page reload. The primary button itself becomes the confirmation.'); }
     });
   });
+
+  // ---- autoplay loop for the chapter teaser ----
+  if(new URLSearchParams(location.search).has('autoplay') && !reduce){
+    setTimeout(() => { if(!busy) tour(); }, 1600);
+    setInterval(() => { if(!busy) tour(); }, 23000);
+  }
 
   // ---- entrance ----
   requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('go')));

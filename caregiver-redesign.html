@@ -482,6 +482,16 @@
 
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   async function tapEl(el){if(!el)return;rippleAt(el);await sleep(260);}
+  if(new URLSearchParams(location.search).has('autoplay')){
+    document.documentElement.classList.add('autoplay');
+    const ap = document.createElement('style');
+    ap.textContent = '.autoplay .panel,.autoplay .top,.autoplay .backlink{display:none!important;}' +
+      '.autoplay body{padding:10px;display:block;background:#0A0B10;}' +
+      '.autoplay .stage{display:block;}';
+    document.head.appendChild(ap);
+    setTimeout(() => { try{ tour(); }catch(e){} }, 1600);
+    setInterval(() => { try{ tour(); }catch(e){} }, 26000);
+  }
   async function tour(){
     if(busy)return;busy=true;reset();await sleep(400);
     cap('<b>1 · Open a loved one.</b> Tapping Robert&rsquo;s card pushes his medication list.');
