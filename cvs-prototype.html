@@ -617,7 +617,6 @@
       <h3>I would push this even further</h3>
       <p>This rebuild documents what shipped. The rework removes every red header and modernizes the whole flow.</p>
       <a class="inv-go" id="invGo" href="cvs-prototype-next.html" target="_blank" rel="noopener">Open the rework<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <button class="inv-stay" id="invStay" type="button">Stay with this one</button>
     </div>
   </div>
 
@@ -813,10 +812,15 @@
   let invShown = false;
   function showInvite(){
     if(invShown) return;
+    if(document.documentElement.classList.contains('embed')){
+      invShown = true;
+      try{ parent.postMessage({ type: 'cvsInvite' }, '*'); }catch(e){}
+      return;
+    }
     try{ if(sessionStorage.getItem('cvs_invite')){ invShown = true; return; } }catch(e){}
     invShown = true;
     try{ sessionStorage.setItem('cvs_invite','1'); }catch(e){}
-    setTimeout(() => { inv.classList.remove('gone'); inv.setAttribute('aria-hidden','false'); inv.classList.add('show'); }, 450);
+    setTimeout(() => { inv.setAttribute('aria-hidden','false'); inv.classList.add('show'); }, 450);
   }
   function hideInvite(){ inv.classList.remove('show'); inv.setAttribute('aria-hidden','true'); }
   function readyPush(){ document.body.classList.add('pushrdy'); showInvite(); }
@@ -858,7 +862,6 @@
     if(!embedded){ e.preventDefault(); hideInvite(); openRw(); }
     else hideInvite();
   });
-  document.getElementById('invStay').addEventListener('click', hideInvite);
   inv.addEventListener('click', e => { if(e.target === inv) hideInvite(); });
   rwBack.addEventListener('click', closeRw);
   document.addEventListener('keydown', e => {
