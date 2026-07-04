@@ -741,7 +741,6 @@
     <div id="hmGrain"></div>
     <div id="hmWash"></div>
   </div>
-  <h2 id="hmH">Designs that<br>ship.</h2>
   <div id="hmHint"><span>Scroll</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
 </div>
 
@@ -2220,12 +2219,8 @@
     radius = parseFloat(getComputedStyle(card).borderTopLeftRadius) || 36;
     startCover = cover(vw, vh, 0, 0);
     endCover = cover(cardR.w, cardR.h, cardR.l, cardR.t);
-    const cs = getComputedStyle(hch);
-    head.style.fontSize = cs.fontSize; head.style.left = hchR.l + 'px'; head.style.top = hchR.t + 'px';
-    head.style.transform = 'none';
-    /* the headline never scales or travels, it sits at its card position and size
-       from the first frame, the world collapses around it */
-    headScale = 1; headDX = 0; headDY = 0;
+    /* no overlay headline, the phrase belongs to the card and appears only when
+       the card itself is revealed */
     art.style.width = NW + 'px'; art.style.height = NH + 'px';
     if(echo){ echo.style.width = NW + 'px'; echo.style.height = NH + 'px'; }
   }
@@ -2266,9 +2261,6 @@
     wash.style.left = cl + 'px'; wash.style.top = ct + 'px';
     wash.style.width = (vw - cl - cr) + 'px'; wash.style.height = (vh - ct - cb) + 'px';
     wash.style.borderRadius = rad + 'px';
-    /* headline leads the container by a breath */
-    const hk = clamp01(p * 1.08);
-    head.style.transform = 'translate3d(' + lerp(headDX, 0, hk) + 'px,' + lerp(headDY, 0, hk) + 'px,0) scale(' + lerp(headScale, 1, hk) + ')';
     /* incoming page life runs concurrently with the melt, settling as the card lands */
     if(!goFired && p >= 0.45 && heroStage){ goFired = true; heroStage.classList.add('tight'); heroStage.classList.add('go'); }
     /* the real card only exists once the container has converged on its rect */
@@ -2315,7 +2307,6 @@
       const revealArt = () => { art.style.opacity = '1'; };
       if(art.complete && art.naturalWidth){ revealArt(); }
       else{ art.addEventListener('load', revealArt, {once:true}); }
-      head.style.opacity = '1';
       watchdog = setTimeout(() => finishSafe(false), 14000);
       window.addEventListener('resize', onResize);
       ['pointerdown','keydown'].forEach(t => window.addEventListener(t, onSkip, {capture:true, passive:true}));
