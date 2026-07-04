@@ -441,11 +441,6 @@
   .hero-card .hc-spacer{flex:1;}
   .hero-card .hc-main{position:relative;z-index:2;display:flex;flex-direction:column;gap:22px;}
   .hero-card .hc-h{font-family:var(--sans);font-weight:800;font-size:clamp(40px,4.6vw,58px);letter-spacing:-.02em;line-height:1.05;color:#fff;font-style:normal;}
-  /* headline ticker, "Designs that" stays planted, only the ending word rolls */
-  .hc-h .hc-flipbox{display:inline-block;height:1.05em;overflow:hidden;vertical-align:top;}
-  .hc-h .hc-flipstack{display:flex;flex-direction:column;transition:transform .36s cubic-bezier(.33,.9,.22,1);}
-  .hc-h .hc-flipstack>span{display:block;height:1.05em;line-height:1.05;white-space:nowrap;}
-  @media (prefers-reduced-motion:reduce){.hc-h .hc-flipstack{transition:none;}}
   .hero-card .hc-sub{color:rgba(255,255,255,.92);font-size:17px;margin-top:14px;font-weight:500;line-height:1.5;}
   .hero-card .hc-cta{display:block;width:100%;text-align:center;background:#fff;color:#0c0c0d;padding:17px;border-radius:18px;font-size:18px;font-weight:700;
     box-shadow:0 10px 24px rgba(0,0,0,.18);transition:transform .2s;}
@@ -795,7 +790,7 @@
         <div class="hc-spacer"></div>
         <div class="hc-main">
           <div>
-            <h2 class="hc-h" id="hcFlipHead" aria-label="Designs that ship">Designs that<br><span class="hc-flipbox"><span class="hc-flipstack" id="hcFlipStack" aria-hidden="true"><span>ship.</span><span>we love.</span><span>we trust.</span><span>ship.</span></span></span></h2>
+            <h2 class="hc-h">Design<br>that ships.</h2>
             <p class="hc-sub">Code-backed prototypes and accessible design systems, built for healthcare, fintech, and commerce.</p>
           </div>
           <a href="case-bagequity.html" class="hc-cta"><span class="hct">View latest work</span><svg class="hcf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 9.6h.01M15 9.6h.01" stroke-width="2.8"/><path d="M8.4 13.8a4.9 4.9 0 0 0 7.2 0"/></svg></a>
@@ -2072,38 +2067,6 @@
 })();
 </script>
 
-<script>
-/* headline ticker, waits for the intro to finish so the shared element handoff
-   always lands on "ship.", then rolls the ending word quickly */
-(() => {
-  'use strict';
-  const stack = document.getElementById('hcFlipStack');
-  if(!stack) return;
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const count = stack.children.length;      /* last child is a clone of the first */
-  let i = 0;
-  function roll(){
-    i += 1;
-    stack.style.transform = 'translateY(-' + (i * 1.05) + 'em)';
-    if(i === count - 1){
-      setTimeout(() => {
-        stack.style.transition = 'none';
-        stack.style.transform = 'translateY(0)';
-        i = 0;
-        requestAnimationFrame(() => { stack.style.transition = ''; });
-      }, 420);
-    }
-  }
-  function begin(){
-    /* first flip rides the landing's momentum, then a steady fast cadence */
-    setTimeout(() => { roll(); setInterval(roll, 1400); }, 550);
-  }
-  (function waitForIntro(){
-    if(document.documentElement.classList.contains('hm-on')){ setTimeout(waitForIntro, 250); }
-    else{ setTimeout(begin, 250); }
-  })();
-})();
-</script>
 <script>
 /* ===== hero morph driver =====
    Container transform choreography. Full viewport wave art collapses into the
