@@ -701,8 +701,11 @@
      carries the same darkness and depth it will have inside the card */
   #hmWash{position:absolute;pointer-events:none;
     background:radial-gradient(130% 90% at 50% -12%,rgba(255,255,255,.08),transparent 55%),linear-gradient(180deg,rgba(40,20,125,.05),rgba(16,8,60,.42));}
-  #hmH{position:fixed;z-index:401;transform-origin:0 0;will-change:transform;margin:0;
-    font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:#fff;opacity:0;}
+  /* opening statement, the exact card headline at the exact card font size, centered
+     over the full art. It bows out the moment the transition begins */
+  #hmH{position:fixed;z-index:401;left:50%;top:44%;transform:translate(-50%,-50%);margin:0;text-align:center;
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;font-weight:800;letter-spacing:-.02em;line-height:1.05;
+    font-size:clamp(40px,4.6vw,58px);color:#fff;opacity:0;will-change:opacity;}
   /* while the intro runs, the hero card sits in its final resting place, the driver owns its opacity
      so it only appears once the morphing container has converged on it, never two cards at once */
   html.hm-on .hero-stage .hero-visual .hero-card{transform:none!important;transition:none!important;}
@@ -736,6 +739,7 @@
     <div id="hmGrain"></div>
     <div id="hmWash"></div>
   </div>
+  <h2 id="hmH">Design<br>that ships.</h2>
   <div id="hmHint"><span>Scroll</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
 </div>
 
@@ -2182,8 +2186,6 @@
     radius = parseFloat(getComputedStyle(card).borderTopLeftRadius) || 36;
     startCover = cover(vw, vh, 0, 0);
     endCover = cover(cardR.w, cardR.h, cardR.l, cardR.t);
-    /* no overlay headline, the phrase belongs to the card and appears only when
-       the card itself is revealed */
     art.style.width = NW + 'px'; art.style.height = NH + 'px';
     if(echo){ echo.style.width = NW + 'px'; echo.style.height = NH + 'px'; }
   }
@@ -2226,6 +2228,8 @@
     wash.style.borderRadius = rad + 'px';
     /* incoming page life runs concurrently with the melt, settling as the card lands */
     if(!goFired && p >= 0.45 && heroStage){ goFired = true; heroStage.classList.add('tight'); heroStage.classList.add('go'); }
+    /* the opening statement bows out the moment the transition begins */
+    if(head) head.style.opacity = String(1 - smooth(0.02, 0.18, p));
     /* the real card only exists once the container has converged on its rect */
     card.style.opacity = String(smooth(0.8, 0.94, p));
     /* the last stretch is a progress linked crossfade, card content emerges with the motion */
@@ -2270,6 +2274,8 @@
       const revealArt = () => { art.style.opacity = '1'; };
       if(art.complete && art.naturalWidth){ revealArt(); }
       else{ art.addEventListener('load', revealArt, {once:true}); }
+      /* the opening statement is the first thing the user sees */
+      if(head && p < 0.02) head.style.opacity = '1';
       watchdog = setTimeout(() => finishSafe(false), 14000);
       window.addEventListener('resize', onResize);
       ['pointerdown','keydown'].forEach(t => window.addEventListener(t, onSkip, {capture:true, passive:true}));
