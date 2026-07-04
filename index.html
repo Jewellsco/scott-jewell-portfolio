@@ -2095,10 +2095,13 @@
       }, 420);
     }
   }
-  function begin(){ setInterval(roll, 1500); }
+  function begin(){
+    /* first flip rides the landing's momentum, then a steady fast cadence */
+    setTimeout(() => { roll(); setInterval(roll, 1400); }, 550);
+  }
   (function waitForIntro(){
-    if(document.documentElement.classList.contains('hm-on')){ setTimeout(waitForIntro, 350); }
-    else{ setTimeout(begin, 900); }
+    if(document.documentElement.classList.contains('hm-on')){ setTimeout(waitForIntro, 250); }
+    else{ setTimeout(begin, 250); }
   })();
 })();
 </script>
@@ -2220,10 +2223,9 @@
     const cs = getComputedStyle(hch);
     head.style.fontSize = cs.fontSize; head.style.left = hchR.l + 'px'; head.style.top = hchR.t + 'px';
     head.style.transform = 'none';
-    const hw = head.getBoundingClientRect();
-    headScale = Math.min(2.6, (Math.min(vw * .64, 700)) / Math.max(hw.width, 1));
-    headDX = (vw / 2) - (hchR.l + hw.width * headScale / 2);
-    headDY = (vh * .44) - (hchR.t + hw.height * headScale / 2);
+    /* the headline never scales or travels, it sits at its card position and size
+       from the first frame, the world collapses around it */
+    headScale = 1; headDX = 0; headDY = 0;
     art.style.width = NW + 'px'; art.style.height = NH + 'px';
     if(echo){ echo.style.width = NW + 'px'; echo.style.height = NH + 'px'; }
   }
