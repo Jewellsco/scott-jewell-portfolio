@@ -22,7 +22,13 @@
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  body{font-family:var(--sans);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+    background:radial-gradient(900px 500px at 85% -5%,rgba(237,37,100,.05),transparent 60%),
+               radial-gradient(700px 460px at 8% 12%,rgba(28,31,36,.05),transparent 58%),#EDE9E0;
+    padding:16px 16px 0;}
+  .sheet{background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;position:relative;
+    box-shadow:0 2px 6px rgba(24,22,16,.04),0 34px 90px rgba(24,22,16,.11);}
+  @media(max-width:700px){body{padding:10px 10px 0;}.sheet{border-radius:20px;}}
   a{color:inherit;text-decoration:none;}
   button{font-family:inherit;cursor:pointer;}
   .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
@@ -116,9 +122,11 @@
 
   @media(max-width:1180px){.phones{grid-template-columns:minmax(0,390px);}}
   @media(max-width:900px){.decisions{grid-template-columns:1fr;}}
+  footer{padding:26px 12px 30px;}
 </style>
 </head>
 <body>
+<div class="sheet">
 <div class="wrap">
   <div class="topbar">
     <a class="back" href="index.html">&larr; Scott Jewell, work</a>
@@ -242,6 +250,9 @@
     <p>These screens came from a design teardown of Ibotta's public properties, complaint platform themes, deactivation, rejected receipts, locked withdrawals, and a help center that promotes its own wait time articles. The gap between a modern product and a 1.8 star reputation is trust UX in the money moments, and that is the work I have done for millions of accounts. <a href="case-cvs.html">See the CVS account work this builds on</a></p>
   </div>
 
+</div>
+</div>
+
   <section class="chx" id="chx" aria-label="Next chapter">
   <div class="chx-in">
     <div class="chx-copy">
@@ -264,7 +275,9 @@
   <div class="chx-sweep" id="chxSweep"></div>
 </section>
 <style>
-  .chx{position:relative;margin-top:70px;background:#0A0B10;overflow:hidden;}
+  .chx{position:relative;margin:18px 0 0;background:#0A0B10;overflow:hidden;border-radius:28px;
+    box-shadow:0 2px 6px rgba(24,22,16,.06),0 34px 90px rgba(10,11,16,.22);}
+  @media(max-width:700px){.chx{border-radius:20px;}}
   .chx::before{content:"";position:absolute;inset:0;pointer-events:none;
     background:radial-gradient(660px 420px at 16% 18%,rgba(30,102,255,.2),transparent 65%),
                radial-gradient(560px 380px at 86% 88%,rgba(232,176,75,.14),transparent 65%);
@@ -362,7 +375,6 @@
     <span>Scott Jewell &middot; Senior Product Designer &middot; Denver, CO</span>
     <span>Independent concept, July 2026. Not affiliated with Ibotta.</span>
   </footer>
-</div>
 
 <script>
 (function(){
