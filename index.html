@@ -706,8 +706,16 @@
   html.hm-on .hero-stage .hero-visual .hero-card{transform:none!important;transition:none!important;}
   #hmHint{position:fixed;z-index:401;left:50%;bottom:34px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;
     color:rgba(255,255,255,.85);font:600 11.5px/1 "Inter",sans-serif;letter-spacing:.22em;text-transform:uppercase;
-    opacity:0;transition:opacity .8s ease .9s;}
-  html.hm-on #hmHint.show{opacity:1;}
+    opacity:0;transition:opacity .25s ease;}
+  html.hm-on #hmHint.show{opacity:1;transition:opacity .8s ease .9s;}
+  /* when the morph drives the page entrance, staggers compress and overlap the landing,
+     motion runs concurrently, nothing waits its turn */
+  .hero-stage.go.tight .status{transition-delay:0s;transition-duration:.8s;}
+  .hero-stage.go.tight h1.lead{transition-delay:.06s;transition-duration:.8s,.8s,.95s;}
+  .hero-stage.go.tight .intro{transition-delay:.13s;transition-duration:.8s;}
+  .hero-stage.go.tight .hero-actions{transition-delay:.2s;transition-duration:.8s;}
+  .hero-stage.go.tight .hero-meta{transition-delay:.27s;transition-duration:.8s;}
+  .hero-stage.go.tight .hero-visual .hp-device{transition-delay:.16s;transition-duration:.8s;}
   #hmHint svg{width:16px;height:16px;animation:hmNudge 1.8s ease-in-out infinite;}
   @keyframes hmNudge{0%,100%{transform:translateY(0);opacity:.85;}50%{transform:translateY(6px);opacity:.4;}}
   @media (prefers-reduced-motion:reduce){#hm,#hmH,#hmHint{display:none!important;}}
@@ -2108,7 +2116,7 @@
     if(done) return; done = true;
     try{ localStorage.setItem('hm_seen','1'); }catch(e){}
     teardownListeners();
-    if(heroStage) heroStage.classList.add('go');
+    if(heroStage){ heroStage.classList.add('tight'); heroStage.classList.add('go'); }
     if(card) card.style.opacity = '';
     if(instant){ layer.remove(); root.classList.remove('hm-on'); return; }
     layer.style.transition = 'opacity .2s ease';
@@ -2221,8 +2229,8 @@
     /* headline leads the container by a breath */
     const hk = clamp01(p * 1.08);
     head.style.transform = 'translate3d(' + lerp(headDX, 0, hk) + 'px,' + lerp(headDY, 0, hk) + 'px,0) scale(' + lerp(headScale, 1, hk) + ')';
-    /* incoming page life starts before the motion ends */
-    if(!goFired && p >= 0.7 && heroStage){ goFired = true; heroStage.classList.add('go'); }
+    /* incoming page life runs concurrently with the melt, settling as the card lands */
+    if(!goFired && p >= 0.45 && heroStage){ goFired = true; heroStage.classList.add('tight'); heroStage.classList.add('go'); }
     /* the real card only exists once the container has converged on its rect */
     card.style.opacity = String(smooth(0.8, 0.94, p));
     /* the last stretch is a progress linked crossfade, card content emerges with the motion */
