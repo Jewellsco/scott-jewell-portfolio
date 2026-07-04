@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Scott Jewell, Senior Product Designer</title>
 <meta name="description" content="Scott Jewell, Senior Product Designer. Account, identity, and security experiences used by millions. Accessible design systems across healthcare, fintech, and commerce.">
+<script>
+/* hero morph gate, decided synchronously to avoid any flash */
+(function(){
+  try{
+    var skip = new URLSearchParams(location.search).has('r')
+      || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)
+      || sessionStorage.getItem('hm_seen')
+      || location.hash;
+    if(!skip){ document.documentElement.classList.add('hm-on'); }
+  }catch(e){}
+})();
+</script>
+<link rel="preload" as="image" href="assets/hero-waves.webp" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -409,7 +422,7 @@
   .hero-card{position:relative;width:100%;max-width:460px;aspect-ratio:4/5;min-height:560px;border-radius:36px;background:#2418c9;
     overflow:hidden;display:flex;flex-direction:column;padding:30px;color:#fff;
     box-shadow:0 44px 96px rgba(20,16,80,.36),inset 0 0 0 1px rgba(255,255,255,.2);}
-  .hero-card .bgimg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;filter:blur(3px);transform:scale(1.1);}
+  .hero-card .bgimg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;}
   .hero-card .wash{position:absolute;inset:0;z-index:0;background:radial-gradient(130% 90% at 50% -12%,rgba(255,255,255,.08),transparent 55%),linear-gradient(180deg,rgba(40,20,125,.05),rgba(16,8,60,.42));}
   .hero-card .pill-open{position:relative;z-index:2;align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:#000;color:#fff;
     padding:9px 18px;border-radius:999px;font-size:13.5px;font-weight:500;box-shadow:0 8px 20px rgba(0,0,0,.25);}
@@ -653,6 +666,46 @@
 </style>
 </head>
 <body>
+<!-- ===== hero morph, tier one. Full viewport wave art collapses into the hero card ===== -->
+<style>
+  #hm{display:none;}
+  html.hm-on #hm{display:block;position:fixed;inset:0;z-index:400;background:#0e0a4a;}
+  html.hm-on{overflow-x:hidden;}
+  #hmClip{position:absolute;inset:0;overflow:hidden;will-change:clip-path;}
+  #hmArt{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;user-select:none;-webkit-user-drag:none;opacity:0;}
+  .hm-blob{position:absolute;width:62vmax;height:62vmax;border-radius:50%;pointer-events:none;mix-blend-mode:screen;filter:blur(10px);will-change:transform,opacity;}
+  #hmBlobA{top:-18vmax;left:-14vmax;background:radial-gradient(circle at 42% 44%,rgba(255,96,196,.5),rgba(255,96,196,0) 62%);animation:hmDriftA 13s ease-in-out infinite alternate;}
+  #hmBlobB{bottom:-22vmax;right:-16vmax;background:radial-gradient(circle at 58% 56%,rgba(64,220,255,.44),rgba(64,220,255,0) 62%);animation:hmDriftB 16s ease-in-out infinite alternate;}
+  @keyframes hmDriftA{from{transform:translate3d(0,0,0) scale(1);}to{transform:translate3d(9vmax,6vmax,0) scale(1.12);}}
+  @keyframes hmDriftB{from{transform:translate3d(0,0,0) scale(1.08);}to{transform:translate3d(-8vmax,-7vmax,0) scale(.98);}}
+  #hmGrain{position:absolute;inset:0;pointer-events:none;opacity:.08;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");}
+  #hmWash{position:absolute;opacity:0;pointer-events:none;
+    background:radial-gradient(130% 90% at 50% -12%,rgba(255,255,255,.08),transparent 55%),linear-gradient(180deg,rgba(40,20,125,.05),rgba(16,8,60,.42));}
+  #hmH{position:fixed;z-index:401;transform-origin:0 0;will-change:transform;margin:0;
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:#fff;opacity:0;}
+  /* while the intro runs, the hero card sits in its final resting place under the layer so the handoff is seamless */
+  html.hm-on .hero-stage .hero-visual .hero-card{opacity:1!important;transform:none!important;transition:none!important;}
+  #hmHint{position:fixed;z-index:401;left:50%;bottom:34px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;
+    color:rgba(255,255,255,.85);font:600 11.5px/1 "Inter",sans-serif;letter-spacing:.22em;text-transform:uppercase;
+    opacity:0;transition:opacity .8s ease .9s;}
+  html.hm-on #hmHint.show{opacity:1;}
+  #hmHint svg{width:16px;height:16px;animation:hmNudge 1.8s ease-in-out infinite;}
+  @keyframes hmNudge{0%,100%{transform:translateY(0);opacity:.85;}50%{transform:translateY(6px);opacity:.4;}}
+  @media (prefers-reduced-motion:reduce){#hm,#hmH,#hmHint{display:none!important;}}
+</style>
+<div id="hm" aria-hidden="true">
+  <div id="hmClip">
+    <img id="hmArt" src="assets/hero-waves.webp" alt="" draggable="false"
+         onerror="this.onerror=null;this.src='assets/hero-waves.png';">
+    <div class="hm-blob" id="hmBlobA"></div>
+    <div class="hm-blob" id="hmBlobB"></div>
+    <div id="hmGrain"></div>
+    <div id="hmWash"></div>
+  </div>
+  <h2 id="hmH">Design<br>that ships.</h2>
+  <div id="hmHint"><span>Scroll</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
+</div>
 
 <nav id="nav">
   <div class="nav-in">
@@ -694,7 +747,7 @@
 
     <div class="hero-visual">
       <div class="hero-card">
-        <div class="bgimg" style="background-image:url('https://cdn.midjourney.com/ad2beae4-f996-4fdb-907e-449d264b10eb/0_2_640_N.webp?method=shortest')"></div>
+        <div class="bgimg" id="heroCardArt" style="background-image:url('assets/hero-waves.png');background-image:image-set(url('assets/hero-waves.webp') type('image/webp'),url('assets/hero-waves.png') type('image/png'))"></div>
         <div class="wash"></div>
         <span class="pill-open"><span class="d"></span> Open to new work</span>
         <div class="status-card">
@@ -1442,7 +1495,8 @@
     /* hero entrance choreography */
     var heroStage=document.querySelector('.hero-stage');
     if(heroStage){
-      if(REDUCED){heroStage.classList.add('go');}
+      if(document.documentElement.classList.contains('hm-on')){/* hero morph adds .go at handoff */}
+      else if(REDUCED){heroStage.classList.add('go');}
       else{requestAnimationFrame(function(){requestAnimationFrame(function(){heroStage.classList.add('go');});});}
     }
 
@@ -1978,6 +2032,172 @@
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     restart();
   });
+})();
+</script>
+
+<script>
+/* ===== hero morph driver, tier one =====
+   Full viewport wave art, blobs, grain. FLIP collapse into the hero card rect,
+   transform plus clip-path only. Desktop scroll scrub on a pinned runway,
+   mobile timed, click or key or touch skips instantly. */
+(() => {
+  'use strict';
+  const root = document.documentElement;
+  if(!root.classList.contains('hm-on')) return;
+
+  const layer = document.getElementById('hm');
+  const clip = document.getElementById('hmClip');
+  const art = document.getElementById('hmArt');
+  const wash = document.getElementById('hmWash');
+  const grain = document.getElementById('hmGrain');
+  const blobA = document.getElementById('hmBlobA');
+  const blobB = document.getElementById('hmBlobB');
+  const head = document.getElementById('hmH');
+  const hint = document.getElementById('hmHint');
+  const heroStage = document.querySelector('.hero-stage');
+  const card = document.querySelector('.hero-card');
+  const hch = card && card.querySelector('.hc-h');
+
+  let done = false, spacer = null, raf = 0, idleT = 0, watchdog = 0, p = 0;
+
+  function finishSafe(){
+    if(done) return; done = true;
+    try{ sessionStorage.setItem('hm_seen','1'); }catch(e){}
+    clearTimeout(idleT); clearTimeout(watchdog); cancelAnimationFrame(raf);
+    window.removeEventListener('scroll', onScroll);
+    ['wheel','touchstart','pointerdown','keydown'].forEach(t => window.removeEventListener(t, onSkip, true));
+    window.removeEventListener('resize', onResize);
+    if(spacer){ window.scrollTo(0,0); spacer.remove(); spacer = null; }
+    if(heroStage) heroStage.classList.add('go');
+    layer.style.transition = 'opacity .18s ease'; head.style.transition = 'opacity .18s ease';
+    layer.style.opacity = '0'; head.style.opacity = '0';
+    setTimeout(() => { layer.remove(); head.remove(); root.classList.remove('hm-on'); }, 220);
+  }
+
+  if(!layer || !clip || !art || !card || !hch || window.scrollY > 0){
+    if(layer){ layer.remove(); } if(head){ head.remove(); }
+    root.classList.remove('hm-on');
+    if(heroStage) heroStage.classList.add('go');
+    return;
+  }
+
+  try{ sessionStorage.setItem('hm_seen','1'); }catch(e){}
+
+  const NW = 960, NH = 1200;               /* natural art size */
+  const isMobile = window.matchMedia('(max-width: 920px)').matches;
+  let vw, vh, cardR, hchR, radius, startCover, endCover, headScale, headDX, headDY;
+
+  function cover(w, h, x, y){               /* cover-fit rect for the art inside w x h at x,y */
+    const s = Math.max(w / NW, h / NH);
+    return { s: s, x: x + (w - NW * s) / 2, y: y + (h - NH * s) / 2 };
+  }
+
+  function measure(){
+    vw = window.innerWidth; vh = window.innerHeight;
+    const c = card.getBoundingClientRect();
+    const t = hch.getBoundingClientRect();
+    const sy = window.scrollY - (spacer ? spacer.offsetHeight : 0);   /* rects in final resting coords, spacer removed */
+    cardR = { l: c.left, t: c.top + sy, w: c.width, h: c.height };
+    hchR = { l: t.left, t: t.top + sy, w: t.width, h: t.height };
+    radius = parseFloat(getComputedStyle(card).borderTopLeftRadius) || 36;
+    startCover = cover(vw, vh, 0, 0);
+    endCover = cover(cardR.w, cardR.h, cardR.l, cardR.t);
+    /* headline overlay sits at the real hc-h rect, starts big and centered */
+    const cs = getComputedStyle(hch);
+    head.style.fontSize = cs.fontSize; head.style.left = hchR.l + 'px'; head.style.top = hchR.t + 'px';
+    headScale = Math.min(2.6, (Math.min(vw * .64, 700)) / Math.max(hchR.w, 1));
+    headDX = (vw / 2) - (hchR.l + hchR.w * headScale / 2);
+    headDY = (vh * .44) - (hchR.t + hchR.h * headScale / 2);
+    art.style.width = NW + 'px'; art.style.height = NH + 'px';
+  }
+
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const outQuart = k => 1 - Math.pow(1 - k, 4);
+  const smooth = k => { k = Math.min(1, Math.max(0, k)); return k * k * (3 - 2 * k); };
+
+  function render(prog){
+    p = Math.min(1, Math.max(0, prog));
+    const k = outQuart(p);
+    /* clip window, viewport to card rect with radius */
+    const ct = lerp(0, cardR.t, k), cr = lerp(0, vw - (cardR.l + cardR.w), k),
+          cb = lerp(0, vh - (cardR.t + cardR.h), k), cl = lerp(0, cardR.l, k),
+          rad = lerp(0, radius, k);
+    clip.style.clipPath = 'inset(' + ct + 'px ' + cr + 'px ' + cb + 'px ' + cl + 'px round ' + rad + 'px)';
+    /* art, uniform scale plus translate between the two cover fits */
+    const s = lerp(startCover.s, endCover.s, k),
+          x = lerp(startCover.x, endCover.x, k),
+          y = lerp(startCover.y, endCover.y, k);
+    art.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) scale(' + s + ')';
+    /* atmosphere fades as the collapse takes over */
+    const atm = String(Math.max(0, 1 - p * 1.6));
+    blobA.style.opacity = atm; blobB.style.opacity = atm;
+    grain.style.opacity = String(.08 * Math.max(0, 1 - p * 1.6));
+    /* card wash settles in over the last stretch, pinned to the card rect */
+    wash.style.left = cardR.l + 'px'; wash.style.top = cardR.t + 'px';
+    wash.style.width = cardR.w + 'px'; wash.style.height = cardR.h + 'px';
+    wash.style.borderRadius = radius + 'px';
+    wash.style.opacity = String(smooth((p - .55) / .45));
+    /* headline rides the collapse as a shared element */
+    const hs = lerp(headScale, 1, k);
+    head.style.transform = 'translate3d(' + lerp(headDX, 0, k) + 'px,' + lerp(headDY, 0, k) + 'px,0) scale(' + hs + ')';
+    if(p > .02 && hint) hint.classList.remove('show');
+    if(p >= 1) finishSafe();
+  }
+
+  function tweenTo(target, ms){
+    cancelAnimationFrame(raf);
+    const from = p, start = performance.now();
+    (function step(now){
+      const t = Math.min(1, (now - start) / ms);
+      render(lerp(from, target, t));      /* outQuart lives inside render */
+      if(t < 1 && !done) raf = requestAnimationFrame(step);
+    })(start);
+  }
+
+  function onSkip(){ if(!done){ render(1); } }
+
+  let runway = 0;
+  function onScroll(){
+    if(done) return;
+    clearTimeout(idleT); idleT = setTimeout(armIdle, 2600);
+    render(window.scrollY / runway);
+  }
+  function armIdle(){ if(!done) tweenTo(1, 900); }
+  function onResize(){ if(!done){ measure(); render(p); } }
+
+  function start(){
+    try{
+      measure(); render(0);
+      art.style.opacity = '1'; head.style.opacity = '1';
+      watchdog = setTimeout(finishSafe, 12000);
+      window.addEventListener('resize', onResize);
+      if(isMobile){
+        /* timed intro, about two seconds, any touch or tap skips */
+        ['wheel','touchstart','pointerdown','keydown'].forEach(t => window.addEventListener(t, onSkip, {capture:true, passive:true}));
+        setTimeout(() => { if(!done) tweenTo(1, 1400); }, 550);
+      }else{
+        /* pinned runway scroll scrub, click or key skips, idle autoplays */
+        runway = vh;
+        spacer = document.createElement('div');
+        spacer.style.cssText = 'height:130vh;pointer-events:none;';
+        document.body.insertBefore(spacer, document.body.firstChild);
+        if(hint) hint.classList.add('show');
+        window.addEventListener('scroll', onScroll, {passive:true});
+        ['pointerdown','keydown'].forEach(t => window.addEventListener(t, onSkip, {capture:true, passive:true}));
+        idleT = setTimeout(armIdle, 2600);
+      }
+    }catch(e){ finishSafe(); }
+  }
+
+  /* wait for the art and the headline font so the first frame and the FLIP measure are honest */
+  const artReady = (art.complete && art.naturalWidth) ? Promise.resolve()
+    : new Promise(res => { art.addEventListener('load', res, {once:true}); art.addEventListener('error', res, {once:true}); });
+  const fontReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+  const cap = new Promise(res => setTimeout(res, 1500));
+  Promise.race([Promise.all([artReady, fontReady]), cap]).then(() => {
+    if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', start, {once:true}); }
+    else{ start(); }
+  }).catch(finishSafe);
 })();
 </script>
 </body>
