@@ -686,7 +686,8 @@
   #hmShadow{position:absolute;opacity:0;will-change:opacity;pointer-events:none;
     box-shadow:0 42px 110px rgba(22,12,90,.38),0 12px 34px rgba(22,12,90,.22);}
   #hmClip{position:absolute;inset:0;overflow:hidden;will-change:clip-path;background:#17114F;}
-  #hmArt{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;user-select:none;-webkit-user-drag:none;opacity:0;}
+  #hmLqip{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(16px);transform:scale(1.08);pointer-events:none;}
+  #hmArt{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;user-select:none;-webkit-user-drag:none;opacity:0;transition:opacity .45s ease;}
   .hm-blob{position:absolute;width:62vmax;height:62vmax;border-radius:50%;pointer-events:none;mix-blend-mode:screen;filter:blur(10px);will-change:transform,opacity;}
   #hmBlobA{top:-18vmax;left:-14vmax;background:radial-gradient(circle at 42% 44%,rgba(255,96,196,.5),rgba(255,96,196,0) 62%);animation:hmDriftA 13s ease-in-out infinite alternate;}
   #hmBlobB{bottom:-22vmax;right:-16vmax;background:radial-gradient(circle at 58% 56%,rgba(64,220,255,.44),rgba(64,220,255,0) 62%);animation:hmDriftB 16s ease-in-out infinite alternate;}
@@ -717,6 +718,7 @@
        onerror="this.onerror=null;this.src='assets/hero-waves.png';">
   <div id="hmShadow"></div>
   <div id="hmClip">
+    <img id="hmLqip" src="data:image/webp;base64,UklGRsQBAABXRUJQVlA4ILgBAAAwCwCdASokAC0APtVoq0+oJiOiJzgKSQAaiWwAsR7oPtkI+vbL+sDC6tMA3mx9zjI+V9TCbsy66V0UM1dOCCMC8ppcO/WMSxmbWMXBC9t0f4ptt1YzWBhGZcTs4G5BOh2i8AD+8NaRLPvR0lPif85hA51LF5WjcJEhHztt/tYyORAo816kAwuVehS3/5xL+gSk2KywSqAQuxY2P3UWQfNRqGBLHoMdeHezGnUi6EXdO215tu/K7pe8TRotwcU3NPwdKRjh8+/iZ2tBXJa74YEsvid/fumpsKauDR9AG86OoUeXRpy3IkrYjJnTDKVqloYEx4oF51BWMuf0nujecXBlcFlh7k7OjN/5uMiaTcfjGC9nJaxwKtTQpT/prg6wJ1ycOeBTLGCQ8hEYOtF+3EO5N2t9pvLHXZI3wAmqa5j1tgP+3xHikXGI//yCVSHVGcj3OxjDc9W+cDQ5110AdICU2hyZ1dWQyn9RYzIx7gsTJhLCf8g25QjdQbBp3MR+/jPi0pd5r8mfpoSZmDP+7vJUmnneCPSWO2RsyPHCFd/ctaQg+Y3GEPGa68do548SNU7p/dXetCLwAA==" alt="" aria-hidden="true" draggable="false">
     <img id="hmArt" src="assets/hero-waves.webp" alt="" draggable="false"
          onerror="this.onerror=null;this.src='assets/hero-waves.png';">
     <div class="hm-blob" id="hmBlobA"></div>
@@ -2198,9 +2200,8 @@
     /* the art field outside the window converges with it, then melts into the scrim */
     if(echo){
       echo.style.transform = artT;
-      const melt = smooth(0.08, 0.6, p);
-      echo.style.opacity = String(p > 0.015 ? (1 - melt) : 0);
-      echo.style.filter = 'blur(' + (melt * 22).toFixed(1) + 'px)';
+      echo.style.opacity = String(p > 0.015 ? (1 - smooth(0.1, 0.97, p)) : 0);
+      echo.style.filter = 'blur(' + (smooth(0.05, 0.8, p) * 24).toFixed(1) + 'px)';
     }
     /* dark to light, the page emerges through indigo, then lavender over paper, then paper */
     scrim.style.opacity = String(1 - sine(smooth(0.05, 0.72, p)));
@@ -2263,7 +2264,10 @@
       /* arriving already scrolled, deep links, restored sessions, never show the intro */
       if(window.scrollY > 2){ finishSafe(true); return; }
       measure(); render();
-      art.style.opacity = '1'; head.style.opacity = '1';
+      const revealArt = () => { art.style.opacity = '1'; };
+      if(art.complete && art.naturalWidth){ revealArt(); }
+      else{ art.addEventListener('load', revealArt, {once:true}); }
+      head.style.opacity = '1';
       watchdog = setTimeout(() => finishSafe(false), 14000);
       window.addEventListener('resize', onResize);
       ['pointerdown','keydown'].forEach(t => window.addEventListener(t, onSkip, {capture:true, passive:true}));
