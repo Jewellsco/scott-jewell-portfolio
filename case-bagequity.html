@@ -171,6 +171,55 @@
     .browser.in .dchart path.line{animation:none;stroke-dashoffset:0;}
     .dtrack i{transition:none;}
   }
+  /* ===== BagEquity case visuals: onboarding trio + design system board ===== */
+  .bev-cap{text-align:center;font-size:13px;color:var(--slate);margin-top:15px;}
+  .bev-stage{margin-top:28px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);
+    background:radial-gradient(120% 90% at 85% -10%,rgba(27,197,92,.20),transparent 55%),linear-gradient(160deg,#141613,#0A0B0A);
+    padding:34px 18px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;}
+  .bev-ph{width:208px;background:#0c0d0c;border-radius:30px;padding:7px;flex:none;
+    box-shadow:0 24px 48px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.06);}
+  .bev-scr{background:#fff;border-radius:24px;overflow:hidden;height:432px;display:flex;flex-direction:column;color:#0E100E;font-family:var(--sans);}
+  .bev-sb{display:flex;justify-content:space-between;align-items:center;padding:11px 16px 2px;font-size:11px;font-weight:700;}
+  .bev-pad{padding:12px 16px 16px;display:flex;flex-direction:column;flex:1;}
+  .bev-wm{font-weight:700;font-size:15px;letter-spacing:-.02em;}
+  .bev-wm b{color:#1BC55C;}
+  .bev-h{font-family:var(--display);font-weight:600;font-size:20px;line-height:1.14;letter-spacing:-.01em;}
+  .bev-p{font-size:11.5px;color:#6B6F6B;margin-top:7px;line-height:1.55;}
+  .bev-trust{display:flex;align-items:center;gap:8px;margin-top:13px;font-size:10.5px;font-weight:700;color:#12A94B;background:#E7F9EE;padding:8px 11px;border-radius:10px;}
+  .bev-trust svg{width:14px;height:14px;flex:none;}
+  .bev-btn{background:#1BC55C;color:#06251A;font-weight:700;font-size:13px;text-align:center;padding:12px;border-radius:12px;}
+  .bev-btn.sec{background:#F2F3F1;color:#0E100E;font-weight:600;margin-top:9px;}
+  .bev-amt{font-family:var(--display);font-weight:600;font-size:38px;letter-spacing:-.02em;text-align:center;margin:8px 0 10px;}
+  .bev-amt span{font-size:22px;color:#9a9e99;}
+  .bev-to{display:flex;align-items:center;gap:10px;background:#F7F8F6;border:1px solid #ECEDEA;border-radius:12px;padding:10px 12px;text-align:left;}
+  .bev-av{width:34px;height:34px;border-radius:10px;background:#1BC55C;color:#06251A;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none;}
+  .bev-to .nm{font-size:12.5px;font-weight:700;}
+  .bev-to .sub{font-size:10.5px;color:#6B6F6B;margin-top:1px;}
+  .bev-field{background:#F2F3F1;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#6B6F6B;margin-top:10px;text-align:left;}
+  .bev-field b{color:#0E100E;font-weight:600;}
+  .bev-check{width:64px;height:64px;border-radius:50%;background:#1BC55C;display:flex;align-items:center;justify-content:center;margin:0 auto;}
+  .bev-check svg{width:32px;height:32px;}
+  .bev-board{margin-top:28px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);
+    background:#FAFBFA;padding:22px;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .bev-b{background:#fff;border:1px solid #ECEDEA;border-radius:16px;padding:18px 18px 20px;}
+  .bev-blab{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#6B6F6B;font-weight:700;margin-bottom:14px;}
+  .bev-sw{display:flex;gap:8px;flex-wrap:wrap;}
+  .bev-swc{width:calc(20% - 7px);min-width:42px;}
+  .bev-swc i{display:block;height:40px;border-radius:9px;border:1px solid rgba(0,0,0,.07);}
+  .bev-swc span{display:block;font-size:9px;color:#6B6F6B;margin-top:5px;font-weight:600;text-align:center;letter-spacing:.02em;}
+  .bev-ty{font-family:var(--display);color:#0E100E;line-height:1.06;}
+  .bev-ty+.bev-ty{margin-top:11px;}
+  .bev-ty .l{display:block;font-family:var(--sans);font-size:9px;color:#9a9e99;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;}
+  .bev-comp{display:flex;flex-direction:column;gap:10px;}
+  .bev-cb{background:#1BC55C;color:#06251A;font-weight:700;font-size:12.5px;text-align:center;padding:10px;border-radius:11px;}
+  .bev-cb.sec{background:#fff;border:1px solid #D8DAD6;color:#0E100E;}
+  .bev-ci{background:#F2F3F1;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#9a9e99;display:flex;justify-content:space-between;align-items:center;}
+  .bev-tog{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;font-weight:600;color:#0E100E;padding:2px;}
+  .bev-tsw{width:40px;height:23px;border-radius:30px;background:#1BC55C;position:relative;flex:none;}
+  .bev-tsw i{position:absolute;top:2px;right:2px;width:19px;height:19px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);}
+  .bev-cardmini{border-radius:14px;padding:14px 15px;color:#fff;aspect-ratio:1.9/1;display:flex;flex-direction:column;
+    background:radial-gradient(120% 90% at 88% -10%,rgba(27,197,92,.30),transparent 55%),linear-gradient(152deg,#1c1f1d,#0A0B0A);box-shadow:0 12px 24px rgba(6,8,6,.4);}
+  @media(max-width:760px){.bev-board{grid-template-columns:1fr;}.bev-ph{width:186px;}}
 </style>
 </head>
 <body>
@@ -332,10 +381,46 @@
 
 <section class="tight">
   <div class="wrap reveal">
-    <div class="shot">
-      <div class="frame f3"><div class="lbl">Onboarding &amp; money-movement flow<br><span style="font-weight:400;opacity:.8;font-size:13px;">Designs in active development</span></div></div>
-      <div class="cap">Onboarding &amp; dashboard — visuals withheld while the product is pre-launch.</div>
+    <div class="bev-stage">
+      <div class="bev-ph"><div class="bev-scr">
+        <div class="bev-sb"><span>9:41</span><span>Welcome</span></div>
+        <div class="bev-pad">
+          <div class="bev-wm">BAG<b>EQUITY</b></div>
+          <div style="flex:1"></div>
+          <div class="bev-h">Money the whole family can trust.</div>
+          <div class="bev-p">One place for parents and coaches to handle season money together, safely.</div>
+          <div class="bev-trust"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Bank level security, built in</div>
+          <div style="height:14px"></div>
+          <div class="bev-btn">Create account</div>
+          <div class="bev-btn sec">I already have one</div>
+        </div>
+      </div></div>
+      <div class="bev-ph"><div class="bev-scr">
+        <div class="bev-sb"><span>9:41</span><span>Send</span></div>
+        <div class="bev-pad">
+          <div style="font-family:var(--display);font-weight:600;font-size:16px;">Send money</div>
+          <div class="bev-amt">$120<span>.00</span></div>
+          <div class="bev-to"><div class="bev-av">CR</div><div><div class="nm">Coach Riley</div><div class="sub">Riverside FC</div></div></div>
+          <div class="bev-field">From <b>Family account</b>, balance $842.10</div>
+          <div class="bev-field">Note <b>Spring season fees</b></div>
+          <div style="flex:1"></div>
+          <div class="bev-btn">Review transfer</div>
+        </div>
+      </div></div>
+      <div class="bev-ph"><div class="bev-scr">
+        <div class="bev-sb"><span>9:41</span><span>Done</span></div>
+        <div class="bev-pad" style="text-align:center;">
+          <div style="flex:1"></div>
+          <div class="bev-check"><svg viewBox="0 0 24 24" fill="none" stroke="#06251A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-11"/></svg></div>
+          <div class="bev-h" style="margin-top:16px;">$120.00 sent</div>
+          <div class="bev-p">To Coach Riley at Riverside FC. Today at 9:41 AM.</div>
+          <div style="flex:1"></div>
+          <div class="bev-to"><div class="bev-av" style="background:#E7F9EE;color:#12A94B;">&#10003;</div><div><div class="nm">Receipt saved</div><div class="sub">Both parties notified</div></div></div>
+          <div class="bev-btn sec" style="margin-top:12px;">Done</div>
+        </div>
+      </div></div>
     </div>
+    <div class="bev-cap">Onboarding through money movement, three of the core screens from the mobile product.</div>
   </div>
 </section>
 
@@ -357,10 +442,44 @@
     <div class="kick">The Solution</div>
     <h2 class="sec">A coherent, trustworthy product system</h2>
     <p class="body">The result is a unified experience across web and mobile: <b>clear onboarding</b>, <b>confident money-movement flows</b>, and <b>compliance-aware identity and consent</b> that feel reassuring rather than bureaucratic — all powered by a scalable design system that lets the product grow without losing its voice.</p>
-    <div class="shot">
-      <div class="frame f1"><div class="lbl">Design system &amp; key screens<br><span style="font-weight:400;opacity:.8;font-size:13px;">Designs in active development</span></div></div>
-      <div class="cap">Design system &amp; component library — sample available on request.</div>
+    <div class="bev-board">
+      <div class="bev-b">
+        <div class="bev-blab">Color</div>
+        <div class="bev-sw">
+          <div class="bev-swc"><i style="background:#1BC55C"></i><span>Green</span></div>
+          <div class="bev-swc"><i style="background:#12A94B"></i><span>Green dk</span></div>
+          <div class="bev-swc"><i style="background:#0E100E"></i><span>Ink</span></div>
+          <div class="bev-swc"><i style="background:#6B6F6B"></i><span>Slate</span></div>
+          <div class="bev-swc"><i style="background:#E7F9EE"></i><span>Mint</span></div>
+        </div>
+        <div style="margin-top:16px;font-size:11px;color:#6B6F6B;line-height:1.5;">Green for action and trust, near black for weight, calm neutrals for everything else.</div>
+      </div>
+      <div class="bev-b">
+        <div class="bev-blab">Type, Fraunces and Inter</div>
+        <div class="bev-ty" style="font-size:26px;"><span class="l">Display</span>Trust at scale</div>
+        <div class="bev-ty" style="font-size:17px;font-weight:600;"><span class="l">Heading</span>Move money simply</div>
+        <div class="bev-ty" style="font-family:var(--sans);font-size:12px;color:#6B6F6B;font-weight:500;"><span class="l">Body</span>Clear, calm, and compliant by default.</div>
+      </div>
+      <div class="bev-b">
+        <div class="bev-blab">Components</div>
+        <div class="bev-comp">
+          <div class="bev-cb">Send money</div>
+          <div class="bev-cb sec">Add a family member</div>
+          <div class="bev-ci">Amount<span>$0.00</span></div>
+          <div class="bev-tog">Biometric unlock<span class="bev-tsw"><i></i></span></div>
+        </div>
+      </div>
+      <div class="bev-b" style="display:flex;flex-direction:column;justify-content:center;">
+        <div class="bev-blab">Key surface</div>
+        <div class="bev-cardmini">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:700;"><span style="letter-spacing:-.02em;">BAG<b style="color:#1BC55C;">EQUITY</b></span><svg viewBox="0 0 18 22" width="12" height="14" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.6" stroke-linecap="round"><path d="M4 5a9 9 0 0 1 0 12"/><path d="M8 3a13 13 0 0 1 0 16"/></svg></div>
+          <div style="flex:1"></div>
+          <div style="font-size:12px;letter-spacing:.14em;color:#d6dbd6;">&#8226;&#8226;&#8226;&#8226;&nbsp;4729</div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:8px;"><span style="font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:#aeb4ad;font-weight:600;">Jordan Fields</span><span style="font-style:italic;font-weight:700;font-size:16px;">VISA</span></div>
+        </div>
+      </div>
     </div>
+    <div class="bev-cap">Design system and component library. A sample is available on request.</div>
   </div>
 </section>
 
