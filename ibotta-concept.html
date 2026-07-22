@@ -381,31 +381,6 @@
   'use strict';
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1});
   document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
-
-  /* screens taller than the phone scroll themselves, gently, pausing for readers */
-  var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.querySelectorAll('.pbody').forEach(function(body){
-    var state={dir:1,raf:null,waitUntil:0,paused:false,active:false};
-    function overflow(){return body.scrollHeight-body.clientHeight;}
-    function step(ts){
-      if(!state.active){state.raf=null;return;}
-      if(!state.paused&&ts>state.waitUntil){
-        var max=overflow();
-        if(max>8){
-          body.scrollTop+=0.35*state.dir;
-          if(body.scrollTop>=max-0.5){state.dir=-1;state.waitUntil=ts+1600;}
-          else if(body.scrollTop<=0.5){state.dir=1;state.waitUntil=ts+1600;}
-        }
-      }
-      state.raf=requestAnimationFrame(step);
-    }
-    function start(){if(reduced||state.raf||overflow()<=8)return;state.active=true;state.waitUntil=performance.now()+350;state.raf=requestAnimationFrame(step);}
-    function stop(){state.active=false;}
-    ['pointerenter','touchstart','wheel'].forEach(function(ev){body.addEventListener(ev,function(){state.paused=true;},{passive:true});});
-    body.addEventListener('pointerleave',function(){state.paused=false;});
-    var vio=new IntersectionObserver(function(es){es.forEach(function(e){e.isIntersecting?start():stop();});},{threshold:.08,rootMargin:'0px 0px 12% 0px'});
-    vio.observe(body);
-  });
 })();
 </script>
 </body>
