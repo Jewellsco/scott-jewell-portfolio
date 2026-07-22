@@ -933,6 +933,25 @@
     setInterval(() => { if(!busy) tour(); }, 23000);
   }
 
+  // ---- autoplay on viewport entry, the primary live demo trigger ----
+  // Plays the full walkthrough once, the moment the phone scrolls into view or
+  // is already visible on load. Skips if the visitor already started tapping
+  // around on their own, so it never overrides a real interaction in progress.
+  if(devEl && !reduce && 'IntersectionObserver' in window){
+    let engaged = false;
+    stack.addEventListener('pointerdown', () => { engaged = true; }, { passive: true });
+    document.querySelectorAll('[data-demo]').forEach(btn => btn.addEventListener('pointerdown', () => { engaged = true; }));
+    const vio = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if(!e.isIntersecting) return;
+        vio.disconnect();
+        if(engaged || busy) return;
+        tour();
+      });
+    }, { threshold: .4 });
+    vio.observe(devEl);
+  }
+
   // ---- entrance ----
   requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('go')));
 

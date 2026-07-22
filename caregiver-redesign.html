@@ -524,6 +524,25 @@
     if(d==='add'){reset();await sleep(250);push('addperson');await sleep(500);cap('<b>Add someone.</b> Relationship is a single tap; everything optional stays optional.');}
   }));
   updateSched();
+
+  // ---- autoplay on viewport entry, the primary live demo trigger ----
+  // Plays the guided walkthrough once, the moment the phone scrolls into view
+  // or is already visible on load, skipping the plain-visit click requirement.
+  // The dedicated ?autoplay teaser embed keeps its own always-on loop below.
+  if(!document.documentElement.classList.contains('autoplay') && !reduce && 'IntersectionObserver' in window){
+    let engaged=false;
+    stack.addEventListener('pointerdown',()=>{engaged=true;},{passive:true});
+    document.querySelectorAll('[data-demo]').forEach(b=>b.addEventListener('pointerdown',()=>{engaged=true;}));
+    const vio=new IntersectionObserver(es=>{
+      es.forEach(e=>{
+        if(!e.isIntersecting)return;
+        vio.disconnect();
+        if(engaged||busy)return;
+        tour();
+      });
+    },{threshold:.4});
+    vio.observe(frame);
+  }
 })();
 </script>
 </body>

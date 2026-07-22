@@ -728,6 +728,26 @@
     cap('<b>Done.</b> Same bank, top and bottom. Every claim traces to their help pages, and everything in the concept is a working control. Tap anything.');
     busy=false;
   }
+
+  // ---- autoplay on viewport entry, the primary live demo trigger ----
+  // Plays the guided walkthrough once, the moment the concept scrolls into
+  // view or is already visible on load, instead of requiring a click first.
+  (function(){
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+    const stageEl = document.querySelector('.stage');
+    if(!stageEl) return;
+    let engaged = false;
+    document.querySelectorAll('[data-gap],[data-navgo],[data-acc],[data-shrow]').forEach(el => el.addEventListener('pointerdown', () => { engaged = true; }));
+    const vio = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if(!e.isIntersecting) return;
+        vio.disconnect();
+        if(engaged || busy) return;
+        tour();
+      });
+    }, { threshold: .35 });
+    vio.observe(stageEl);
+  })();
 })();
 </script>
 

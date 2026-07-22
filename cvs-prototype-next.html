@@ -656,6 +656,55 @@
   // hide page nav when framed, the host page owns navigation there
   if(window.top !== window.self){ const pn = document.getElementById('pnav'); if(pn) pn.remove(); }
 
+  // ---- guided walkthrough, plays once when this screen enters the viewport ----
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  async function tapEl(el){ if(!el) return; rippleAt(el); el.classList.add('tap'); await sleep(260); el.classList.remove('tap'); }
+  let touring = false;
+  async function tour(){
+    if(touring) return; touring = true;
+    setCaption('<b>Watch it work.</b> Opening Sign in and security.');
+    await tapEl(screens.home.querySelector('[data-go="security"]')); push('security'); await sleep(950);
+
+    const fTog = screens.security.querySelector('[data-faceid]');
+    if(fTog){
+      await tapEl(fTog); fTog.classList.remove('on'); await sleep(600);
+      await tapEl(fTog); fTog.classList.add('on'); playFaceId();
+      setCaption('<b>Face ID on.</b> The scan overlay confirms the change before it settles.'); await sleep(2050);
+    }
+    const pk = screens.security.querySelector('#passkeyRow');
+    if(pk){
+      await tapEl(pk);
+      document.getElementById('pkstat').style.display = '';
+      document.getElementById('pkchev').style.display = 'none';
+      document.getElementById('pkd').textContent = 'Saved to your keychain';
+      showToast('Passkey created');
+      setCaption('<b>Passkeys first.</b> The modern default, a password you cannot forget or phish.'); await sleep(1400);
+    }
+    await tapEl(screens.security.querySelector('[data-back]')); pop(); await sleep(600);
+
+    const sheetRow = screens.home.querySelector('[data-sheet]');
+    if(sheetRow){ await tapEl(sheetRow); openSheet(); await sleep(1500); closeSheet(); await sleep(500); }
+
+    const addBtn = document.getElementById('addPhone');
+    if(addBtn && !done){ await sleep(300); addBtn.click(); await sleep(1600); }
+
+    setCaption('<b>That is the shape of it.</b> Push, toggle, sheet, all without a page reload. Tap through yourself.');
+    touring = false;
+  }
+  if(!reduce && 'IntersectionObserver' in window){
+    let engaged = false;
+    stack.addEventListener('pointerdown', () => { engaged = true; }, { passive: true });
+    const vio = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if(!e.isIntersecting) return;
+        vio.disconnect();
+        if(engaged) return;
+        tour();
+      });
+    }, { threshold: .4 });
+    vio.observe(frame);
+  }
+
   // entrance
   requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('go')));
 
