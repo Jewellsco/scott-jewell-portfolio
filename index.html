@@ -5,19 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Scott Jewell, Senior Product Designer</title>
 <meta name="description" content="Scott Jewell, Senior Product Designer. Account, identity, and security experiences used by millions. Accessible design systems across healthcare, fintech, and commerce.">
-<script>
-/* hero morph gate, decided synchronously to avoid any flash */
-(function(){
-  try{
-    var skip = new URLSearchParams(location.search).has('r')
-      || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)
-      || localStorage.getItem('hm_seen')
-      || location.hash;
-    if(!skip){ document.documentElement.classList.add('hm-on'); }
-  }catch(e){}
-})();
-</script>
-<link rel="preload" as="image" href="assets/hero-waves-1920.webp" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -646,6 +633,32 @@
 
   /* CoBank audit card thumb */
   .thumb.cbx{background:linear-gradient(150deg,#E8F0F6 0%,#F4F8FB 60%,#FFF 100%);display:flex;flex-direction:column;justify-content:center;gap:8px;padding:22px 26px;position:relative;overflow:hidden;}
+
+  /* GameChanger audit card */
+  .thumb.gcx{background:radial-gradient(120% 100% at 50% 0%,#16264a 0%,#0a1226 60%,#07081b 100%);display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
+  .gcx-phone{width:64%;max-width:235px;background:#000;border-radius:22px 22px 0 0;padding:8px 8px 0;transform:translateY(8px);transition:transform .55s cubic-bezier(.2,.7,.2,1);}
+  .card:hover .gcx-phone{transform:translateY(2px);}
+  .gcx-screen{background:#07081b;border-radius:15px 15px 0 0;padding:10px 10px 12px;color:#f4f6ff;}
+  .gcx-head{font-size:11.5px;font-weight:800;font-style:italic;text-transform:uppercase;letter-spacing:.02em;}
+  .gcx-head b{color:#3ddc84;}
+  .gcx-sub{display:block;font-size:8px;color:#a9afce;font-weight:500;margin-top:2px;font-style:normal;letter-spacing:0;text-transform:none;}
+  .gcx-player{position:relative;margin-top:8px;border-radius:9px;background:radial-gradient(130% 100% at 50% 0%,#1d3156,#0a1226);height:72px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+  .gcx-player svg{width:62%;filter:blur(2.5px) saturate(.6);opacity:.6;}
+  .gcx-chip{position:absolute;top:6px;left:6px;display:inline-flex;align-items:center;gap:4px;font-size:7.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#ffc857;background:rgba(7,8,27,.82);border:1px solid rgba(255,200,87,.4);border-radius:99px;padding:3px 7px;}
+  .gcx-chip i{width:5px;height:5px;border-radius:50%;background:#ffc857;}
+  .gcx-truth{margin-top:7px;font-size:7.5px;color:#a9afce;line-height:1.45;}
+  .gcx-truth b{color:#f4f6ff;}
+  .gcx-cap{margin-top:7px;display:flex;align-items:center;justify-content:space-between;gap:6px;background:#151838;border:1px solid rgba(169,175,206,.18);border-radius:99px;padding:4px 9px;font-size:7.5px;font-weight:800;}
+  .gcx-cap .sc{font-style:italic;font-size:10.5px;}
+  .gcx-cap .fd{color:#3ddc84;font-size:6.5px;letter-spacing:.1em;text-transform:uppercase;}
+  .gcx-head,.gcx-player,.gcx-truth,.gcx-cap{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .55s cubic-bezier(.2,.7,.2,1);}
+  .card.in .gcx-head{opacity:1;transform:none;transition-delay:.10s;}
+  .card.in .gcx-player{opacity:1;transform:none;transition-delay:.22s;}
+  .card.in .gcx-truth{opacity:1;transform:none;transition-delay:.34s;}
+  .card.in .gcx-cap{opacity:1;transform:none;transition-delay:.46s;}
+  .card.in .gcx-chip i{animation:ibxPulse 1.9s ease-in-out .9s infinite;}
+  @media (prefers-reduced-motion:reduce){ .gcx-head,.gcx-player,.gcx-truth,.gcx-cap{opacity:1!important;transform:none!important;} .card.in .gcx-chip i{animation:none;} }
+
   .cbx-frame{background:#fff;border-radius:9px;box-shadow:0 8px 22px rgba(10,42,66,.12);overflow:hidden;border:1px solid #D8E4EE;}
   .cbx-bar{display:flex;gap:4px;padding:6px 9px;background:#EEF0F3;border-bottom:1px solid #E0E3E8;}
   .cbx-bar i{width:6px;height:6px;border-radius:50%;background:#D3D7DE;}
@@ -666,82 +679,6 @@
 </style>
 </head>
 <body>
-<!-- ===== hero morph, tier one. Full viewport wave art collapses into the hero card ===== -->
-<style>
-  #hm{display:none;}
-  html.hm-on #hm{display:block;position:fixed;inset:0;z-index:400;}
-  /* scroll is locked during the intro, wheel and touch drive a virtual scrub instead,
-     so the page beneath the layer always sits in its final resting position */
-  html.hm-on{overflow:hidden;}
-  /* luminance ramp scrim, deep indigo pulled from the art's shadows, never black.
-     It sits under the clip window, so as the container shrinks the page emerges
-     through indigo, then lavender over paper, then full paper */
-  #hmScrim{position:absolute;inset:0;background:#17114F;will-change:opacity;}
-  /* echo of the art field outside the collapsing window, pixel continuous at the clip edge.
-     It blurs and dissolves into the scrim as the core condenses into the card, so the
-     background converges and melts instead of being cut away */
-  #hmEcho{position:absolute;top:0;left:0;transform-origin:0 0;pointer-events:none;user-select:none;-webkit-user-drag:none;
-    opacity:0;will-change:transform,opacity,filter;
-    -webkit-mask-image:radial-gradient(ellipse 74% 74% at 50% 50%,#000 42%,transparent 94%);
-    mask-image:radial-gradient(ellipse 74% 74% at 50% 50%,#000 42%,transparent 94%);}
-  /* elevation shadow tracks the container rect so the morph reads as a card lifting out of the page */
-  #hmShadow{position:absolute;opacity:0;will-change:opacity;pointer-events:none;
-    box-shadow:0 42px 110px rgba(22,12,90,.38),0 12px 34px rgba(22,12,90,.22);}
-  #hmClip{position:absolute;inset:0;overflow:hidden;will-change:clip-path;background:#17114F;}
-  #hmLqip{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(16px);transform:scale(1.08);pointer-events:none;}
-  #hmArt{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;user-select:none;-webkit-user-drag:none;opacity:0;transition:opacity .45s ease;}
-  .hm-blob{position:absolute;width:62vmax;height:62vmax;border-radius:50%;pointer-events:none;mix-blend-mode:screen;filter:blur(10px);will-change:transform,opacity;}
-  #hmBlobA{top:-18vmax;left:-14vmax;background:radial-gradient(circle at 42% 44%,rgba(255,96,196,.5),rgba(255,96,196,0) 62%);animation:hmDriftA 13s ease-in-out infinite alternate;}
-  #hmBlobB{bottom:-22vmax;right:-16vmax;background:radial-gradient(circle at 58% 56%,rgba(64,220,255,.44),rgba(64,220,255,0) 62%);animation:hmDriftB 16s ease-in-out infinite alternate;}
-  @keyframes hmDriftA{from{transform:translate3d(0,0,0) scale(1);}to{transform:translate3d(9vmax,6vmax,0) scale(1.12);}}
-  @keyframes hmDriftB{from{transform:translate3d(0,0,0) scale(1.08);}to{transform:translate3d(-8vmax,-7vmax,0) scale(.98);}}
-  #hmGrain{position:absolute;inset:0;pointer-events:none;opacity:.1;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");}
-  /* the card's wash rides the container from the first frame, so the full bleed art
-     carries the same darkness and depth it will have inside the card */
-  #hmWash{position:absolute;pointer-events:none;
-    background:radial-gradient(130% 90% at 50% -12%,rgba(255,255,255,.08),transparent 55%),linear-gradient(180deg,rgba(40,20,125,.05),rgba(16,8,60,.42));}
-  /* opening statement, the exact card headline at the exact card font size, centered
-     over the full art. It bows out the moment the transition begins */
-  #hmH{position:fixed;z-index:401;left:50%;top:44%;transform:translate(-50%,-50%);margin:0;text-align:center;
-    font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;font-weight:800;letter-spacing:-.02em;line-height:1.05;
-    font-size:clamp(40px,4.6vw,58px);color:#fff;opacity:0;will-change:opacity;}
-  /* while the intro runs, the hero card sits in its final resting place, the driver owns its opacity
-     so it only appears once the morphing container has converged on it, never two cards at once */
-  html.hm-on .hero-stage .hero-visual .hero-card{transform:none!important;transition:none!important;}
-  #hmHint{position:fixed;z-index:401;left:50%;bottom:34px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;
-    color:rgba(255,255,255,.85);font:600 11.5px/1 "Inter",sans-serif;letter-spacing:.22em;text-transform:uppercase;
-    opacity:0;transition:opacity .25s ease;}
-  html.hm-on #hmHint.show{opacity:1;transition:opacity .8s ease .9s;}
-  /* when the morph drives the page entrance, staggers compress and overlap the landing,
-     motion runs concurrently, nothing waits its turn */
-  .hero-stage.go.tight .status{transition-delay:0s;transition-duration:.8s;}
-  .hero-stage.go.tight h1.lead{transition-delay:.06s;transition-duration:.8s,.8s,.95s;}
-  .hero-stage.go.tight .intro{transition-delay:.13s;transition-duration:.8s;}
-  .hero-stage.go.tight .hero-actions{transition-delay:.2s;transition-duration:.8s;}
-  .hero-stage.go.tight .hero-meta{transition-delay:.27s;transition-duration:.8s;}
-  .hero-stage.go.tight .hero-visual .hp-device{transition-delay:.16s;transition-duration:.8s;}
-  #hmHint svg{width:16px;height:16px;animation:hmNudge 1.8s ease-in-out infinite;}
-  @keyframes hmNudge{0%,100%{transform:translateY(0);opacity:.85;}50%{transform:translateY(6px);opacity:.4;}}
-  @media (prefers-reduced-motion:reduce){#hm,#hmH,#hmHint{display:none!important;}}
-</style>
-<div id="hm" aria-hidden="true">
-  <div id="hmScrim"></div>
-  <img id="hmEcho" src="assets/hero-waves.webp" alt="" draggable="false"
-       onerror="this.onerror=null;this.src='assets/hero-waves.png';">
-  <div id="hmShadow"></div>
-  <div id="hmClip">
-    <img id="hmLqip" src="data:image/webp;base64,UklGRsQBAABXRUJQVlA4ILgBAAAwCwCdASokAC0APtVoq0+oJiOiJzgKSQAaiWwAsR7oPtkI+vbL+sDC6tMA3mx9zjI+V9TCbsy66V0UM1dOCCMC8ppcO/WMSxmbWMXBC9t0f4ptt1YzWBhGZcTs4G5BOh2i8AD+8NaRLPvR0lPif85hA51LF5WjcJEhHztt/tYyORAo816kAwuVehS3/5xL+gSk2KywSqAQuxY2P3UWQfNRqGBLHoMdeHezGnUi6EXdO215tu/K7pe8TRotwcU3NPwdKRjh8+/iZ2tBXJa74YEsvid/fumpsKauDR9AG86OoUeXRpy3IkrYjJnTDKVqloYEx4oF51BWMuf0nujecXBlcFlh7k7OjN/5uMiaTcfjGC9nJaxwKtTQpT/prg6wJ1ycOeBTLGCQ8hEYOtF+3EO5N2t9pvLHXZI3wAmqa5j1tgP+3xHikXGI//yCVSHVGcj3OxjDc9W+cDQ5110AdICU2hyZ1dWQyn9RYzIx7gsTJhLCf8g25QjdQbBp3MR+/jPi0pd5r8mfpoSZmDP+7vJUmnneCPSWO2RsyPHCFd/ctaQg+Y3GEPGa68do548SNU7p/dXetCLwAA==" alt="" aria-hidden="true" draggable="false">
-    <img id="hmArt" src="assets/hero-waves.webp" alt="" draggable="false"
-         onerror="this.onerror=null;this.src='assets/hero-waves.png';">
-    <div class="hm-blob" id="hmBlobA"></div>
-    <div class="hm-blob" id="hmBlobB"></div>
-    <div id="hmGrain"></div>
-    <div id="hmWash"></div>
-  </div>
-  <h2 id="hmH">Design<br>that ships.</h2>
-  <div id="hmHint"><span>Scroll</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>
-</div>
 
 <nav id="nav">
   <div class="nav-in">
@@ -1222,6 +1159,28 @@
 
     <div class="work-grid">
 
+      <a class="card reveal" href="gamechanger-concept.html" style="--i:0">
+        <div class="thumb gcx"><span class="badge">Audit</span>
+          <div class="gcx-phone">
+            <div class="gcx-screen">
+              <div class="gcx-head">Game<b>Changer</b><span class="gcx-sub">Owls at Blue Sox &middot; 12U Baseball</span></div>
+              <div class="gcx-player">
+                <svg viewBox="0 0 400 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="200" cy="172" rx="168" ry="38" fill="#1a5c38"/><path d="M200 62 L288 150 L200 190 L112 150 Z" fill="#b98a4e" opacity=".85"/><circle cx="200" cy="128" r="7" fill="#d9c9a3"/></svg>
+                <span class="gcx-chip"><i></i>Signal dip</span>
+              </div>
+              <div class="gcx-truth"><b>Video softened, nothing is lost.</b> Audio and live scoring are still with you.</div>
+              <div class="gcx-cap"><span>OWL <span class="sc">4</span></span><span class="fd">Scoring live</span><span><span class="sc">2</span> CPK</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="ctags">Sports tech &middot; Trust UX &middot; Audit</div>
+          <h3>GameChanger, a Stream That Tells the Truth</h3>
+          <p>An evidence led teardown of the top youth sports app found streams that fail without explanation. This working concept designs the honesty layer, a five rung ladder from full video down to live score, never a silent failure.</p>
+          <span class="more">View the audit <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
+
       <a class="card reveal" href="ibotta-concept.html" style="--i:0">
         <div class="thumb ibx"><span class="badge">Audit</span>
           <div class="ibx-phone">
@@ -1531,8 +1490,7 @@
     /* hero entrance choreography */
     var heroStage=document.querySelector('.hero-stage');
     if(heroStage){
-      if(document.documentElement.classList.contains('hm-on')){/* hero morph adds .go at handoff */}
-      else if(REDUCED){heroStage.classList.add('go');}
+      if(REDUCED){heroStage.classList.add('go');}
       else{requestAnimationFrame(function(){requestAnimationFrame(function(){heroStage.classList.add('go');});});}
     }
 
@@ -2071,241 +2029,5 @@
 })();
 </script>
 
-<script>
-/* ===== hero morph driver =====
-   Container transform choreography. Full viewport wave art collapses into the
-   hero card as one continuous shared element. Per channel motion curves,
-   M3 emphasized decelerate for the container, an indigo scrim for the dark to
-   light luminance ramp, an elevation shadow that grounds the landing, and a
-   progress linked crossfade so the card's content emerges with the motion.
-   Scroll is locked during the intro, wheel and touch deltas drive a virtual
-   scrub with critical damping, so the page beneath is always in its final
-   position and the handoff can never blink. */
-(() => {
-  'use strict';
-  const root = document.documentElement;
-  if(!root.classList.contains('hm-on')) return;
-
-  const layer = document.getElementById('hm');
-  const clip = document.getElementById('hmClip');
-  const art = document.getElementById('hmArt');
-  const echo = document.getElementById('hmEcho');
-  const scrim = document.getElementById('hmScrim');
-  const shadow = document.getElementById('hmShadow');
-  const wash = document.getElementById('hmWash');
-  const grain = document.getElementById('hmGrain');
-  const blobA = document.getElementById('hmBlobA');
-  const blobB = document.getElementById('hmBlobB');
-  const head = document.getElementById('hmH');
-  const hint = document.getElementById('hmHint');
-  const heroStage = document.querySelector('.hero-stage');
-  const card = document.querySelector('.hero-card');
-  const cardArt = document.getElementById('heroCardArt');
-  const hch = card && card.querySelector('.hc-h');
-
-  let done = false, raf = 0, idleT = 0, watchdog = 0, settleT = 0;
-  let p = 0, target = 0, goFired = false, lastTs = 0, settle = null, committed = false;
-  let touchY = null;
-
-  function teardownListeners(){
-    clearTimeout(idleT); clearTimeout(watchdog); clearTimeout(settleT);
-    cancelAnimationFrame(raf);
-    window.removeEventListener('wheel', onWheel);
-    window.removeEventListener('touchstart', onTouchStart);
-    window.removeEventListener('touchmove', onTouchMove);
-    ['pointerdown','keydown'].forEach(t => window.removeEventListener(t, onSkip, true));
-    window.removeEventListener('resize', onResize);
-  }
-
-  function finishSafe(instant){
-    if(done) return; done = true;
-    try{ localStorage.setItem('hm_seen','1'); }catch(e){}
-    teardownListeners();
-    if(heroStage){ heroStage.classList.add('tight'); heroStage.classList.add('go'); }
-    if(card) card.style.opacity = '';
-    if(instant){ layer.remove(); root.classList.remove('hm-on'); return; }
-    layer.style.transition = 'opacity .2s ease';
-    layer.style.opacity = '0';
-    setTimeout(() => { layer.remove(); root.classList.remove('hm-on'); }, 240);
-  }
-
-  if(!layer || !clip || !art || !scrim || !card || !hch){
-    if(layer) layer.remove();
-    root.classList.remove('hm-on');
-    if(heroStage) heroStage.classList.add('go');
-    return;
-  }
-
-  try{ localStorage.setItem('hm_seen','1'); }catch(e){}
-
-  /* sharpest source this screen can use, the card gets the same file so the handoff is identical */
-  const need = Math.max(window.innerWidth, window.innerHeight * 0.8) * Math.min(window.devicePixelRatio || 1, 3);
-  const src = need > 1920 ? 'assets/hero-waves-2560.webp' : (need > 960 ? 'assets/hero-waves-1920.webp' : 'assets/hero-waves.webp');
-  if(art.getAttribute('src') !== src) art.src = src;
-  if(echo && echo.getAttribute('src') !== src) echo.src = src;
-  if(cardArt) cardArt.style.backgroundImage = "url('" + src + "')";
-
-  const NW = 960, NH = 1200;
-  const isMobile = window.matchMedia('(max-width: 920px)').matches;
-  let vw, vh, cardR, hchR, radius, startCover, endCover, headScale, headDX, headDY;
-
-  /* M3 emphasized decelerate, snappy takeoff, very soft landing */
-  function bezier(x1, y1, x2, y2){
-    const A = a => 3 * a, cx = A(x1), bx = A(x2 - x1) - cx, ax = 1 - cx - bx,
-          cy = A(y1), by = A(y2 - y1) - cy, ay = 1 - cy - by;
-    const xAt = t => ((ax * t + bx) * t + cx) * t;
-    const dxAt = t => (3 * ax * t + 2 * bx) * t + cx;
-    return x => {
-      if(x <= 0) return 0; if(x >= 1) return 1;
-      let t = x;
-      for(let i = 0; i < 6; i++){
-        const d = dxAt(t);
-        if(Math.abs(d) < 1e-6) break;
-        t -= (xAt(t) - x) / d;
-      }
-      return ((ay * t + by) * t + cy) * t;
-    };
-  }
-  const emph = bezier(0.05, 0.7, 0.1, 1);
-  const lerp = (a, b, k) => a + (b - a) * k;
-  const clamp01 = v => Math.min(1, Math.max(0, v));
-  const smooth = (a, b, v) => { v = clamp01((v - a) / (b - a)); return v * v * (3 - 2 * v); };
-  const sine = v => 0.5 - 0.5 * Math.cos(Math.PI * clamp01(v));
-
-  function cover(w, h, x, y){
-    const s = Math.max(w / NW, h / NH);
-    return { s: s, x: x + (w - NW * s) / 2, y: y + (h - NH * s) / 2 };
-  }
-
-  function measure(){
-    vw = window.innerWidth; vh = window.innerHeight;
-    const c = card.getBoundingClientRect();     /* scroll is locked at 0, these are final coords */
-    const t = hch.getBoundingClientRect();
-    cardR = { l: c.left, t: c.top, w: c.width, h: c.height };
-    hchR = { l: t.left, t: t.top };
-    radius = parseFloat(getComputedStyle(card).borderTopLeftRadius) || 36;
-    startCover = cover(vw, vh, 0, 0);
-    endCover = cover(cardR.w, cardR.h, cardR.l, cardR.t);
-    art.style.width = NW + 'px'; art.style.height = NH + 'px';
-    if(echo){ echo.style.width = NW + 'px'; echo.style.height = NH + 'px'; }
-  }
-
-  function render(){
-    /* progress maps 1:1, the scrub is the user's hand and the damped chase is the ease.
-       The emphasized curve lives on the timed settles instead */
-    const k = p;
-    const ct = lerp(0, cardR.t, k), cr = lerp(0, vw - (cardR.l + cardR.w), k),
-          cb = lerp(0, vh - (cardR.t + cardR.h), k), cl = lerp(0, cardR.l, k),
-          rad = lerp(0, radius, k);
-    clip.style.clipPath = 'inset(' + ct + 'px ' + cr + 'px ' + cb + 'px ' + cl + 'px round ' + rad + 'px)';
-    const s = lerp(startCover.s, endCover.s, k),
-          x = lerp(startCover.x, endCover.x, k),
-          y = lerp(startCover.y, endCover.y, k);
-    const artT = 'translate3d(' + x + 'px,' + y + 'px,0) scale(' + s + ')';
-    art.style.transform = artT;
-    /* the art field outside the window converges with it, then melts into the scrim */
-    if(echo){
-      echo.style.transform = artT;
-      /* the halo rides at full presence while it converges, and only lets go
-         once it has reached the card's exact width and height */
-      echo.style.opacity = String(p > 0.015 ? (1 - smooth(0.55, 0.985, p)) : 0);
-      echo.style.filter = 'blur(' + (smooth(0.05, 0.7, p) * 26).toFixed(1) + 'px)';
-    }
-    /* dark to light, the page emerges through indigo, then lavender over paper, then paper */
-    scrim.style.opacity = String(1 - sine(smooth(0.05, 0.72, p)));
-    /* elevation grows as the container becomes a card */
-    shadow.style.left = cl + 'px'; shadow.style.top = ct + 'px';
-    shadow.style.width = (vw - cl - cr) + 'px'; shadow.style.height = (vh - ct - cb) + 'px';
-    shadow.style.borderRadius = rad + 'px';
-    shadow.style.opacity = String(smooth(0.25, 0.8, p));
-    /* atmosphere hands off early so the art reads clean while it travels */
-    const atm = 1 - smooth(0, 0.42, p);
-    blobA.style.opacity = String(atm); blobB.style.opacity = String(atm);
-    grain.style.opacity = String(.1 * atm);
-    /* the card's wash rides the container the whole way, same darkness at every size */
-    wash.style.left = cl + 'px'; wash.style.top = ct + 'px';
-    wash.style.width = (vw - cl - cr) + 'px'; wash.style.height = (vh - ct - cb) + 'px';
-    wash.style.borderRadius = rad + 'px';
-    /* incoming page life runs concurrently with the melt, settling as the card lands */
-    if(!goFired && p >= 0.45 && heroStage){ goFired = true; heroStage.classList.add('tight'); heroStage.classList.add('go'); }
-    /* the opening statement bows out the moment the transition begins */
-    if(head) head.style.opacity = String(1 - smooth(0.02, 0.18, p));
-    /* the real card only exists once the container has converged on its rect */
-    card.style.opacity = String(smooth(0.8, 0.94, p));
-    /* the last stretch is a progress linked crossfade, card content emerges with the motion */
-    layer.style.opacity = String(1 - smooth(0.86, 1, p));
-    if(p > .02 && hint) hint.classList.remove('show');
-  }
-
-  function loop(ts){
-    if(done) return;
-    const dt = Math.min(0.05, (ts - (lastTs || ts)) / 1000); lastTs = ts;
-    if(settle){
-      const t = clamp01((ts - settle.t0) / settle.ms);
-      target = lerp(settle.from, settle.to, emph(t));   /* M3 emphasized decelerate on timed runs */
-      if(t >= 1) settle = null;
-    }else if(committed){
-      target = 1;
-    }
-    p += (target - p) * (1 - Math.exp(-dt * 9));
-    if(target >= 1 && 1 - p < 0.001) p = 1;
-    render();
-    if(p >= 1){ finishSafe(true); return; }
-    raf = requestAnimationFrame(loop);
-  }
-
-  function settleTo(to, ms){ if(to >= 1) committed = true; settle = { from: target, to: to, ms: ms, t0: performance.now() }; }
-  function onSkip(){ if(!done && !committed) settleTo(1, 340); }
-  /* the first scroll input starts the full performance, no scrubbing required */
-  function beginOnScroll(){ if(!done && !committed) settleTo(1, 1100); }
-  function onWheel(){ beginOnScroll(); }
-  function onTouchStart(e){ touchY = e.touches[0].clientY; }
-  function onTouchMove(e){
-    if(touchY === null) return;
-    if(Math.abs(touchY - e.touches[0].clientY) > 4) beginOnScroll();
-  }
-  function onResize(){ if(!done){ measure(); render(); } }
-
-  function start(){
-    try{
-      /* arriving already scrolled, deep links, restored sessions, never show the intro */
-      if(window.scrollY > 2){ finishSafe(true); return; }
-      measure(); render();
-      const revealArt = () => { art.style.opacity = '1'; };
-      if(art.complete && art.naturalWidth){ revealArt(); }
-      else{ art.addEventListener('load', revealArt, {once:true}); }
-      /* the opening statement is the first thing the user sees */
-      if(head && p < 0.02) head.style.opacity = '1';
-      watchdog = setTimeout(() => finishSafe(false), 14000);
-      window.addEventListener('resize', onResize);
-      ['pointerdown','keydown'].forEach(t => window.addEventListener(t, onSkip, {capture:true, passive:true}));
-      /* begin on scroll, or 1.7s after landing. Anchored to navigation start so
-         asset loading never adds to the wait the user feels */
-      const lead = Math.max(250, 1700 - performance.now());
-      if(isMobile){
-        window.addEventListener('touchstart', onTouchStart, {passive:true});
-        window.addEventListener('touchmove', onTouchMove, {passive:true});
-        settleT = setTimeout(() => { if(!done && !settle && !committed) settleTo(1, 1600); }, lead);
-      }else{
-        window.addEventListener('wheel', onWheel, {passive:true});
-        window.addEventListener('touchstart', onTouchStart, {passive:true});
-        window.addEventListener('touchmove', onTouchMove, {passive:true});
-        if(hint) hint.classList.add('show');
-        idleT = setTimeout(() => { if(!done && !settle && !committed && target < 0.02) settleTo(1, 1100); }, lead);
-      }
-      raf = requestAnimationFrame(loop);
-    }catch(e){ finishSafe(true); }
-  }
-
-  const artReady = () => (art.complete && art.naturalWidth) ? Promise.resolve()
-    : new Promise(res => { art.addEventListener('load', res, {once:true}); art.addEventListener('error', res, {once:true}); });
-  const fontReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
-  const cap = new Promise(res => setTimeout(res, 1600));
-  Promise.race([Promise.all([artReady(), fontReady]), cap]).then(() => {
-    if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', start, {once:true}); }
-    else{ start(); }
-  }).catch(() => finishSafe(true));
-})();
-</script>
 </body>
 </html>

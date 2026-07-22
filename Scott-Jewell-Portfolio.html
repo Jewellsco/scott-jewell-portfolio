@@ -633,6 +633,32 @@
 
   /* CoBank audit card thumb */
   .thumb.cbx{background:linear-gradient(150deg,#E8F0F6 0%,#F4F8FB 60%,#FFF 100%);display:flex;flex-direction:column;justify-content:center;gap:8px;padding:22px 26px;position:relative;overflow:hidden;}
+
+  /* GameChanger audit card */
+  .thumb.gcx{background:radial-gradient(120% 100% at 50% 0%,#16264a 0%,#0a1226 60%,#07081b 100%);display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
+  .gcx-phone{width:64%;max-width:235px;background:#000;border-radius:22px 22px 0 0;padding:8px 8px 0;transform:translateY(8px);transition:transform .55s cubic-bezier(.2,.7,.2,1);}
+  .card:hover .gcx-phone{transform:translateY(2px);}
+  .gcx-screen{background:#07081b;border-radius:15px 15px 0 0;padding:10px 10px 12px;color:#f4f6ff;}
+  .gcx-head{font-size:11.5px;font-weight:800;font-style:italic;text-transform:uppercase;letter-spacing:.02em;}
+  .gcx-head b{color:#3ddc84;}
+  .gcx-sub{display:block;font-size:8px;color:#a9afce;font-weight:500;margin-top:2px;font-style:normal;letter-spacing:0;text-transform:none;}
+  .gcx-player{position:relative;margin-top:8px;border-radius:9px;background:radial-gradient(130% 100% at 50% 0%,#1d3156,#0a1226);height:72px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+  .gcx-player svg{width:62%;filter:blur(2.5px) saturate(.6);opacity:.6;}
+  .gcx-chip{position:absolute;top:6px;left:6px;display:inline-flex;align-items:center;gap:4px;font-size:7.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#ffc857;background:rgba(7,8,27,.82);border:1px solid rgba(255,200,87,.4);border-radius:99px;padding:3px 7px;}
+  .gcx-chip i{width:5px;height:5px;border-radius:50%;background:#ffc857;}
+  .gcx-truth{margin-top:7px;font-size:7.5px;color:#a9afce;line-height:1.45;}
+  .gcx-truth b{color:#f4f6ff;}
+  .gcx-cap{margin-top:7px;display:flex;align-items:center;justify-content:space-between;gap:6px;background:#151838;border:1px solid rgba(169,175,206,.18);border-radius:99px;padding:4px 9px;font-size:7.5px;font-weight:800;}
+  .gcx-cap .sc{font-style:italic;font-size:10.5px;}
+  .gcx-cap .fd{color:#3ddc84;font-size:6.5px;letter-spacing:.1em;text-transform:uppercase;}
+  .gcx-head,.gcx-player,.gcx-truth,.gcx-cap{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .55s cubic-bezier(.2,.7,.2,1);}
+  .card.in .gcx-head{opacity:1;transform:none;transition-delay:.10s;}
+  .card.in .gcx-player{opacity:1;transform:none;transition-delay:.22s;}
+  .card.in .gcx-truth{opacity:1;transform:none;transition-delay:.34s;}
+  .card.in .gcx-cap{opacity:1;transform:none;transition-delay:.46s;}
+  .card.in .gcx-chip i{animation:ibxPulse 1.9s ease-in-out .9s infinite;}
+  @media (prefers-reduced-motion:reduce){ .gcx-head,.gcx-player,.gcx-truth,.gcx-cap{opacity:1!important;transform:none!important;} .card.in .gcx-chip i{animation:none;} }
+
   .cbx-frame{background:#fff;border-radius:9px;box-shadow:0 8px 22px rgba(10,42,66,.12);overflow:hidden;border:1px solid #D8E4EE;}
   .cbx-bar{display:flex;gap:4px;padding:6px 9px;background:#EEF0F3;border-bottom:1px solid #E0E3E8;}
   .cbx-bar i{width:6px;height:6px;border-radius:50%;background:#D3D7DE;}
@@ -893,6 +919,28 @@
     </div>
 
     <div class="work-grid">
+
+      <a class="card reveal" href="gamechanger-concept.html" style="--i:0">
+        <div class="thumb gcx"><span class="badge">Audit</span>
+          <div class="gcx-phone">
+            <div class="gcx-screen">
+              <div class="gcx-head">Game<b>Changer</b><span class="gcx-sub">Owls at Blue Sox &middot; 12U Baseball</span></div>
+              <div class="gcx-player">
+                <svg viewBox="0 0 400 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="200" cy="172" rx="168" ry="38" fill="#1a5c38"/><path d="M200 62 L288 150 L200 190 L112 150 Z" fill="#b98a4e" opacity=".85"/><circle cx="200" cy="128" r="7" fill="#d9c9a3"/></svg>
+                <span class="gcx-chip"><i></i>Signal dip</span>
+              </div>
+              <div class="gcx-truth"><b>Video softened, nothing is lost.</b> Audio and live scoring are still with you.</div>
+              <div class="gcx-cap"><span>OWL <span class="sc">4</span></span><span class="fd">Scoring live</span><span><span class="sc">2</span> CPK</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="ctags">Sports tech &middot; Trust UX &middot; Audit</div>
+          <h3>GameChanger, a Stream That Tells the Truth</h3>
+          <p>An evidence led teardown of the top youth sports app found streams that fail without explanation. This working concept designs the honesty layer, a five rung ladder from full video down to live score, never a silent failure.</p>
+          <span class="more">View the audit <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </a>
 
       <a class="card reveal" href="ibotta-concept.html" style="--i:0">
         <div class="thumb ibx"><span class="badge">Audit</span>
