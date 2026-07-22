@@ -64,6 +64,43 @@
   .synth{margin-top:20px;background:var(--navy-2);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:12px;padding:16px 20px;font-size:15px;max-width:720px}
   .synth b{color:var(--green)}
 
+  /* process paper */
+  .paperband{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:28px}
+  @media(max-width:900px){.paperband{grid-template-columns:1fr}}
+  .paperband.three{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:960px){.paperband.three{grid-template-columns:1fr;max-width:420px}}
+  .paper{background:#f4f3ef;color:#26282e;border-radius:16px;padding:22px 24px;box-shadow:0 18px 50px rgba(0,0,0,.45);transform:rotate(-.4deg)}
+  .paper:nth-child(even){transform:rotate(.4deg)}
+  .plabel2{display:block;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#7a7d86;border-bottom:1.5px solid #26282e;padding-bottom:7px;margin-bottom:14px}
+  .terr{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .terr li{display:flex;flex-direction:column;gap:1px;font-size:13px}
+  .terr li b{font-weight:700}
+  .terr li span{font-size:11.5px;color:#7a7d86}
+  .terr li.dead b{text-decoration:line-through;text-decoration-thickness:1.5px;color:#7a7d86}
+  .terr li.kept b{background:linear-gradient(transparent 55%,rgba(61,220,132,.45) 55%)}
+  .chgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .chg{border:1.5px solid #d6d7d2;border-radius:10px;padding:11px 12px;position:relative;background:#fff}
+  .chg b{display:block;font-size:12.5px}
+  .chg span{font-size:10.5px;color:#7a7d86;display:block;margin-top:2px}
+  .chg .st2{position:absolute;top:-9px;right:8px;font-family:'SF Mono',Menlo,monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;background:#26282e;color:#f4f3ef;padding:2px 7px;transform:rotate(2deg)}
+  .chg .st2.hold{background:#fff;color:#7a7d86;border:1.5px solid #d6d7d2}
+  .pwire{display:flex;flex-direction:column;gap:8px;background:#fff;border:1.5px solid #26282e;border-radius:14px;padding:12px;min-height:250px}
+  .pbox{border:1.5px dashed #7a7d86;border-radius:7px;padding:8px 10px;display:flex;flex-direction:column;gap:3px}
+  .pbox .lbl{font-family:'SF Mono',Menlo,monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#7a7d86}
+  .pbox .bg{font-size:11.5px;font-weight:700;line-height:1.4}
+  .pbox .sm{font-size:10px;color:#7a7d86}
+  .pann{background:rgba(232,180,41,.22);border-left:3px solid #e8b429;padding:7px 10px;font-size:10.5px;line-height:1.45}
+  .pann b{font-weight:700}
+  .became{margin-top:10px;font-family:'SF Mono',Menlo,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#26282e}
+  .became i{font-style:normal;color:#0b7d43;font-weight:700}
+  .reflect2{margin-top:22px;max-width:820px}
+  .reflect2 .paper{transform:rotate(.3deg)}
+  .rf{display:flex;flex-direction:column;gap:11px}
+  .rf p{font-size:13px;line-height:1.55;padding-left:20px;position:relative}
+  .rf p::before{content:"\2192";position:absolute;left:0;font-family:'SF Mono',Menlo,monospace;color:#0b7d43;font-weight:700}
+  .rf p b{font-weight:700}
+  .proc-cta{margin-top:22px}
+
   /* flow */
   .flowband{margin-top:28px;display:flex;align-items:center;gap:0;flex-wrap:wrap}
   .fb{background:var(--navy-2);border:1px solid var(--line);border-radius:14px;padding:14px 18px;font-size:13.5px;font-weight:700;text-align:center;min-width:150px}
@@ -186,7 +223,7 @@
     <span class="eyebrow">GameChanger, a concept for the Stats and Insights team</span>
     <h1>Worth every<br><span class="g">dollar</span></h1>
     <p class="sub">GameChanger families pay about 99 dollars a year, and their reviews say they feel it. The same families generate nine million games of scoring data a season. <b>This concept returns that data as felt value, so the subscription justifies itself every week.</b></p>
-    <div class="note"><b>How this was made.</b> Built from a design teardown of GameChanger's public properties, both app stores, help documentation, and press. Direction was set in low fidelity first, the process files sit behind this page. All teams, players, and numbers are fictional.</div>
+    <div class="note"><b>How this was made.</b> Built from a design teardown of GameChanger's public properties, both app stores, help documentation, and press. Direction was set in low fidelity first, the gray wireframes are in the process chapter below and the full board is one click away. All teams, players, and numbers are fictional.</div>
   </header>
 
   <section class="reveal" id="evidence">
@@ -200,6 +237,77 @@
     </div>
     <div class="synth">Resented price, rich data, proven demand. That is one job description. <b>Make the data feel worth the money.</b></div>
   </section>
+
+  <section class="reveal" id="process">
+    <p class="kicker">The process</p>
+    <h2>Direction before decoration</h2>
+    <p class="lead">This concept was picked, not assumed. The teardown produced five territories, the merge killed four, and the survivor was broken into measurable chunks and wireframed in gray before a single pixel got styled. <b>The paper below is the actual working file.</b></p>
+
+    <div class="paperband">
+      <div class="paper">
+        <span class="plabel2">01 &middot; Five territories, four killed</span>
+        <ul class="terr">
+          <li class="dead"><b>The reader problem</b><span>a method, not a headline, folded into the pick</span></li>
+          <li class="dead"><b>Recommendation trust</b><span>strong but narrow, became chunk two</span></li>
+          <li class="dead"><b>The household roll up</b><span>real and verified, held as the family chapter</span></li>
+          <li class="dead"><b>Capture speed</b><span>verified pain, another team's seat, interview note only</span></li>
+          <li class="kept"><b>Worth every dollar</b><span>price resentment plus rich data plus proven demand, the business spine</span></li>
+        </ul>
+      </div>
+      <div class="paper">
+        <span class="plabel2">02 &middot; The problem in measurable chunks</span>
+        <div class="chgrid">
+          <div class="chg"><span class="st2">Build now</span><b>C1 The morning after</b><span>recap open rate</span></div>
+          <div class="chg"><span class="st2">Build now</span><b>C2 Decisions with receipts</b><span>suggestion acceptance</span></div>
+          <div class="chg"><span class="st2 hold">Held</span><b>C3 The growth ledger</b><span>profile return visits</span></div>
+          <div class="chg"><span class="st2 hold">Held</span><b>C4 The household</b><span>family plan retention</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="paperband three">
+      <div class="paper">
+        <span class="plabel2">03 &middot; W1, the recap</span>
+        <div class="pwire">
+          <div class="pbox"><span class="lbl">Insight, lead</span><span class="bg">One sentence about the kid, no jargon</span><span class="sm">receipt line under it</span></div>
+          <div class="pbox"><span class="lbl">Insight, team</span><span class="bg">One sentence about the trend</span></div>
+          <div class="pann"><b>Decision.</b> Two insights max. The moment it scrolls, it is a stat page and I have lost the reader.</div>
+        </div>
+        <span class="became">became <i>chunk one</i></span>
+      </div>
+      <div class="paper">
+        <span class="plabel2">04 &middot; W2, the receipt</span>
+        <div class="pwire">
+          <div class="pbox"><span class="lbl">Pinned</span><span class="bg">The sentence stays on top</span></div>
+          <div class="pbox"><span class="lbl">The number</span><span class="bg">14 vs season 9, one comparison</span><span class="sm">history behind a tap</span></div>
+          <div class="pann"><b>Decision.</b> The table is the last stop, never the first. Depth is earned by taps, not dumped.</div>
+        </div>
+        <span class="became">became <i>the receipt view</i></span>
+      </div>
+      <div class="paper">
+        <span class="plabel2">05 &middot; W3, the coach card</span>
+        <div class="pwire">
+          <div class="pbox"><span class="lbl">Suggestion</span><span class="bg">One lineup call for Tuesday</span></div>
+          <div class="pbox"><span class="lbl">Reasons</span><span class="bg">Two plain stat lines, always visible</span></div>
+          <div class="pann"><b>Decision.</b> A volunteer coach must be able to defend it to a parent, so reasons come before buttons.</div>
+        </div>
+        <span class="became">became <i>chunk two</i></span>
+      </div>
+    </div>
+
+    <div class="reflect2">
+      <div class="paper">
+        <span class="plabel2">06 &middot; What the gray version taught</span>
+        <div class="rf">
+          <p><b>W1 sketched three insight slots.</b> Read cold, three already felt like a stat page. The build enforces two, never more.</p>
+          <p><b>The receipt was one comparison bar.</b> It felt thin as proof, so the build added the last three games beneath it, and the rule held, depth earned by taps.</p>
+          <p><b>The coach buttons were sketched above the reasons.</b> Flipped in review. Trust reads top to bottom, so the reasoning comes first and the buttons wait their turn.</p>
+        </div>
+      </div>
+    </div>
+    <div class="proc-cta"><a class="btn ghost" href="gamechanger-lofi.html">Open the full low fidelity board</a></div>
+  </section>
+
 
   <section class="reveal" id="idea">
     <p class="kicker">The idea</p>

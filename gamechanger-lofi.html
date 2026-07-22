@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameChanger x Stats and Insights · Low Fidelity Board · Scott Jewell</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{
+    --paper:#f6f6f4; --ink:#26282e; --mid:#7a7d86; --line:#d6d7d2; --box:#ffffff;
+    --mark:#e8b429; --ok:#3f9463;
+    --mono:'SF Mono',Menlo,Consolas,monospace; --sans:-apple-system,'Inter','Segoe UI',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1160px;margin:0 auto;padding:40px 24px 90px}
+  .stamp{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border:1.5px solid var(--ink);padding:5px 12px;transform:rotate(-1deg);margin-bottom:20px}
+  h1{font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.1}
+  .sub{color:var(--mid);margin-top:10px;max-width:70ch;font-size:15px}
+  .sub b{color:var(--ink)}
+  section{margin-top:56px}
+  .sec{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mid);border-bottom:1.5px solid var(--ink);padding-bottom:8px;margin-bottom:22px;display:flex;justify-content:space-between}
+  .note{font-size:13.5px;color:var(--mid);max-width:74ch}
+  .note b{color:var(--ink)}
+
+  .opp{border:2px solid var(--ink);background:var(--box);padding:26px 28px;max-width:820px}
+  .opp .t{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
+  .opp p{font-size:19px;font-weight:600;line-height:1.5}
+  .opp p b{background:linear-gradient(transparent 60%,rgba(232,180,41,.5) 60%)}
+
+  .chunks{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+  @media(max-width:900px){.chunks{grid-template-columns:repeat(2,1fr)}}
+  .chunk{background:var(--box);border:1.5px solid var(--line);padding:16px}
+  .chunk .n{font-family:var(--mono);font-size:11px;color:var(--mid)}
+  .chunk b{display:block;font-size:14px;margin:4px 0 6px}
+  .chunk p{font-size:12.5px;color:var(--mid)}
+  .chunk .m{display:block;margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--ok)}
+
+  /* flow */
+  .flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;margin-top:8px}
+  .fbox{background:var(--box);border:1.5px solid var(--ink);padding:12px 16px;font-size:13px;font-weight:600;text-align:center;min-width:120px}
+  .fbox small{display:block;font-weight:400;color:var(--mid);font-size:11px;margin-top:2px}
+  .farr{font-family:var(--mono);color:var(--mid);padding:0 12px;font-size:18px}
+  .fsplit{display:flex;flex-direction:column;gap:10px}
+
+  /* wireframes */
+  .wires{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:8px}
+  @media(max-width:960px){.wires{grid-template-columns:1fr;max-width:420px}}
+  .wire{display:flex;flex-direction:column;gap:10px}
+  .wire .wt{font-family:var(--mono);font-size:12px}
+  .wire .wt b{font-family:var(--sans);font-size:13.5px}
+  .frame{background:var(--box);border:1.5px solid var(--ink);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:9px;min-height:360px}
+  .bar{height:10px;background:var(--line);border-radius:5px}
+  .bar.w2{width:60%}
+  .bar.w3{width:40%}
+  .wbox{border:1.5px dashed var(--mid);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:6px}
+  .wbox .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mid)}
+  .wbox .big{font-size:13px;font-weight:700;line-height:1.4}
+  .wbox .sml{font-size:11px;color:var(--mid)}
+  .wpill{border:1.5px solid var(--ink);border-radius:99px;padding:6px 12px;font-size:11px;font-weight:700;align-self:flex-start}
+  .wpill.ghost{border-color:var(--mid);color:var(--mid);font-weight:600}
+  .wrow{display:flex;gap:8px;align-items:center}
+  .ann{background:rgba(232,180,41,.18);border-left:3px solid var(--mark);padding:9px 12px;font-size:12px;line-height:1.5}
+  .ann b{font-weight:700}
+  .qs{margin-top:14px;display:flex;flex-direction:column;gap:8px;max-width:820px}
+  .qs p{font-size:13.5px;padding-left:20px;position:relative}
+  .qs p::before{content:"?";position:absolute;left:0;font-family:var(--mono);color:var(--mark);font-weight:700}
+  footer{margin-top:70px;border-top:1.5px solid var(--ink);padding-top:16px;font-family:var(--mono);font-size:11px;color:var(--mid);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="stamp">Low fidelity &middot; not for polish review</span>
+  <h1>GameChanger x Stats and Insights<br>Direction before decoration</h1>
+  <p class="sub">I keep this stage deliberately ugly. Its only job is picking the right problem and the right flows before a single pixel gets styled. <b>React to the thinking, not the boxes.</b></p>
+
+  <section>
+    <div class="sec"><span>01 &middot; The opportunity</span><span>where my teardown pointed</span></div>
+    <div class="opp">
+      <span class="t">Working title, Worth every dollar</span>
+      <p>Families pay about 99 dollars a year, resent the price, and generate nine million games of data doing it. I am designing the insight system that makes the family <b>feel the subscription pay for itself every week,</b> through the coach, the player, and the household.</p>
+    </div>
+    <p class="note" style="margin-top:14px">I did not invent the problem. Price resentment is in their reviews. Demand for deeper stats is in their reviews. The insight surfaces are already shipping. The multi kid clutter complaint is in their reviews. Every claim traces to something public.</p>
+  </section>
+
+  <section>
+    <div class="sec"><span>02 &middot; The problem in measurable chunks</span><span>big problems, small measurable pieces</span></div>
+    <div class="chunks">
+      <div class="chunk"><span class="n">C1</span><b>The morning after</b><p>The family recap worth opening, sentences first, numbers one tap behind.</p><span class="m">recap open rate</span></div>
+      <div class="chunk"><span class="n">C2</span><b>Decisions with receipts</b><p>The coach surface where every suggestion shows its reasoning.</p><span class="m">suggestion acceptance</span></div>
+      <div class="chunk"><span class="n">C3</span><b>The growth ledger</b><p>The player's own pride with proof, a season arc, not a stat dump.</p><span class="m">profile return visits</span></div>
+      <div class="chunk"><span class="n">C4</span><b>The household</b><p>One digest across kids and seasons for the family that pays the most.</p><span class="m">family plan retention</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec"><span>03 &middot; The flow</span><span>one engine, three readers, four surfaces</span></div>
+    <div class="flow">
+      <div class="fbox">Scorekeeper feed<small>9M games a year</small></div>
+      <span class="farr">&#8594;</span>
+      <div class="fbox">Insight engine<small>number to sentence, per reader</small></div>
+      <span class="farr">&#8594;</span>
+      <div class="fsplit">
+        <div class="fbox">Family recap<small>push, morning after</small></div>
+        <div class="fbox">Coach card<small>before next practice</small></div>
+        <div class="fbox">Player ledger<small>in profile, always on</small></div>
+        <div class="fbox">Household digest<small>weekly, multi kid</small></div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:14px"><b>The rule I hold the whole system to.</b> Every sentence carries its receipt, the raw number is always one tap away, and nothing is shown that the data cannot back.</p>
+  </section>
+
+  <section>
+    <div class="sec"><span>04 &middot; Wireframes</span><span>gray on purpose</span></div>
+    <div class="wires">
+
+      <div class="wire">
+        <span class="wt">W1 &middot; <b>The morning after</b> &middot; C1</span>
+        <div class="frame">
+          <div class="bar w3"></div>
+          <div class="wbox"><span class="lbl">Insight, lead</span><span class="big">One sentence about the kid, plain language, no jargon</span><span class="sml">receipt line, the number behind it</span></div>
+          <div class="wbox"><span class="lbl">Insight, team</span><span class="big">One sentence about the team trend</span><span class="sml">receipt line</span></div>
+          <div class="wrow"><span class="wpill">Share</span><span class="wpill ghost">See every number</span></div>
+          <div class="ann"><b>Decision.</b> Two insights max per recap. The moment it scrolls, it is a stat page and I have lost the reader.</div>
+        </div>
+      </div>
+
+      <div class="wire">
+        <span class="wt">W2 &middot; <b>The receipt</b> &middot; C1</span>
+        <div class="frame">
+          <div class="bar w2"></div>
+          <div class="wbox"><span class="lbl">The sentence, kept visible</span><span class="big">Same sentence stays pinned on top</span></div>
+          <div class="wbox"><span class="lbl">The number</span><span class="big">14 vs season 9, one comparison, one chart</span><span class="sml">tap history for the full table</span></div>
+          <div class="wbox"><span class="lbl">Reader switch</span><span class="big">Coach / Player / Family</span><span class="sml">same number rewritten per reader</span></div>
+          <div class="ann"><b>Decision.</b> The table is the last stop, never the first. Depth is earned by taps, not dumped.</div>
+        </div>
+      </div>
+
+      <div class="wire">
+        <span class="wt">W3 &middot; <b>Coach card</b> &middot; C2</span>
+        <div class="frame">
+          <div class="bar w3"></div>
+          <div class="wbox"><span class="lbl">Suggestion</span><span class="big">One lineup or practice suggestion</span></div>
+          <div class="wbox"><span class="lbl">Reason 1</span><span class="sml">plain stat line</span></div>
+          <div class="wbox"><span class="lbl">Reason 2</span><span class="sml">plain stat line</span></div>
+          <div class="wrow"><span class="wpill">Use it</span><span class="wpill ghost">Not this week</span></div>
+          <div class="ann"><b>Decision.</b> Reasons are always visible before the accept button. A volunteer coach must be able to defend it to a parent.</div>
+        </div>
+      </div>
+
+      <div class="wire">
+        <span class="wt">W4 &middot; <b>Growth ledger</b> &middot; C3</span>
+        <div class="frame">
+          <div class="bar w3"></div>
+          <div class="wbox"><span class="lbl">The arc</span><span class="big">One skill trending across the season</span><span class="sml">simple rising marks, month over month</span></div>
+          <div class="wbox"><span class="lbl">Milestone</span><span class="big">First over the fence, June 12</span></div>
+          <div class="wbox"><span class="lbl">Next</span><span class="sml">one thing to try, written like a coach, not a report card</span></div>
+          <div class="ann"><b>Question.</b> Tone for the player view, encouragement first or evidence first. I want a kid and a parent to gut check this before it moves.</div>
+        </div>
+      </div>
+
+      <div class="wire">
+        <span class="wt">W5 &middot; <b>Household digest</b> &middot; C4</span>
+        <div class="frame">
+          <div class="bar w2"></div>
+          <div class="wbox"><span class="lbl">Kid one</span><span class="big">One sentence, one tap to recap</span></div>
+          <div class="wbox"><span class="lbl">Kid two</span><span class="big">One sentence, one tap to recap</span></div>
+          <div class="wbox"><span class="lbl">This weekend</span><span class="sml">both schedules merged, one glance</span></div>
+          <div class="ann"><b>Decision.</b> The household, not the team, is the paying unit. This screen is the family plan's reason to exist.</div>
+        </div>
+      </div>
+
+      <div class="wire">
+        <span class="wt">W6 &middot; <b>Entry points</b> &middot; system</span>
+        <div class="frame">
+          <div class="wbox"><span class="lbl">Push, morning after</span><span class="big">The lead sentence IS the notification</span></div>
+          <div class="wbox"><span class="lbl">Weekly digest</span><span class="sml">household roll up, Sunday evening</span></div>
+          <div class="wbox"><span class="lbl">In app</span><span class="sml">recap tab, profile ledger</span></div>
+          <div class="ann"><b>Question.</b> Does the lead insight go in the push notification free, or is the sentence itself the premium hook. A monetization fork I would take to the business before designing further.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec"><span>05 &middot; Open questions before high fidelity</span><span>answer these, then build</span></div>
+    <div class="qs">
+      <p>Which chunks earn high fidelity first. My call is C1 plus C2, family value plus coach trust.</p>
+      <p>Is the insight sentence free and the receipt premium, or the reverse. Changes W6 entirely.</p>
+      <p>How loud should the final piece be. I am leaning a calm product story with two working moments.</p>
+      <p>Player tone in W4, encouragement first or evidence first.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>Scott Jewell &middot; low fidelity board v1 &middot; July 2026</span>
+    <span>All names and numbers fictional &middot; built on my GameChanger teardown</span>
+  </footer>
+
+</div>
+</body>
+</html>
