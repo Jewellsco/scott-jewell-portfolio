@@ -13,26 +13,70 @@
     --ink:#0C0C0E; --paper:#F5F4F0; --line:rgba(12,12,14,.12);
     --mint:#22D3BE; --mint-deep:#0E9E8C; --orange:#FF5A2C; --muted:#5c5c62;
     --display:'Anton',sans-serif; --sans:'Inter',system-ui,sans-serif;
+    --scott-bg:#F1EEE8; --scott-ink:#141414; --scott-blue:#2418c9; --fraunces:'Fraunces',Georgia,serif;
     --ease:cubic-bezier(.2,.7,.2,1);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  body{font-family:var(--sans);background:var(--scott-bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
   a{color:inherit}
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
   .disp{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:.01em;line-height:.92}
-  .eyebrow{font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:13px;color:var(--mint-deep)}
-  :focus-visible{outline:3px solid var(--mint-deep);outline-offset:2px;border-radius:4px}
+  :focus-visible{outline:3px solid var(--scott-blue);outline-offset:2px;border-radius:4px}
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
   .reveal.in{opacity:1;transform:none}
 
-  /* concept ribbon */
-  .concept{background:var(--ink);color:#fff;font-size:13px;padding:10px 24px;text-align:center;letter-spacing:.01em}
+  .concept{background:var(--ink);color:#fff;font-size:13px;padding:10px 24px;text-align:center}
   .concept b{color:var(--mint)}
 
-  /* header / nav */
+  /* ===== Scott portfolio voice (frame band + analysis + outro) ===== */
+  .frame-band{background:var(--scott-bg);color:var(--scott-ink);padding:66px 0 40px}
+  .frame-band .who{display:flex;align-items:center;gap:13px;margin-bottom:22px}
+  .frame-band .avatar{width:54px;height:54px;border-radius:50%;overflow:hidden;flex:0 0 auto;border:2px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.16)}
+  .frame-band .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .frame-band .who .nm{font-weight:700;font-size:15px;line-height:1.2}
+  .frame-band .who .rl{font-size:13px;color:#6b6b6b}
+  .a-eye{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--scott-blue);display:block;margin-bottom:12px}
+  .frame-band h1.case{font-family:var(--fraunces);font-weight:500;font-size:clamp(30px,4.8vw,52px);line-height:1.04;letter-spacing:-.01em;margin:12px 0 0;max-width:20ch}
+  .frame-band p.reason{font-size:17px;color:#474747;max-width:62ch;margin-top:16px;line-height:1.62}
+  .frame-meta{display:flex;gap:34px;flex-wrap:wrap;margin-top:26px;border-top:1px solid rgba(0,0,0,.12);padding-top:20px}
+  .frame-meta .k{font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:#8a8a8a}
+  .frame-meta .v{font-size:15px;font-weight:600;margin-top:3px;max-width:26ch}
+  .frame-to{max-width:1200px;margin:8px auto 0;padding:0 24px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#9a9a9a;display:flex;align-items:center;gap:12px}
+  .frame-to::after{content:"";flex:1;height:1px;background:rgba(0,0,0,.14)}
+
+  .analysis{background:var(--scott-bg);color:var(--scott-ink);padding:74px 0;border-top:1px solid rgba(0,0,0,.08)}
+  .analysis h2{font-family:var(--fraunces);font-weight:500;font-size:clamp(28px,4.2vw,46px);line-height:1.05;letter-spacing:-.01em}
+  .analysis .lead{color:#4a4a4a;max-width:62ch;margin-top:14px;font-size:17px}
+
+  .scott-foot{background:var(--scott-ink);color:#fff;padding:60px 0 26px;text-align:center}
+  .scott-foot h3{font-family:var(--fraunces);font-weight:500;font-size:clamp(24px,3.4vw,34px);letter-spacing:-.01em}
+  .scott-foot p{color:rgba(255,255,255,.7);max-width:52ch;margin:12px auto 0;font-size:16px}
+  .scott-foot .btns{margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .scott-foot .b{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;padding:13px 24px;border-radius:10px;text-decoration:none}
+  .scott-foot .b.solid{background:#fff;color:var(--scott-ink)}
+  .scott-foot .b.line{border:1.5px solid rgba(255,255,255,.35);color:#fff}
+  .scott-foot .fine{margin-top:30px;font-size:12px;color:rgba(255,255,255,.45);max-width:60ch;margin-left:auto;margin-right:auto}
+
+  /* ===== concept boundary, a browser frame ===== */
+  .concept-stage{background:var(--scott-bg);padding:8px 20px 6px}
+  .concept-frame{max-width:1200px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.14);box-shadow:0 40px 100px -44px rgba(0,0,0,.45)}
+  .concept-chrome{background:#e7e3dc;display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid rgba(0,0,0,.1)}
+  .concept-chrome .dots{display:flex;gap:7px;flex:0 0 auto}
+  .concept-chrome .dots i{width:11px;height:11px;border-radius:50%;background:#c7c1b6;display:block}
+  .concept-chrome .url{background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:8px;padding:6px 14px;font-size:13px;color:#5a5a5a}
+  .concept-chrome .ctag{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--scott-blue);padding:5px 10px;border-radius:6px;flex:0 0 auto}
+  @media(max-width:600px){.concept-chrome .ctag{display:none}}
+  .concept-end{max-width:1200px;margin:12px auto 0;display:flex;align-items:center;gap:14px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#9a9a9a}
+  .concept-end::before,.concept-end::after{content:"";flex:1;height:1px;background:rgba(0,0,0,.14)}
+
+  /* ===== the redesigned HDN homepage (inside the frame, their brand) ===== */
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:15px;padding:13px 22px;border-radius:10px;border:0;cursor:pointer;text-decoration:none;transition:transform .2s var(--ease)}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-mint{background:var(--mint);color:var(--ink)}
+  .btn-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
   header.top{background:var(--ink);color:#fff}
-  .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 26px}
   .logo{font-family:var(--display);text-transform:uppercase;font-size:22px;letter-spacing:.02em;color:#fff;display:flex;align-items:center;gap:10px}
   .logo .ball{width:26px;height:26px;border-radius:50%;background:var(--orange);position:relative;flex:0 0 auto}
   .logo .ball::before,.logo .ball::after{content:"";position:absolute;background:var(--ink)}
@@ -42,21 +86,15 @@
   .navlinks a{opacity:.85;text-decoration:none}
   .navlinks a:hover{opacity:1;color:var(--mint)}
   @media(max-width:760px){.navlinks{display:none}}
-  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:15px;padding:13px 22px;border-radius:10px;border:0;cursor:pointer;text-decoration:none;transition:transform .2s var(--ease)}
-  .btn:hover{transform:translateY(-2px)}
-  .btn-mint{background:var(--mint);color:var(--ink)}
-  .btn-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3)}
-  .btn-ink{background:var(--ink);color:#fff}
-
-  /* hero */
-  .hero{background:var(--ink);color:#fff;padding:40px 0 90px;position:relative;overflow:hidden}
+  .hero{background:var(--ink);color:#fff;padding:40px 26px 60px}
+  .hero .inner{max-width:1080px;margin:0 auto}
   .hero .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
   @media(max-width:860px){.hero .grid{grid-template-columns:1fr;gap:28px}}
-  .hero h1{font-size:clamp(46px,7vw,92px)}
+  .eyebrow{font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:13px;color:var(--mint-deep)}
+  .hero h1{font-size:clamp(44px,6.4vw,84px)}
   .hero h1 .mint{color:var(--mint)}
   .hero .sub{margin-top:20px;font-size:clamp(16px,1.8vw,19px);color:rgba(255,255,255,.75);max-width:44ch}
   .hero .cta{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
-  /* tourney finder card */
   .finder{background:#17171b;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:22px}
   .finder h3{font-family:var(--display);text-transform:uppercase;font-size:20px;letter-spacing:.03em}
   .finder .row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
@@ -64,28 +102,20 @@
   .chip[aria-pressed="true"],.chip:hover{background:var(--mint);color:var(--ink);border-color:var(--mint)}
   .finder .out{margin-top:16px;background:#0f0f13;border-radius:12px;padding:16px;font-size:14px;color:rgba(255,255,255,.85)}
   .finder .out b{color:var(--mint)}
+  .hstats{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.12);border-top:1px solid rgba(255,255,255,.12)}
+  .hstat{background:var(--ink);padding:24px 26px}
+  .hstat .n{font-family:var(--display);font-size:34px;color:#fff}
+  .hstat .n .u{color:var(--mint)}
+  .hstat .l{font-size:13px;color:rgba(255,255,255,.6);margin-top:2px}
+  @media(max-width:700px){.hstats{grid-template-columns:1fr}}
 
-  /* stat strip */
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:16px;overflow:hidden;margin-top:56px;border:1px solid var(--line)}
-  .stat{background:var(--paper);padding:24px}
-  .stat .n{font-family:var(--display);font-size:40px;color:var(--ink)}
-  .stat .n .u{color:var(--mint-deep)}
-  .stat .l{font-size:13.5px;color:var(--muted);margin-top:2px}
-  @media(max-width:700px){.stats{grid-template-columns:1fr}}
-
-  /* section */
-  section{padding:84px 0}
-  .kick{display:block;margin-bottom:12px}
-  h2.sec{font-size:clamp(30px,4.4vw,50px)}
-  .lead{color:var(--muted);max-width:60ch;margin-top:14px;font-size:17px}
-
-  /* before/after */
-  .ba{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:36px}
+  /* ===== analysis components (Scott voice, warm) ===== */
+  .ba{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:34px}
   @media(max-width:760px){.ba{grid-template-columns:1fr}}
   .col{border-radius:18px;padding:26px;border:1px solid var(--line)}
   .col.before{background:#fff}
-  .col.after{background:var(--ink);color:#fff;border-color:var(--ink)}
-  .col h4{font-family:var(--display);text-transform:uppercase;font-size:16px;letter-spacing:.06em;margin-bottom:14px}
+  .col.after{background:var(--scott-ink);color:#fff;border-color:var(--scott-ink)}
+  .col h4{font-family:var(--sans);font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:.08em;margin-bottom:14px}
   .col.before h4{color:var(--muted)}
   .col.after h4{color:var(--mint)}
   .col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
@@ -93,104 +123,44 @@
   .col li .i{flex:0 0 auto;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;margin-top:1px}
   .before .i{background:#f0dcd6;color:var(--orange)}
   .after .i{background:var(--mint);color:var(--ink)}
-
-  /* flow steps */
-  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px}
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px}
   @media(max-width:860px){.flow{grid-template-columns:1fr 1fr}}
   @media(max-width:520px){.flow{grid-template-columns:1fr}}
-  .step{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;position:relative}
-  .step .num{font-family:var(--display);font-size:15px;width:34px;height:34px;border-radius:10px;background:var(--ink);color:var(--mint);display:grid;place-items:center;margin-bottom:14px}
+  .step{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+  .step .num{font-family:var(--display);font-size:15px;width:34px;height:34px;border-radius:10px;background:var(--scott-ink);color:#fff;display:grid;place-items:center;margin-bottom:14px}
   .step h4{font-size:17px;font-weight:700;margin-bottom:6px}
   .step p{font-size:14px;color:var(--muted)}
-  .step.pay{background:var(--ink);color:#fff;border-color:var(--ink)}
-  .step.pay .num{background:var(--mint);color:var(--ink)}
-  .step.pay p{color:rgba(255,255,255,.72)}
-  .step .pill{display:inline-block;margin-top:12px;font-size:12px;font-weight:700;background:var(--mint);color:var(--ink);padding:4px 10px;border-radius:999px}
-
-  /* checkout mock */
-  .checkout{display:grid;grid-template-columns:1fr .9fr;gap:24px;margin-top:40px;align-items:start}
-  @media(max-width:820px){.checkout{grid-template-columns:1fr}}
-  .receipt{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
-  .receipt .head{background:var(--ink);color:#fff;padding:18px 22px;display:flex;justify-content:space-between;align-items:center}
-  .receipt .head .t{font-family:var(--display);text-transform:uppercase;letter-spacing:.04em}
+  .step.pay{background:var(--scott-blue);color:#fff;border-color:var(--scott-blue)}
+  .step.pay .num{background:#fff;color:var(--scott-blue)}
+  .step.pay p{color:rgba(255,255,255,.82)}
+  .step .pill{display:inline-block;margin-top:12px;font-size:12px;font-weight:700;background:#fff;color:var(--scott-blue);padding:4px 10px;border-radius:999px}
+  .checkout{max-width:460px;margin:34px auto 0}
+  .receipt{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 24px 60px -34px rgba(0,0,0,.3)}
+  .receipt .head{background:var(--scott-ink);color:#fff;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;font-weight:700}
   .receipt .body{padding:22px}
   .lineitem{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
   .lineitem:last-of-type{border-bottom:0}
   .lineitem .muted{color:var(--muted)}
   .total{display:flex;justify-content:space-between;padding-top:14px;font-weight:800;font-size:18px}
-  .paybtn{margin-top:18px;width:100%;justify-content:center}
-  .paynote{font-size:12.5px;color:var(--muted);text-align:center;margin-top:10px}
-  .pamethods{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .paybtn{margin-top:18px;width:100%;justify-content:center;background:var(--scott-blue);color:#fff}
+  .pamethods{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;justify-content:center}
   .pm{font-size:12px;font-weight:600;border:1px solid var(--line);border-radius:8px;padding:7px 11px;background:#fff}
-  .why{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px}
-  .why h4{font-family:var(--display);text-transform:uppercase;font-size:16px;letter-spacing:.05em;margin-bottom:14px}
-  .why .rev{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
-  .why .rev:first-of-type{border-top:0}
-  .why .rev .big{font-family:var(--display);font-size:26px;color:var(--mint-deep);flex:0 0 auto;min-width:74px}
-  .why .rev .d{font-size:13.5px;color:var(--muted)}
-
-  /* revenue band */
-  .rev-band{background:var(--ink);color:#fff}
-  .rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:34px}
+  .paynote{font-size:12.5px;color:var(--muted);text-align:center;margin-top:12px}
+  .cap-note{text-align:center;font-size:12.5px;color:#8a8a8a;font-style:italic;margin-top:14px}
+  .rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:34px}
   @media(max-width:760px){.rev-grid{grid-template-columns:1fr}}
-  .rev-card{background:#17171b;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:24px}
-  .rev-card .n{font-family:var(--display);font-size:34px;color:var(--mint)}
+  .rev-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
+  .rev-card .n{font-family:var(--fraunces);font-size:24px;color:var(--scott-blue);font-weight:600}
   .rev-card h4{font-size:16px;font-weight:700;margin:8px 0 6px}
-  .rev-card p{font-size:14px;color:rgba(255,255,255,.7)}
-  .rev-band h2{color:#fff}
-  .rev-band .lead{color:rgba(255,255,255,.7)}
-
-  /* close */
-  .close{padding:80px 0}
-  .close .card{background:var(--mint);border-radius:24px;padding:clamp(32px,6vw,64px);text-align:center}
-  .close h2{color:var(--ink)}
-  .close p{color:#0a3d37;max-width:52ch;margin:14px auto 0;font-size:17px;font-weight:500}
-  footer{background:var(--ink);color:rgba(255,255,255,.6);padding:30px 0;font-size:13px;text-align:center}
-  footer b{color:#fff}
-  /* ===== Scott portfolio voice frame (wraps the target-brand concept) ===== */
-  :root{--scott-bg:#F1EEE8;--scott-ink:#141414;--scott-blue:#2418c9;--fraunces:'Fraunces',Georgia,serif}
-  .frame-band{background:var(--scott-bg);color:var(--scott-ink);padding:66px 0 54px}
-  .frame-band .who{display:flex;align-items:center;gap:13px;margin-bottom:22px}
-  .frame-band .avatar{width:54px;height:54px;border-radius:50%;overflow:hidden;flex:0 0 auto;border:2px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.16)}
-  .frame-band .avatar img{width:100%;height:100%;object-fit:cover;display:block}
-  .frame-band .who .nm{font-weight:700;font-size:15px;line-height:1.2}
-  .frame-band .who .rl{font-size:13px;color:#6b6b6b}
-  .frame-band .fe{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--scott-blue)}
-  .frame-band h1.case{font-family:var(--fraunces);font-weight:500;font-size:clamp(30px,4.8vw,52px);line-height:1.04;letter-spacing:-.01em;margin:12px 0 0;max-width:20ch}
-  .frame-band p.reason{font-size:17px;color:#474747;max-width:62ch;margin-top:16px;line-height:1.62}
-  .frame-meta{display:flex;gap:34px;flex-wrap:wrap;margin-top:26px;border-top:1px solid rgba(0,0,0,.12);padding-top:20px}
-  .frame-meta .k{font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:#8a8a8a}
-  .frame-meta .v{font-size:15px;font-weight:600;margin-top:3px;max-width:26ch}
-  .frame-to{max-width:1080px;margin:26px auto 0;padding:0 24px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#9a9a9a;display:flex;align-items:center;gap:12px}
-  .frame-to::after{content:"";flex:1;height:1px;background:rgba(0,0,0,.12)}
-  /* Scott outro, ties back to portfolio */
-  .scott-foot{background:var(--scott-bg);color:var(--scott-ink);padding:56px 0 20px;text-align:center}
-  .scott-foot h3{font-family:var(--fraunces);font-weight:500;font-size:clamp(22px,3vw,30px);letter-spacing:-.01em}
-  .scott-foot p{color:#5a5a5a;max-width:52ch;margin:12px auto 0;font-size:16px}
-  .scott-foot .btns{margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-  .scott-foot .b{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;padding:12px 22px;border-radius:10px;text-decoration:none}
-  .scott-foot .b.solid{background:var(--scott-ink);color:#fff}
-  .scott-foot .b.line{border:1.5px solid rgba(0,0,0,.2);color:var(--scott-ink)}
-  .scott-foot .fine{margin-top:28px;font-size:12px;color:#9a9a9a}
-  /* ===== concept boundary, a browser frame so start and end are unmistakable ===== */
-  .concept-stage{background:var(--scott-bg);padding:8px 20px 6px}
-  .concept-frame{max-width:1200px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.14);box-shadow:0 40px 100px -44px rgba(0,0,0,.45)}
-  .concept-chrome{background:#e7e3dc;display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid rgba(0,0,0,.1)}
-  .concept-chrome .dots{display:flex;gap:7px;flex:0 0 auto}
-  .concept-chrome .dots i{width:11px;height:11px;border-radius:50%;background:#c7c1b6;display:block}
-  .concept-chrome .url{background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:8px;padding:6px 14px;font-size:13px;color:#5a5a5a;font-family:var(--sans)}
-  .concept-chrome .ctag{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--scott-blue);padding:5px 10px;border-radius:6px;flex:0 0 auto}
-  @media(max-width:600px){.concept-chrome .ctag{display:none}.concept-chrome .url{font-size:12px}}
-  .concept-end{max-width:1200px;margin:12px auto 0;display:flex;align-items:center;gap:14px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#9a9a9a}
-  .concept-end::before,.concept-end::after{content:"";flex:1;height:1px;background:rgba(0,0,0,.14)}
+  .rev-card p{font-size:14px;color:var(--muted)}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
 </style>
 </head>
 <body>
 
-<div class="concept">Concept redesign by <b>Scott Jewell</b>. Not affiliated with Hoop Dreams Nation. Sample data is illustrative. Built to show what a modern register, pay, play experience could do for the program.</div>
+<div class="concept">Concept redesign by <b>Scott Jewell</b>. Not affiliated with Hoop Dreams Nation. Sample data is illustrative.</div>
 
-<!-- Scott portfolio voice frame, the reason this exists -->
+<!-- Scott voice, why this exists -->
 <div class="frame-band">
   <div class="wrap">
     <div class="who">
@@ -200,18 +170,18 @@
         <span class="rl">Senior Product Designer</span>
       </span>
     </div>
-    <span class="fe">Concept, youth sports operations</span>
+    <span class="a-eye">Concept, youth sports operations</span>
     <h1 class="case">I applied for the job by doing the job.</h1>
-    <p class="reason">Hoop Dreams Nation, a Colorado youth basketball program, is hiring for an operations role I want. Instead of only sending a resume, I studied where their sign-up loses teams and where their cash slows down, then built this concept to show how better design would help the program grow. What follows is that concept, rendered in their brand.</p>
+    <p class="reason">Hoop Dreams Nation, a Colorado youth basketball program, is hiring for an operations role I want. Instead of only sending a resume, I studied where their sign-up loses teams and where their cash slows down, then redesigned their homepage and mapped the fix. The concept is the redesigned site below. Everything after it is my read on the operation and why it would help the program grow.</p>
     <div class="frame-meta">
       <div><div class="k">Role I applied for</div><div class="v">Operations, Hoop Dreams Nation</div></div>
       <div><div class="k">What this is</div><div class="v">An unsolicited concept, made to earn the conversation</div></div>
-      <div><div class="k">Surfaces</div><div class="v">Homepage, and the register, pay, play flow</div></div>
     </div>
   </div>
 </div>
-<div class="frame-to">The concept begins here</div>
+<div class="frame-to">The concept, a redesigned homepage</div>
 
+<!-- CONCEPT, the redesigned HDN homepage, inside a browser frame -->
 <div class="concept-stage">
   <div class="concept-frame">
     <div class="concept-chrome">
@@ -219,61 +189,57 @@
       <span class="url">hoopdreamsnation.com</span>
       <span class="ctag">Concept redesign, not the live site</span>
     </div>
-<header class="top">
-  <div class="wrap nav">
-    <span class="logo"><span class="ball"></span>Hoop Dreams Nation</span>
-    <nav class="navlinks">
-      <a href="#tourneys">Tourneys</a>
-      <a href="#flow">Register</a>
-      <a href="#revenue">Why it grows</a>
-    </nav>
-    <a href="#flow" class="btn btn-mint">Register a team</a>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="wrap">
-    <div class="grid">
-      <div class="reveal">
-        <span class="eyebrow">Colorado youth basketball</span>
-        <h1 class="disp">Find your <span class="mint">moment</span> on and off the court.</h1>
-        <p class="sub">One place to find a tourney, register your team, and pay in a single step. No group texts, no waiting on an invoice.</p>
-        <div class="cta">
-          <a href="#flow" class="btn btn-mint">Register a team</a>
-          <a href="#tourneys" class="btn btn-ghost">Find a tourney</a>
+    <header class="top">
+      <div class="nav">
+        <span class="logo"><span class="ball"></span>Hoop Dreams Nation</span>
+        <nav class="navlinks"><a href="#">Tourneys</a><a href="#">Find a team</a><a href="#">Scholarships</a><a href="#">Get involved</a></nav>
+        <a href="#" class="btn btn-mint">Register a team</a>
+      </div>
+    </header>
+    <section class="hero">
+      <div class="inner">
+        <div class="grid">
+          <div>
+            <span class="eyebrow">Colorado youth basketball</span>
+            <h1 class="disp">Find your <span class="mint">moment</span> on and off the court.</h1>
+            <p class="sub">One place to find a tourney, register your team, and pay in a single step. No group texts, no waiting on an invoice.</p>
+            <div class="cta">
+              <a href="#" class="btn btn-mint">Register a team</a>
+              <a href="#" class="btn btn-ghost">Find a tourney</a>
+            </div>
+          </div>
+          <div class="finder">
+            <h3>Find your tourney</h3>
+            <div class="row" role="group" aria-label="Season">
+              <button class="chip" aria-pressed="true">Fall / Winter</button>
+              <button class="chip" aria-pressed="false">Spring / Summer</button>
+              <button class="chip" aria-pressed="false">3x3</button>
+            </div>
+            <div class="row" role="group" aria-label="Region">
+              <button class="chip" aria-pressed="true">Denver</button>
+              <button class="chip" aria-pressed="false">Colorado Springs</button>
+              <button class="chip" aria-pressed="false">Pueblo</button>
+            </div>
+            <div class="out"><b>4 tourneys</b> match near Denver this season. Nearest, <b>RMR Fall Classic</b>, Nov 8 to 9, registration open, 12 of 16 divisions filling.</div>
+          </div>
         </div>
       </div>
-      <div class="finder reveal">
-        <h3>Find your tourney</h3>
-        <div class="row" role="group" aria-label="Season">
-          <button class="chip" aria-pressed="true">Fall / Winter</button>
-          <button class="chip" aria-pressed="false">Spring / Summer</button>
-          <button class="chip" aria-pressed="false">3x3</button>
-        </div>
-        <div class="row" role="group" aria-label="Region">
-          <button class="chip" aria-pressed="true">Denver</button>
-          <button class="chip" aria-pressed="false">Colorado Springs</button>
-          <button class="chip" aria-pressed="false">Pueblo</button>
-        </div>
-        <div class="out">
-          <b>4 tourneys</b> match near Denver this season. Nearest, <b>RMR Fall Classic</b>, Nov 8 to 9, registration open, 12 of 16 divisions filling.
-        </div>
+      <div class="hstats" style="margin-top:44px">
+        <div class="hstat"><div class="n">2018</div><div class="l">Serving Colorado Hoop Dreamers since</div></div>
+        <div class="hstat"><div class="n">14<span class="u">+</span></div><div class="l">Gyms across Denver, Springs, and Pueblo</div></div>
+        <div class="hstat"><div class="n">1<span class="u"> step</span></div><div class="l">To register and pay, instead of five</div></div>
       </div>
-    </div>
+    </section>
+  </div><!-- /concept-frame -->
+  <div class="concept-end">End of concept</div>
+</div>
 
-    <div class="stats reveal">
-      <div class="stat"><div class="n">2018</div><div class="l">Serving Colorado Hoop Dreamers since</div></div>
-      <div class="stat"><div class="n">14<span class="u">+</span></div><div class="l">Gyms across Denver, Springs, and Pueblo</div></div>
-      <div class="stat"><div class="n">1<span class="u"> step</span></div><div class="l">To register and pay, instead of five</div></div>
-    </div>
-  </div>
-</section>
-
-<section id="tourneys">
+<!-- Scott analysis, the problem worth fixing -->
+<section class="analysis">
   <div class="wrap">
-    <span class="eyebrow kick">The problem worth fixing</span>
-    <h2 class="sec disp">Registering and paying takes five tools. It should take one.</h2>
-    <p class="lead">The program runs great events. The friction is in the sign-up. Today a coach bounces between a tournament site, an age-verification site, and five separate payment apps, and the office chases money by hand. Every extra step is a team that almost registered.</p>
+    <span class="a-eye">The problem worth fixing</span>
+    <h2>Registering and paying takes five tools. It should take one.</h2>
+    <p class="lead">The program runs great events. The friction is in the sign-up. Today a coach bounces between a tournament site, an age verification site, and five separate payment apps, and the office chases money by hand. Every extra step is a team that almost registered.</p>
     <div class="ba">
       <div class="col before reveal">
         <h4>Today</h4>
@@ -286,7 +252,7 @@
         </ul>
       </div>
       <div class="col after reveal">
-        <h4>The concept</h4>
+        <h4>What I would change</h4>
         <ul>
           <li><span class="i">&check;</span><span>Pick the tourney and add your team in one place</span></li>
           <li><span class="i">&check;</span><span>Verify age and grade inline, no site hop</span></li>
@@ -299,64 +265,48 @@
   </div>
 </section>
 
-<section id="flow" style="padding-top:20px">
+<!-- Scott analysis, the fix -->
+<section class="analysis">
   <div class="wrap">
-    <span class="eyebrow kick">Register, pay, play</span>
-    <h2 class="sec disp">One flow, four steps, done in minutes.</h2>
+    <span class="a-eye">The fix I would build</span>
+    <h2>Register, pay, play. One flow, four steps.</h2>
     <div class="flow">
       <div class="step reveal"><div class="num">1</div><h4>Pick the tourney</h4><p>Filter by season, region, and grade. See divisions filling live.</p></div>
       <div class="step reveal"><div class="num">2</div><h4>Add your team</h4><p>Roster carries over year to year. Verify age and grade inline.</p></div>
       <div class="step pay reveal"><div class="num">3</div><h4>Pay once</h4><p>Card or Apple Pay in the same screen. Instant receipt.</p><span class="pill">Replaces 5 payment handles</span></div>
       <div class="step reveal"><div class="num">4</div><h4>Play</h4><p>Schedule, wristbands, and tickets in one place, notified when live.</p></div>
     </div>
-
-    <div class="checkout">
-      <div class="receipt reveal">
-        <div class="head"><span class="t">Checkout</span><span>RMR Fall Classic</span></div>
+    <div class="checkout reveal">
+      <div class="receipt">
+        <div class="head"><span>Checkout</span><span>RMR Fall Classic</span></div>
         <div class="body">
           <div class="lineitem"><span>Team registration, 7/8 Gold <span class="muted">Nov 8 to 9</span></span><span>$225.00</span></div>
           <div class="lineitem"><span>Age and grade verification <span class="muted">2 players</span></span><span>Included</span></div>
           <div class="lineitem"><span>Weekend spectator passes <span class="muted">x4</span></span><span>$40.00</span></div>
           <div class="total"><span>Total</span><span>$265.00</span></div>
-          <button class="btn btn-ink paybtn">Pay $265.00</button>
+          <button class="btn paybtn">Pay $265.00</button>
           <div class="pamethods"><span class="pm">Card</span><span class="pm">Apple Pay</span><span class="pm">Google Pay</span></div>
           <p class="paynote">Instant receipt. No invoice wait, no processing surprises.</p>
         </div>
       </div>
-      <div class="why reveal">
-        <h4>Why this grows revenue</h4>
-        <div class="rev"><span class="big">1 step</span><span class="d">Every removed step is a team that finishes registering instead of dropping off. Fewer abandoned sign-ups is the fastest revenue there is.</span></div>
-        <div class="rev"><span class="big">Day 0</span><span class="d">Payment collected at registration, not days later by hand. Cash arrives sooner and less of it slips.</span></div>
-        <div class="rev"><span class="big">+ Add</span><span class="d">Tickets and passes sold inside the same checkout, an upsell the current flow never offers.</span></div>
-      </div>
+      <p class="cap-note">Illustration of the one screen pay step. Sample event and figures.</p>
     </div>
   </div>
 </section>
 
-<section id="revenue" class="rev-band">
+<!-- Scott analysis, why it grows revenue -->
+<section class="analysis">
   <div class="wrap">
-    <span class="eyebrow kick" style="color:var(--mint)">The case for the redesign</span>
-    <h2 class="sec disp">Design that pays for itself.</h2>
-    <p class="lead">Illustrative, not a promise. The point is the direction, a smoother funnel and instant collection move the numbers that matter to a youth-sports program.</p>
+    <span class="a-eye">The case for the redesign</span>
+    <h2>Design that pays for itself.</h2>
+    <p class="lead">Illustrative, not a promise. The point is the direction. A smoother funnel and instant collection move the numbers that matter to a youth sports program.</p>
     <div class="rev-grid">
-      <div class="rev-card reveal"><div class="n">Fewer drop-offs</div><h4>Finish the sign-up</h4><p>A one-screen register-and-pay flow keeps coaches from abandoning midway across sites and apps.</p></div>
-      <div class="rev-card reveal"><div class="n">Paid on day one</div><h4>Collect at registration</h4><p>Card and Apple Pay at checkout replaces chasing Venmo and mailing Square invoices, so revenue lands sooner.</p></div>
-      <div class="rev-card reveal"><div class="n">New line items</div><h4>Sell tickets online</h4><p>Passes and spectator wristbands sold in the same flow, a revenue stream the current site leaves on the table.</p></div>
+      <div class="rev-card reveal"><div class="n">Fewer drop offs</div><h4>Finish the sign-up</h4><p>Every removed step is a team that finishes registering instead of abandoning midway across sites and apps. Fewer abandoned sign-ups is the fastest revenue there is.</p></div>
+      <div class="rev-card reveal"><div class="n">Paid on day one</div><h4>Collect at registration</h4><p>Card and Apple Pay at checkout replaces chasing Venmo and mailing Square invoices, so cash arrives sooner and less of it slips.</p></div>
+      <div class="rev-card reveal"><div class="n">New line items</div><h4>Sell tickets online</h4><p>Passes and spectator wristbands sold inside the same checkout, an upsell the current flow never offers.</p></div>
     </div>
   </div>
 </section>
-
-<section class="close">
-  <div class="wrap">
-    <div class="card reveal">
-      <h2 class="sec disp">Built to help the program grow.</h2>
-      <p>I put this together to show, not just tell, how a tighter register, pay, play experience could lift registrations and speed up collections for Hoop Dreams Nation. Happy to walk through it and where it would fit.</p>
-    </div>
-  </div>
-</section>
-  </div><!-- /concept-frame -->
-  <div class="concept-end">End of concept</div>
-</div><!-- /concept-stage -->
 
 <div class="scott-foot">
   <div class="wrap">
@@ -373,7 +323,6 @@
 <script>
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-  // chip toggles within each group
   document.querySelectorAll('[role="group"]').forEach(g=>{
     g.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
       g.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed','false'));
