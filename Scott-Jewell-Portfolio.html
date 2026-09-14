@@ -421,7 +421,7 @@
   .hero-card{position:relative;width:100%;max-width:460px;aspect-ratio:4/5;min-height:560px;border-radius:36px;background:#2418c9;
     overflow:hidden;display:flex;flex-direction:column;padding:30px;color:#fff;
     box-shadow:0 44px 96px rgba(20,16,80,.36),inset 0 0 0 1px rgba(255,255,255,.2);}
-  .hero-card .bgimg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;filter:blur(3px);transform:scale(1.1);}
+  .hero-card .bgimg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;}
   .hero-card .wash{position:absolute;inset:0;z-index:0;background:radial-gradient(130% 90% at 50% -12%,rgba(255,255,255,.08),transparent 55%),linear-gradient(180deg,rgba(40,20,125,.05),rgba(16,8,60,.42));}
   .hero-card .pill-open{position:relative;z-index:2;align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:#000;color:#fff;
     padding:9px 18px;border-radius:999px;font-size:13.5px;font-weight:500;box-shadow:0 8px 20px rgba(0,0,0,.25);}
@@ -446,10 +446,12 @@
   .hero-card .hc-cta:hover{transform:scale(1.02);}
   .hero-card .hc-cta{position:relative;overflow:hidden;}
   .hero-card .hc-cta .hct{display:inline-block;transition:opacity .22s ease,transform .3s cubic-bezier(.2,.9,.3,1.2);}
-  .hero-card .hc-cta .hcf{position:absolute;inset:0;margin:auto;width:26px;height:26px;opacity:0;transform:scale(.4) rotate(-25deg);transition:opacity .2s ease .08s,transform .5s cubic-bezier(.2,.9,.3,1.5) .08s;}
+  .hero-card .hc-cta .hcx{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:9px;opacity:0;transform:scale(.4) rotate(-25deg);transition:opacity .2s ease .08s,transform .5s cubic-bezier(.2,.9,.3,1.5) .08s;}
+  .hero-card .hc-cta .hcf{width:26px;height:26px;flex:none;}
+  .hero-card .hc-cta .hce{font-size:18px;font-weight:700;letter-spacing:-.2px;}
   .hero-card .hc-cta.going .hct{opacity:0;transform:scale(.82);}
-  .hero-card .hc-cta.going .hcf{opacity:1;transform:scale(1) rotate(0);}
-  @media (prefers-reduced-motion:reduce){.hero-card .hc-cta .hct,.hero-card .hc-cta .hcf{transition:none;}}
+  .hero-card .hc-cta.going .hcx{opacity:1;transform:scale(1) rotate(0);}
+  @media (prefers-reduced-motion:reduce){.hero-card .hc-cta .hct,.hero-card .hc-cta .hcx{transition:none;}}
   .hero-card .hc-foot{position:relative;z-index:2;margin-top:26px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
   .hero-card .hc-foot .who{display:flex;align-items:center;gap:13px;text-decoration:none;color:inherit;cursor:pointer;}
   .hero-card .hc-foot a.who:hover .t2{text-decoration:underline;}
@@ -756,7 +758,7 @@
 
     <div class="hero-visual">
       <div class="hero-card">
-        <div class="bgimg" style="background-image:url('https://cdn.midjourney.com/ad2beae4-f996-4fdb-907e-449d264b10eb/0_2_640_N.webp?method=shortest')"></div>
+        <div class="bgimg" id="heroCardArt" style="background-image:url('assets/hero-waves.png');background-image:image-set(url('assets/hero-waves.webp') type('image/webp'),url('assets/hero-waves.png') type('image/png'))"></div>
         <div class="wash"></div>
         <span class="pill-open"><span class="d"></span> Open to new work</span>
         <div class="status-card">
@@ -770,7 +772,7 @@
             <h2 class="hc-h">Design<br>that ships.</h2>
             <p class="hc-sub">Code-backed prototypes and accessible design systems, built for healthcare, fintech, and commerce.</p>
           </div>
-          <a href="case-bagequity.html" class="hc-cta"><span class="hct">View latest work</span><svg class="hcf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 9.6h.01M15 9.6h.01" stroke-width="2.8"/><path d="M8.4 13.8a4.9 4.9 0 0 0 7.2 0"/></svg></a>
+          <a href="case-cvs.html" class="hc-cta"><span class="hct">View latest work</span><span class="hcx" aria-hidden="true"><svg class="hcf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9 9.6h.01M15 9.6h.01" stroke-width="2.8"/><path d="M8.4 13.8a4.9 4.9 0 0 0 7.2 0"/></svg><span class="hce">Enjoy</span></span></a>
         </div>
         <div class="hc-foot">
           <a class="who" href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ26mu5FAo_kRzpKSWgvlFGxpZYPW3qMM5zd7FsAHzr9QAHQKepP9BJtFrDu-4BOMxlgAN_bSJGY" target="_blank" rel="noopener">
@@ -785,17 +787,251 @@
   </div>
 </header>
 
-<section class="reveal" id="featured" aria-label="Featured interface" style="padding:36px 0 6px;">
-  <div class="wrap">
-    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap;">
-      <div style="font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent,#1E66FF);">One interface, live</div>
-      <a href="case-cvs.html" style="font-size:13.5px;font-weight:600;color:#5a6070;">See what shipped and why &rarr;</a>
+<div class="fli" id="fli" role="dialog" aria-modal="true" aria-label="See the rework" aria-hidden="true">
+  <div class="fli-card">
+    <div class="fli-eyebrow">You just met the rework</div>
+    <h3>Now walk the whole arc, vision to shipped</h3>
+    <p>The live phone on the homepage is where I would take the account experience. The case study walks from that vision back to what shipped for millions of members inside CVS constraints, with the working proof embedded at every step.</p>
+    <div class="fli-feats">
+      <span class="fli-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>No red header bars anywhere</span>
+      <span class="fli-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>One clear next step on every screen</span>
+      <span class="fli-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Editing in sheets that keep your place</span>
+      <span class="fli-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Passkeys ahead of passwords</span>
     </div>
-    <div style="border-radius:20px;overflow:hidden;border:1px solid var(--line,#E7E4DD);box-shadow:0 30px 62px rgba(13,40,120,.15);background:#0C0C0D;">
-      <iframe src="cvs-prototype.html" title="CVS account experience, live prototype" loading="lazy" style="width:100%;height:760px;border:0;display:block;"></iframe>
-    </div>
-    <div style="text-align:center;font-size:13px;color:#8a90a0;margin-top:12px;">The CVS account and sign in flow, rebuilt as working UI. Tap through it.</div>
+    <a class="fli-go" href="case-cvs.html">See the whole arc<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <div class="fli-sub">About a minute, every screen responds</div>
   </div>
+</div>
+<style>
+  .fli{position:fixed;inset:0;z-index:220;display:flex;align-items:center;justify-content:center;padding:24px;
+    background:rgba(4,6,12,0);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);
+    opacity:0;pointer-events:none;
+    transition:opacity .5s ease,background .5s ease,backdrop-filter .5s ease,-webkit-backdrop-filter .5s ease;}
+  .fli.show{opacity:1;pointer-events:auto;background:rgba(4,6,12,.62);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+  .fli-card{width:min(500px,92vw);text-align:center;position:relative;
+    background:linear-gradient(180deg,rgba(24,20,10,.94),rgba(12,13,20,.96));
+    border:1px solid rgba(232,176,75,.5);border-radius:24px;padding:34px 30px 30px;
+    box-shadow:0 50px 120px rgba(0,0,0,.6);
+    transform:translateY(26px) scale(.94);transition:transform .65s cubic-bezier(.16,1,.3,1);}
+  .fli.show .fli-card{transform:none;animation:fliGlow 1.8s ease .4s 1;}
+  @keyframes fliGlow{0%{box-shadow:0 50px 120px rgba(0,0,0,.6),0 0 0 0 rgba(232,176,75,.5);}
+    100%{box-shadow:0 50px 120px rgba(0,0,0,.6),0 0 34px 12px rgba(232,176,75,0);}}
+  .fli-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#F2CE8B;margin-bottom:14px;}
+  .fli-card h3{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:25px;letter-spacing:-.5px;color:#fff;margin-bottom:10px;}
+  .fli-card p{font-size:14px;color:#D9CBAE;line-height:1.65;max-width:36ch;margin:0 auto 22px;}
+  .fli-go{display:inline-flex;align-items:center;gap:9px;text-decoration:none;
+    background:linear-gradient(120deg,#E8B04B,#F2CE8B);color:#221604;
+    font:700 14.5px 'Inter',-apple-system,sans-serif;border-radius:40px;padding:14px 26px;
+    box-shadow:0 14px 34px rgba(232,176,75,.3);
+    transition:transform .3s cubic-bezier(.2,.9,.3,1.4),box-shadow .3s ease;}
+  .fli-go:hover{transform:translateY(-2px);box-shadow:0 20px 44px rgba(232,176,75,.4);}
+  .fli-go svg{width:14px;height:14px;transition:transform .3s cubic-bezier(.2,.9,.3,1.4);}
+  .fli-go:hover svg{transform:translateX(4px);}
+  .fli-feats{display:grid;grid-template-columns:1fr 1fr;gap:9px 14px;text-align:left;
+    margin:0 auto 24px;max-width:390px;}
+  .fli-feat{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:#E7DFCB;line-height:1.45;}
+  .fli-feat svg{width:14px;height:14px;flex:none;color:#F2CE8B;margin-top:1px;}
+  .fli-sub{font-size:11.5px;color:#9C8F70;margin-top:12px;}
+  @media(max-width:480px){.fli-feats{grid-template-columns:1fr;}}
+  @media(prefers-reduced-motion:reduce){.fli,.fli-card{transition:none;}.fli.show .fli-card{animation:none;}}
+</style>
+<script>
+(() => {
+  'use strict';
+  const fli = document.getElementById('fli');
+  let shown = false;
+
+  function inviteSeen(){
+    try{ if(localStorage.getItem('cvs_rework_invite')) return true; }catch(e){}
+    try{ if(sessionStorage.getItem('cvs_rework_invite')) return true; }catch(e){}
+    try{ if(document.cookie.indexOf('cvs_rework_invite=1') > -1) return true; }catch(e){}
+    return false;
+  }
+  function markInviteSeen(){
+    try{ localStorage.setItem('cvs_rework_invite','1'); }catch(e){}
+    try{ sessionStorage.setItem('cvs_rework_invite','1'); }catch(e){}
+    try{ document.cookie = 'cvs_rework_invite=1;max-age=31536000;path=/;SameSite=Lax'; }catch(e){}
+  }
+  if(inviteSeen()) shown = true;
+  if(new URLSearchParams(location.search).has('r')){ markInviteSeen(); shown = true; }
+  function show(){
+    if(shown || inviteSeen()){ shown = true; return; }
+    shown = true;
+    markInviteSeen();
+    setTimeout(() => { fli.setAttribute('aria-hidden','false'); fli.classList.add('show'); }, 250);
+  }
+  function hide(){ fli.classList.remove('show'); fli.setAttribute('aria-hidden','true'); }
+  window.addEventListener('message', e => {
+    if(e.data && e.data.type === 'cvsInvite') show();
+  });
+  function watchSection(){
+    const frame = document.getElementById('flIframe');
+    const sec = document.getElementById('featured');
+    const target = frame || sec;
+    if(!target) return;
+    let raf = 0;
+    function check(){
+      raf = 0;
+      if(shown) return;
+      const r = target.getBoundingClientRect();
+      if(r.bottom > 0 && r.bottom < window.innerHeight * .5) show();
+    }
+    window.addEventListener('scroll', () => { if(!raf) raf = requestAnimationFrame(check); }, { passive: true });
+    check();
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchSection);
+  else watchSection();
+  fli.querySelector('.fli-go').addEventListener('click', () => {
+    try{ localStorage.setItem('cvs_home_y', String(Math.round(window.scrollY))); }catch(e){}
+    hide();
+  });
+  // returning from the rework, put them back where they were
+  if(new URLSearchParams(location.search).has('resume')){
+    let y = 0;
+    try{ y = parseInt(localStorage.getItem('cvs_home_y') || '0', 10) || 0; }catch(e){}
+    if(y > 0){
+      const go = () => setTimeout(() => window.scrollTo({ top: y, behavior: 'instant' in window ? 'instant' : 'auto' }), 60);
+      if(document.readyState === 'complete') go();
+      else window.addEventListener('load', go);
+    }
+  }
+})();
+</script>
+<section id="featured" aria-label="Featured interface" class="fl-sec">
+<style>
+  .fl-sec{padding:64px 0 30px;}
+  .fl-head{display:flex;justify-content:space-between;align-items:flex-end;gap:22px;margin-bottom:26px;flex-wrap:wrap;}
+  .fl-eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent,#1E66FF);
+    opacity:0;transform:translateY(16px);transition:opacity .7s cubic-bezier(.16,.84,.28,1),transform .7s cubic-bezier(.16,.84,.28,1);}
+  .fl-dot{width:8px;height:8px;border-radius:50%;background:#12B76A;position:relative;flex:none;}
+  .fl-dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1.5px solid rgba(18,183,106,.5);animation:flPing 2.2s ease-out infinite;}
+  @keyframes flPing{0%{transform:scale(.6);opacity:1;}100%{transform:scale(1.7);opacity:0;}}
+  .fl-title{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(28px,3.8vw,44px);letter-spacing:-.018em;line-height:1.08;margin-top:12px;
+    opacity:0;transform:translateY(20px);transition:opacity .8s cubic-bezier(.16,.84,.28,1) .1s,transform .8s cubic-bezier(.16,.84,.28,1) .1s;}
+  .fl-title .g2{background:linear-gradient(120deg,#1E66FF,#13C8FF);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic;}
+  .fl-sub{margin-top:10px;font-size:15.5px;color:#5a6070;max-width:520px;line-height:1.6;
+    opacity:0;transform:translateY(20px);transition:opacity .8s cubic-bezier(.16,.84,.28,1) .22s,transform .8s cubic-bezier(.16,.84,.28,1) .22s;}
+  .fl-link{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#0C1322;border-bottom:1.5px solid #0C1322;padding-bottom:4px;white-space:nowrap;
+    opacity:0;transform:translateY(16px);transition:opacity .7s cubic-bezier(.16,.84,.28,1) .32s,transform .7s cubic-bezier(.16,.84,.28,1) .32s,gap .2s;}
+  .fl-link:hover{gap:12px;}
+  .fl-link svg{transition:transform .3s cubic-bezier(.2,.7,.2,1);}
+  .fl-link:hover svg{transform:translateX(3px);}
+  .fl-sec.go .fl-eyebrow,.fl-sec.go .fl-title,.fl-sec.go .fl-sub,.fl-sec.go .fl-link{opacity:1;transform:none;}
+
+  .fl-stage{position:relative;background:#0A0B10;border-radius:30px;padding:28px 28px 20px;overflow:hidden;
+    box-shadow:0 50px 110px rgba(13,40,120,.25),inset 0 1px 0 rgba(255,255,255,.06);}
+  .fl-glow{position:absolute;width:780px;height:540px;left:50%;top:-32%;transform:translateX(-50%);pointer-events:none;
+    background:radial-gradient(closest-side,rgba(30,102,255,.42),rgba(19,200,255,.13),transparent 72%);filter:blur(42px);
+    animation:flDrift 12s ease-in-out infinite alternate;}
+  @keyframes flDrift{from{transform:translateX(-58%) translateY(0);}to{transform:translateX(-42%) translateY(30px);}}
+  .fl-grid{position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+    background-size:46px 46px;
+    -webkit-mask-image:radial-gradient(closest-side at 50% 42%,#000,transparent 95%);mask-image:radial-gradient(closest-side at 50% 42%,#000,transparent 95%);}
+  .fl-shell{position:relative;opacity:0;transform:perspective(1300px) translateY(52px) rotateX(8deg) scale(.955);
+    transition:opacity 1s cubic-bezier(.16,.84,.28,1) .25s,transform 1.15s cubic-bezier(.16,.84,.28,1) .25s;will-change:transform,opacity;}
+  .fl-sec.go .fl-shell{opacity:1;transform:perspective(1300px) translateY(0) rotateX(0) scale(1);}
+  .fl-tilt{border-radius:18px;overflow:hidden;background:#101116;border:1px solid rgba(255,255,255,.1);
+    box-shadow:0 34px 80px rgba(0,0,0,.55);will-change:transform;position:relative;}
+  .fl-glare{position:absolute;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity .4s;
+    background:radial-gradient(420px 420px at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.1),transparent 60%);}
+  .fl-stage:hover .fl-glare{opacity:1;}
+  .fl-chrome{display:flex;align-items:center;gap:14px;padding:12px 16px;background:rgba(255,255,255,.055);border-bottom:1px solid rgba(255,255,255,.08);}
+  .fl-dots{display:flex;gap:6px;}
+  .fl-dots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.16);}
+  .fl-url{flex:1;max-width:360px;font-size:12px;color:#9aa3b8;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:5px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .fl-live{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#4ADE97;}
+  .fl-live i{width:7px;height:7px;border-radius:50%;background:#12B76A;position:relative;}
+  .fl-live i::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1.5px solid rgba(18,183,106,.5);animation:flPing 2.2s ease-out .6s infinite;}
+  .fl-frame{position:relative;}
+  .fl-frame iframe{width:100%;height:720px;border:0;display:block;background:#0C0C0D;}
+  .fl-skel{position:absolute;inset:0;background:#0C0C0D;z-index:3;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease;}
+  .fl-skel::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-45%;transform:skewX(-16deg);
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);animation:flSheen 1.6s ease-in-out infinite;}
+  @keyframes flSheen{to{left:110%;}}
+  .fl-skel span{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#3d4354;font-weight:700;}
+  .fl-skel.off{opacity:0;pointer-events:none;}
+  .fl-foot{position:relative;display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap;}
+  .fl-tags{display:flex;gap:7px;flex-wrap:wrap;}
+  .fl-tags i{font-style:normal;font-size:11px;font-weight:600;color:#c4cee4;border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:5px 12px;
+    opacity:0;transform:translateY(10px);transition:opacity .5s cubic-bezier(.16,.84,.28,1),transform .55s cubic-bezier(.2,.9,.3,1.3);}
+  .fl-sec.go .fl-tags i{opacity:1;transform:none;}
+  .fl-sec.go .fl-tags i:nth-child(1){transition-delay:.75s;}
+  .fl-sec.go .fl-tags i:nth-child(2){transition-delay:.85s;}
+  .fl-sec.go .fl-tags i:nth-child(3){transition-delay:.95s;}
+  .fl-sec.go .fl-tags i:nth-child(4){transition-delay:1.05s;}
+  .fl-hint{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:#8a92a6;
+    opacity:0;transition:opacity .6s ease 1.15s;}
+  .fl-sec.go .fl-hint{opacity:1;}
+  .fl-hint svg{animation:flTap 2.6s ease-in-out 1.6s infinite;}
+  @keyframes flTap{0%,100%{transform:translateY(0);}12%{transform:translateY(3px) scale(.94);}24%{transform:translateY(0);}}
+  @media(max-width:700px){.fl-stage{padding:14px 14px 12px;border-radius:20px;}.fl-frame iframe{height:620px;}}
+  @media (prefers-reduced-motion:reduce){
+    .fl-eyebrow,.fl-title,.fl-sub,.fl-link,.fl-shell,.fl-tags i,.fl-hint{opacity:1;transform:none;transition:none;}
+    .fl-glow,.fl-dot::after,.fl-live i::after,.fl-skel::after,.fl-hint svg{animation:none;}
+  }
+</style>
+  <div class="wrap">
+    <div class="fl-head">
+      <div>
+        <div class="fl-eyebrow"><span class="fl-dot"></span>The rework, live</div>
+        <h2 class="fl-title">The account experience I would <span class="g2">ship today</span>, running live.</h2>
+        <p class="fl-sub">The CVS account flow pushed past what shipped, one clear next step on every screen, editing in sheets that keep your place, passkeys ahead of passwords, and every tap below is real.</p>
+      </div>
+      <a class="fl-link" href="case-cvs.html">See what shipped and why
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="fl-stage" id="flStage">
+      <span class="fl-glow" aria-hidden="true"></span>
+      <span class="fl-grid" aria-hidden="true"></span>
+      <div class="fl-shell">
+        <div class="fl-tilt" id="flTilt">
+          <span class="fl-glare" aria-hidden="true"></span>
+          <div class="fl-frame">
+            <div class="fl-skel" id="flSkel"></div>
+            <iframe id="flIframe" src="cvs-prototype-next.html?embed=1" title="The CVS rework, live" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="fl-foot">
+        
+        <span class="fl-hint"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11.5V5a1.5 1.5 0 0 1 3 0v5"/><path d="M12 10V8.5a1.5 1.5 0 0 1 3 0V11"/><path d="M15 11v-1a1.5 1.5 0 0 1 3 0v3.5a6.5 6.5 0 0 1-6.5 6.5h-.6a6.5 6.5 0 0 1-5.4-2.9l-2.3-3.5a1.5 1.5 0 0 1 2.4-1.7l1.4 1.6"/></svg>Every control works, drive it yourself</span>
+      </div>
+    </div>
+  </div>
+<script>
+(function(){
+  'use strict';
+  var sec=document.getElementById('featured'),stage=document.getElementById('flStage'),tilt=document.getElementById('flTilt');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){sec.classList.add('go');io.unobserve(sec);}
+  });},{threshold:.22});
+  io.observe(sec);
+  var ifr=document.getElementById('flIframe'),skel=document.getElementById('flSkel');
+  function off(){skel.classList.add('off');}
+  ifr.addEventListener('load',off);
+  setTimeout(off,3500);
+  if(!reduce&&window.matchMedia('(pointer: fine)').matches){
+    var raf=null,px=.5,py=.5;
+    stage.addEventListener('pointermove',function(e){
+      var r=stage.getBoundingClientRect();
+      px=(e.clientX-r.left)/r.width;py=(e.clientY-r.top)/r.height;
+      if(!raf)raf=requestAnimationFrame(function(){raf=null;
+        tilt.style.transform='perspective(1300px) rotateX('+((py-.5)*-1.7).toFixed(2)+'deg) rotateY('+((px-.5)*2).toFixed(2)+'deg)';
+        tilt.style.setProperty('--gx',(px*100).toFixed(1)+'%');
+        tilt.style.setProperty('--gy',(py*100).toFixed(1)+'%');});
+    },{passive:true});
+    stage.addEventListener('pointerleave',function(){
+      if(raf){cancelAnimationFrame(raf);raf=null;}
+      tilt.style.transition='transform .8s cubic-bezier(.2,.9,.25,1.15)';
+      tilt.style.transform='';
+      setTimeout(function(){tilt.style.transition='';},800);});
+  }
+})();
+</script>
 </section>
 
 <section id="work">
@@ -919,10 +1155,10 @@
           </div>
         </div>
         <div class="card-body">
-          <div class="ctags">Fintech · 0 → 1 · Founder</div>
+          <div class="ctags">Fintech · 0 → 1 · Founder · <span style="color:#E8A13A;">Gated</span></div>
           <h3>BagEquity Fintech Platform</h3>
-          <p>Founder and lead designer of a platform helping families and youth-sports coaches manage money together, spanning onboarding, money-movement, and the full design system.</p>
-          <span class="more">View case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <p>Founder and lead designer of a fintech platform helping families manage shared money with clarity and trust, spanning onboarding, money movement, and the full design system.</p>
+          <span class="more">Unlock case study <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
         </div>
       </a>
       <div class="bqn reveal" style="--i:3">
@@ -1050,6 +1286,7 @@
     </div>
   </div>
 </section>
+
 
 <section class="reveal" id="kind-words" aria-label="Recommendation" style="padding:44px 0 8px;">
   <div class="wrap" style="max-width:880px;text-align:center;">
@@ -1506,6 +1743,7 @@
 
   /* the latest work CTA smiles before it goes */
   var hc=document.querySelector('.hc-cta');
+  if(hc){window.addEventListener('pageshow',function(){hc.classList.remove('going');});}
   if(hc&&!reduce){
     hc.addEventListener('click',function(e){
       if(hc.classList.contains('going'))return;
@@ -1631,7 +1869,7 @@
   var SEEDS=[
     {sel:'.card[href="case-cvs.html"]',rx:.94,ry:.12,who:'Hiring manager',ago:'3w',txt:'Walked through the CVS work twice. Designers who can talk about trust in regulated products are rare.'},
     {sel:'.hero-meta',rx:.97,ry:.2,who:'Anonymous visitor',ago:'2w',txt:'Came for the resume, stayed for the live prototypes. Everything actually works, which says a lot.'},
-    {sel:'.card[href="cobank-prototype.html"]',rx:.94,ry:.14,who:'Hiring manager',ago:'5d',txt:'Designing and building the fix instead of a pitch deck is the smartest portfolio move I have seen this year. This is how you apply for a job.'}
+    {sel:'.card[href="ibotta-concept.html"]',rx:.94,ry:.14,who:'Hiring manager',ago:'5d',txt:'Designing and building the fix instead of a pitch deck is the smartest portfolio move I have seen this year. This is how you apply for a job.'}
   ];
   function mine(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch(e){return [];}}
   function saveMine(list){try{localStorage.setItem(KEY,JSON.stringify(list));}catch(e){}}
@@ -1764,8 +2002,8 @@
   document.addEventListener('click',function(e){
     var hot=armed||cur.classList.contains('on');
     if(!hot||comp)return;
-    if(e.target.closest('a,button,input,textarea,select,#gbFab,#gbCur,.gb-bubble,.gb-comp,.gb-pin,nav'))return;
-    e.preventDefault();openComp(e.clientX,e.clientY);
+    if(e.target.closest('#gbFab,#gbCur,.gb-bubble,.gb-comp,.gb-pin,nav'))return;
+    e.preventDefault();e.stopPropagation();openComp(e.clientX,e.clientY);
   },true);
 })();
 </script>
@@ -1830,5 +2068,6 @@
   });
 })();
 </script>
+
 </body>
 </html>
