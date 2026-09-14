@@ -271,6 +271,7 @@
     .dev-wrap{animation:none;}
   }
 </style>
+<style>body.embed .top{display:none;}body.embed .stage{padding-top:20px;}</style>
 </head>
 <body>
 
@@ -281,8 +282,8 @@
 
   <div class="top">
     <div class="eyebrow">CVS Health · The rework</div>
-    <h1>Same flow. <span class="g">Pushed all the way.</span></h1>
-    <p class="sub">The rebuild next door documents what shipped. This is where I would take it. No red header bars, content leads every screen, editing happens in a sheet so you never lose your place, and the account greets you with one clear next step.</p>
+    <h1>The same flow, <span class="g">pushed all the way.</span></h1>
+    <p class="sub">The case study documents what shipped, and this is where I would take it. No red header bars, content leads every screen, editing happens in a sheet so you never lose your place, and the account greets you with one clear next step.</p>
   </div>
 
   <div class="stage">
@@ -727,5 +728,6 @@
   }
 })();
 </script>
+<script>if(new URLSearchParams(location.search).has("embed")){document.body.classList.add("embed");}</script>
 </body>
 </html>
