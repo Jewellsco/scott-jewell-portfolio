@@ -427,8 +427,8 @@
   <section class="chx" id="chx" aria-label="Next chapter">
   <div class="chx-in">
     <div class="chx-copy">
-      <div class="chx-eyebrow">Why I can audit money · The proof</div>
-      <h2>I audit money products because I build one.</h2>
+      <div class="chx-eyebrow">Why money products are my lane · The proof</div>
+      <h2>I can take a money product apart because I build one.</h2>
       <p>The CoBank rework is not guesswork. BagEquity is the fintech I founded and designed end to end, onboarding, money movement, and the design system. That is it on the right.</p>
       <div class="chx-chips"><span>Founder</span><span>0 to 1</span><span>Live product</span></div>
       <a class="chx-go" href="case-bagequity.html">Meet BagEquity<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -547,13 +547,13 @@
 (()=>{
   const mToday=document.getElementById('mToday'),mConcept=document.getElementById('mConcept');
   const caption=document.getElementById('caption'),cToast=document.getElementById('cToast');
-  let busy=false,toastT=null;
+  let busy=false,toastT=null,autoMode=false;
   const cap=h=>caption.innerHTML=h;
   const toast=m=>{cToast.textContent=m;cToast.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>cToast.classList.remove('show'),1700);};
 
   function highlight(id){
     const el=document.getElementById(id);if(!el)return;
-    el.scrollIntoView({behavior:'smooth',block:'center'});
+    if(!autoMode) el.scrollIntoView({behavior:'smooth',block:'center'});
     el.classList.remove('hl');void el.offsetWidth;el.classList.add('hl');
     setTimeout(()=>el.classList.remove('hl'),1700);
   }
@@ -692,8 +692,8 @@
   }));
 
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-  async function tour(){
-    if(busy)return;busy=true;
+  async function tour(auto){
+    if(busy)return;busy=true;autoMode=!!auto;
     mToday.scrollTop=0;mConcept.scrollTop=0;
     cap('<b>1 · Their truth, on top.</b> The documented portal, balances, settlement, email reports. Watch what gets a system and what gets a paragraph.');
     await sleep(3000);
@@ -743,7 +743,7 @@
         if(!e.isIntersecting) return;
         vio.disconnect();
         if(engaged || busy) return;
-        tour();
+        tour(true);
       });
     }, { threshold: .35 });
     vio.observe(stageEl);
