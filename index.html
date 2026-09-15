@@ -89,7 +89,11 @@
   .hero-stage.go .hero-actions{opacity:1;transform:none;transition-delay:.46s;}
   .hero-stage.go .hero-meta{opacity:1;transform:none;transition-delay:.56s;}
   .hero .intro{margin-top:32px;font-size:clamp(17px,1.7vw,20px);line-height:1.6;color:var(--ink-2);max-width:54ch;}
-.intro .fx{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:1.07em;color:var(--ink);}
+.intro .fx{color:var(--ink);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 6' preserveAspectRatio='none'%3E%3Cpath d='M2 4.2 Q 30 2.6 60 3.8 T 118 3.4' fill='none' stroke='%232418c9' stroke-width='2.2' stroke-linecap='round' opacity='.85'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:0 100%;background-size:0% 6px;padding-bottom:3px;animation:fxsweep .9s cubic-bezier(.22,.61,.2,1) forwards;animation-delay:1s;}
+.intro .fx:nth-of-type(2){animation-delay:1.3s;}
+.intro .fx:nth-of-type(3){animation-delay:1.6s;}
+@keyframes fxsweep{to{background-size:100% 6px;}}
+@media (prefers-reduced-motion:reduce){.intro .fx{animation:none;background-size:100% 6px;}}
   .hero .intro b{color:var(--ink);font-weight:600;}
   .hero-actions{margin-top:40px;display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
   .btn-line{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:var(--ink);
